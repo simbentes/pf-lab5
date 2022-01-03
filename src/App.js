@@ -22,6 +22,7 @@ function App() {
   console.log(utilizador);
   return (
     <div className='App'>
+      <p>Teste Luis</p>
       <header className='App-header'>
         <h5>eBooks.</h5>
         {utilizador && (
