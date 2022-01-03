@@ -23,7 +23,7 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <h6>eBooks.</h6>
+        <h5>eBooks.</h5>
         {utilizador && (
           <>
             <div>
