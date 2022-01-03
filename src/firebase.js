@@ -7,12 +7,12 @@ import {
 } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDK08KFCBsi5km9CoCizj4dZ1DwxB3qmf0",
-  authDomain: "pf-lab5.firebaseapp.com",
-  projectId: "pf-lab5",
-  storageBucket: "pf-lab5.appspot.com",
-  messagingSenderId: "665266284817",
-  appId: "1:665266284817:web:d0b94832ff8da6c03904b0",
+  apiKey: process.env.REACT_APP_FB_API,
+  authDomain: process.env.REACT_APP_FB_URL,
+  projectId: process.env.REACT_APP_FB_PROJECT,
+  storageBucket: process.env.REACT_APP_FB_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FB_SENDER,
+  appId: process.env.REACT_APP_FB_APP,
 };
 
 const app = initializeApp(firebaseConfig);
