@@ -1,3 +1,4 @@
+import g_icon from "./g_icon.svg";
 import "./App.css";
 import { auth, useAuth } from "./firebase";
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
@@ -23,7 +24,7 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <h5>eBooks.</h5>
+        <h5>Primeiro Jornal.</h5>
         {utilizador && (
           <>
             <div>
@@ -35,7 +36,11 @@ function App() {
         )}
         {!utilizador && (
           <>
-            <button onClick={iniciarSessaoGoogle}>
+            <button
+              className='px-4 py-3 bg-white border-0 rounded-md flex items-center'
+              onClick={iniciarSessaoGoogle}
+            >
+              <img src={g_icon} className='w-5 pr-3' alt='logo' />
               Iniciar Sessão com o Google
             </button>
           </>
