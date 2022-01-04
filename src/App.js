@@ -31,14 +31,7 @@ function App() {
             <h5>Primeiro Jornal.</h5>
           </>
         )}
-        {utilizador && (
-          <>
-            <div>
-              <img src={utilizador.photoURL} className='rounded-full'></img>
-            </div>
-            <div>Olá, {utilizador.displayName}!</div>
-          </>
-        )}
+
         {!utilizador && (
           <>
             <button
@@ -70,9 +63,13 @@ function App() {
 }
 
 function Home() {
+  const utilizador = useAuth();
   return (
     <div>
-      <h2>Home</h2>
+      <div>
+        <img src={utilizador.photoURL} className='rounded-full mx-auto'></img>
+      </div>
+      <div>Olá, {utilizador.displayName}!</div>
     </div>
   );
 }
