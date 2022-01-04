@@ -1,5 +1,6 @@
 import g_icon from "./g_icon.svg";
 import "./App.css";
+import NavBar from "./NavBar";
 import { auth, useAuth } from "./firebase";
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 
@@ -15,32 +16,32 @@ function App() {
       });
   };
 
-  const terminarSessao = () => {
-    signOut(auth);
-  };
-
   const utilizador = useAuth();
   console.log(utilizador);
   return (
     <div className='App'>
+      {utilizador && <NavBar />}
       <header className='App-header'>
-        <h5>Primeiro Jornal.</h5>
+        {!utilizador && (
+          <>
+            <h5>Primeiro Jornal.</h5>
+          </>
+        )}
         {utilizador && (
           <>
             <div>
-              <img src={utilizador.photoURL}></img>
+              <img src={utilizador.photoURL} className='rounded-full'></img>
             </div>
             <div>Olá, {utilizador.displayName}!</div>
-            <button onClick={terminarSessao}>Terminar Sessão</button>
           </>
         )}
         {!utilizador && (
           <>
             <button
-              className='px-4 py-3 bg-white border-0 rounded-md flex items-center'
+              className='my-4 px-4 py-3 bg-white border-0 rounded-md flex items-center text-sm text-black'
               onClick={iniciarSessaoGoogle}
             >
-              <img src={g_icon} className='w-5 pr-3' alt='logo' />
+              <img src={g_icon} className='w-8 pr-3' alt='logo' />
               Iniciar Sessão com o Google
             </button>
           </>

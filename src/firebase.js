@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { initializeApp, signOut } from "firebase/app";
+import { initializeApp } from "firebase/app";
+import { signOut } from "firebase/auth";
 import {
   getAuth,
   onAuthStateChanged,
@@ -35,4 +36,8 @@ export const useAuth = () => {
   }, []);
 
   return user;
+};
+
+export const terminarSessao = () => {
+  signOut(auth);
 };
