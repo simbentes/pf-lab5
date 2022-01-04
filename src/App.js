@@ -2,7 +2,10 @@ import g_icon from "./g_icon.svg";
 import "./App.css";
 import NavBar from "./NavBar";
 import { auth, useAuth } from "./firebase";
-import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Routes, Route, Link, Outlet } from "react-router-dom";
+import Ultimas from "./Ultimas";
+import NoMatch from "./NoMatch";
 
 function App() {
   const iniciarSessaoGoogle = () => {
@@ -46,7 +49,28 @@ function App() {
             </button>
           </>
         )}
+        {/* Routes nest inside one another. Nested route paths build upon
+            parent route paths, and nested route elements render inside
+            parent route elements. See the note about <Outlet> below. */}
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path='ultimas' element={<Ultimas />} />
+          <Route path='dashboard' element={<NoMatch />} />
+
+          {/* Using path="*"" means "match anything", so this route
+                acts like a catch-all for URLs that we don't have explicit
+                routes for. */}
+          <Route path='*' element={<NoMatch />} />
+        </Routes>
       </header>
+    </div>
+  );
+}
+
+function Home() {
+  return (
+    <div>
+      <h2>Home</h2>
     </div>
   );
 }
