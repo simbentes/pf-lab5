@@ -6,6 +6,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Routes, Route, Link, Outlet } from "react-router-dom";
 import Ultimas from "./Ultimas";
 import NoMatch from "./NoMatch";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 function App() {
   const iniciarSessaoGoogle = () => {
@@ -53,14 +54,15 @@ function App() {
             parent route paths, and nested route elements render inside
             parent route elements. See the note about <Outlet> below. */}
         <Routes>
-          <Route index element={<Home />} />
-          <Route path='ultimas' element={<Ultimas />} />
-          <Route path='dashboard' element={<NoMatch />} />
-
-          {/* Using path="*"" means "match anything", so this route
+          <Route element={<ProtectedRoutes />}>
+            <Route index element={<Home />} />
+            <Route path='ultimas' element={<Ultimas />} />
+            <Route path='dashboard' element={<NoMatch />} />
+            {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}
-          <Route path='*' element={<NoMatch />} />
+            <Route path='*' element={<NoMatch />} />
+          </Route>
         </Routes>
       </header>
     </div>
