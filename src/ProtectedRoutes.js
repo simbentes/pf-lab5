@@ -1,5 +1,5 @@
 import { useAuth } from "./firebase";
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 function ProtectedRoutes() {
   const utilizador = useAuth();

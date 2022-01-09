@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Ultimas() {
   const [noticias, setNoticias] = useState([]);
@@ -12,10 +13,20 @@ function Ultimas() {
         setNoticias(data.articles);
       });
   }, []);
+  let mudarCategoria = useNavigate();
+  let urlParams = useParams();
+  console.log(urlParams);
   return (
     <div>
+      <button
+        onClick={() => {
+          mudarCategoria("/ultimas/desporto");
+        }}
+        className='ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
+      >
+        Desporto
+      </button>
       <h1>Últimas Notícias</h1>
-
       {noticias.length > 0 &&
         noticias.map((el) => (
           <div key={el.publishedAt} className='py-4'>
