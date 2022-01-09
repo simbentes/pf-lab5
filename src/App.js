@@ -5,6 +5,7 @@ import { auth, useAuth } from "./firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Routes, Route, Link, Outlet } from "react-router-dom";
 import Ultimas from "./Ultimas";
+import Noticia from "./Noticia";
 import NoMatch from "./NoMatch";
 import ProtectedRoutes from "./ProtectedRoutes";
 
@@ -52,6 +53,7 @@ function App() {
             <Route path='ultimas' element={<Ultimas />} />
             <Route path='ultimas/desporto' element={<Ultimas />} />
             <Route />
+            <Route path='noticia/:id' element={<Noticia />} />
             <Route path='dashboard' element={<NoMatch />} />
             {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
