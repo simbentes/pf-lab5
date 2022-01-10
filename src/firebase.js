@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { signOut } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import {
   getAuth,
   onAuthStateChanged,
@@ -41,3 +42,12 @@ export const useAuth = () => {
 export const terminarSessao = () => {
   signOut(auth);
 };
+
+export async function guardarNoticia(id_noticia) {
+  const db = getFirestore();
+  const docData = {
+    noticia: [id_noticia],
+  };
+
+  await setDoc(doc(db, "utilizadores", "asdasd"), docData);
+}

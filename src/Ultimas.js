@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import NoticiaMiniatura from "./NoticiaMiniatura";
 
 function Ultimas() {
   const [noticias, setNoticias] = useState([]);
 
   useEffect(() => {
-    fetch(
-      "https://newsapi.org/v2/top-headlines?q=trump&apiKey=2d2ffd828b484c509da84c81c89ed60d"
-    )
+    fetch("https://pf-py-api.herokuapp.com/fetch/", {
+      method: "POST",
+      body: JSON.stringify({
+        link: "https://www.publico.pt/api/list/ultimas",
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
-        setNoticias(data.articles);
+        setNoticias(data);
       });
   }, []);
   let mudarCategoria = useNavigate();
@@ -27,14 +34,12 @@ function Ultimas() {
         Desporto
       </button>
       <h1>Últimas Notícias</h1>
-      {noticias.length > 0 &&
-        noticias.map((el) => (
-          <div key={el.publishedAt} className='py-4'>
-            <img src={el.urlToImage} className='mx-auto h-20' />
-            <h6 className='font-semibold'>{el.title}</h6>
-            <p className='text-xs'>{el.description}</p>
-          </div>
-        ))}
+      <div className='container px-10'>
+        <div className='grid grid-cols-1 md:grid-cols-3'>
+          {noticias.length > 0 &&
+            noticias.map((el) => <NoticiaMiniatura info={el} />)}
+        </div>
+      </div>
     </div>
   );
 }
