@@ -6,8 +6,7 @@ import { guardarNoticia } from "./firebase";
 function Noticia() {
   let id_noticia = useParams();
 
-  const [noticiaInfo, setNoticiaInfo] = useState({});
-  const [noticia, setNoticia] = useState([]);
+  const [noticiaCorpo, setNoticiaCorpo] = useState([]);
 
   const navegar = useNavigate();
 
@@ -15,25 +14,11 @@ function Noticia() {
     fetch("https://pf-py-api.herokuapp.com/pub/" + id_noticia.id)
       .then((res) => res.json())
       .then((data) => {
-        setNoticia(data.content);
+        setNoticiaCorpo(data.content);
       })
       .catch((erro) => {
         console.log(erro);
         navegar("/");
-      });
-
-    fetch("https://pf-py-api.herokuapp.com/fetch/", {
-      method: "POST",
-      body: JSON.stringify({
-        link: "https://www.publico.pt/api/list/search?query=" + id_noticia.id,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setNoticiaInfo(data[0]);
       });
   }, []);
   return (
@@ -41,9 +26,7 @@ function Noticia() {
       <div className='md:container mx-auto px-10 lg:px-24 my-12'>
         <div className='grid grid-cols-4 gap-4'>
           <div className='col-span-3'>
-            <h1 className='font-bold text-5xl mb-3'>
-              {noticiaInfo.tituloNoticia}
-            </h1>
+            <h1 className='font-bold text-5xl mb-3'>Ola</h1>
             <div className='py-3'>
               <button
                 onClick={() => guardarNoticia(id_noticia.id)}
@@ -53,10 +36,11 @@ function Noticia() {
                 Guardar
               </button>
             </div>
-            <img className='w-full' src={noticiaInfo.multimediaPrincipal} />
-            {noticia.map((el) => (
-              <div key={el} className='py-4'>
-                <p className='text-base '>{el}</p>
+            <div></div>
+            <img className='w-full' src='' />
+            {noticiaCorpo.map((e) => (
+              <div key={e.content}>
+                <p className="text-base py-2">{e.content}</p>
               </div>
             ))}
           </div>
