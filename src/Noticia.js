@@ -6,7 +6,7 @@ import { guardarNoticia } from "./firebase";
 function Noticia() {
   let id_noticia = useParams();
 
-  const [noticiaCorpo, setNoticiaCorpo] = useState([]);
+  const [noticiaCorpo, setNoticia] = useState({});
 
   const navegar = useNavigate();
 
@@ -14,7 +14,7 @@ function Noticia() {
     fetch("https://pf-py-api.herokuapp.com/pub/" + id_noticia.id)
       .then((res) => res.json())
       .then((data) => {
-        setNoticiaCorpo(data.content);
+        setNoticia(data);
       })
       .catch((erro) => {
         console.log(erro);
@@ -38,9 +38,11 @@ function Noticia() {
             </div>
             <div></div>
             <img className='w-full' src='' />
-            {noticiaCorpo.map((e) => (
+            {noticiaCorpo.content.map((e) => (
               <div key={e.content}>
-                <p className="text-base py-2">{e.content}</p>
+                <p key={e.content} className='text-base py-2'>
+                  {e.content}
+                </p>
               </div>
             ))}
           </div>
