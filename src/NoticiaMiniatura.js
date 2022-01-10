@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();
   return (
-    <div className='bg-white shadow-md m-3 rounded-md'>
+    <div className='bg-white shadow-md m-3 rounded-lg'>
       <div key={props.info.id}>
         <img
           src={props.info.multimediaPrincipal}
-          className='mx-auto w-full hover:cursor-pointer'
+          className='mx-auto w-full rounded-t-lg h-48 object-cover hover:cursor-pointer '
           onClick={() => navegar("/noticia/" + props.info.id)}
         />
         <div className='p-2'>
