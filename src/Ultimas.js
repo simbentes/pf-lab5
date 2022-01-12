@@ -78,7 +78,7 @@ function Ultimas() {
         Desporto
       </button>
       <h1 className='pl-11'>Últimas Notícias</h1>
-      <div className='container px-10'>
+      <div className='container mx-auto px-10'>
         <div className='grid grid-cols-1 md:grid-cols-3'>
           {ver &&
             noticias.map((el) => <NoticiaMiniatura info={el} key={el.id} />)}

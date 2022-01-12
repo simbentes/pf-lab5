@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import eco from "./eco.svg";
 
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();
@@ -9,7 +10,7 @@ function NoticiaMiniatura(props) {
     console.log(e);
   }
   return (
-    <div className='bg-white shadow-md m-3 rounded-lg'>
+    <div className='relative bg-white shadow-md m-3 rounded-lg pb-3'>
       <img
         src={image}
         className='mx-auto w-full rounded-t-lg h-48 object-cover hover:cursor-pointer '
@@ -17,14 +18,18 @@ function NoticiaMiniatura(props) {
           navegar("/noticia/" + props.info.fonte + "/" + props.info.id)
         }
       />
-      <div className='p-2'>
-        <h6 className='text-base leading-4 font-semibold'>
+      <div className='px-2 py-3'>
+        <h6 className='text-base leading-5 font-semibold mb-2'>
           {props.info.titulo}
         </h6>
         <p className='text-xs'>{props.info.lead}</p>
-        <div className='text-right text-base font-extrabold pt-4 pr-1'>
-          {props.info.fonte}
-        </div>
+      </div>
+      <div>
+        {props.info.fonte == "eco" ? (
+          <img src={eco} className='w-10 absolute bottom-2 right-2' />
+        ) : (
+          "adeus"
+        )}
       </div>
     </div>
   );
