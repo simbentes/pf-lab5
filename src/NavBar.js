@@ -100,7 +100,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function NavBar() {
+function NavBar(props) {
   return (
     <Popover className='relative bg-white'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6'>
@@ -199,6 +199,15 @@ function NavBar() {
             </Link>
           </Popover.Group>
           <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
+            <div className='flex justify-center items-center'>
+              <div>
+                <img
+                  src={props.user.photoURL}
+                  className='rounded-full mx-auto h-9 mr-2'
+                ></img>
+              </div>
+              <div>{props.user.displayName}</div>
+            </div>
             <button
               onClick={terminarSessao}
               className='ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'

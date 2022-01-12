@@ -5,7 +5,7 @@ import { fetchNoticia } from "./fetchNoticia";
 import { guardarNoticia } from "./firebase";
 import { markdown } from "markdown";
 import parse from "html-react-parser";
-import "./Noticia.css";
+import "./css/App.css";
 
 function Noticia() {
   let id_noticia = useParams();
