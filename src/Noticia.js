@@ -4,14 +4,14 @@ import { SaveIcon } from "@heroicons/react/solid";
 import { fetchNoticia } from "./fetchNoticia";
 import { guardarNoticia } from "./firebase";
 import { markdown } from "markdown";
+import parse from "html-react-parser";
+import "./Noticia.css";
 
 function Noticia() {
   let id_noticia = useParams();
 
   const [noticia, setNoticia] = useState([]);
 
-
-  
   useEffect(() => {
     fetchNoticia(id_noticia.fonte, id_noticia.id)
       .then((resultado) => {
@@ -45,7 +45,9 @@ function Noticia() {
               className='w-full'
               src={noticia.map((e) => e.images.wide.urlTemplate)}
             />
-            {noticia.map((e) => e.body)}
+            <div className='corpo-noticia text-base py-8'>
+              {noticia.map((e) => parse(markdown.toHTML(e.body)))}
+            </div>
           </div>
           <div>
             <h5 className='font-semibold'>Notícias Relacionadas</h5>
