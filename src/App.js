@@ -22,7 +22,6 @@ function App() {
   };
 
   const utilizador = useAuth();
-  console.log(utilizador);
   return (
     <div className='App'>
       {utilizador && <NavBar />}
