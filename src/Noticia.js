@@ -1,31 +1,25 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { SaveIcon } from "@heroicons/react/solid";
+import { fetchNoticia } from "./fetchNoticia";
 import { guardarNoticia } from "./firebase";
+import { markdown } from "markdown";
 
 function Noticia() {
   let id_noticia = useParams();
 
   const [noticia, setNoticia] = useState([]);
 
-  const navegar = useNavigate();
 
+  
   useEffect(() => {
-    let urlFetch;
-    if (id_noticia.fonte === "eco") {
-      urlFetch = "https://eco.sapo.pt/wp-json/eco/v1/items/id/";
-    } else if (id_noticia.fonte === "observador") {
-      urlFetch = "https://pf-py-api.herokuapp.com/pub/";
-    }
-
-    fetch(urlFetch + id_noticia.id)
-      .then((res) => res.json())
-      .then((data) => {
-        setNoticia([data]);
+    fetchNoticia(id_noticia.fonte, id_noticia.id)
+      .then((resultado) => {
+        console.log(resultado);
+        setNoticia(resultado);
       })
-      .catch((erro) => {
-        console.log(erro);
-        navegar("/");
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
 
@@ -35,7 +29,7 @@ function Noticia() {
         <div className='grid grid-cols-4 gap-4'>
           <div className='col-span-3'>
             <h1 className='font-bold text-5xl mb-3'>
-              {noticia.map((e) => e.title)}
+              {noticia.map((e) => e.title.long)}
             </h1>
             <div className='py-3'>
               <button
@@ -47,16 +41,11 @@ function Noticia() {
               </button>
             </div>
             <div></div>
-            <img className='w-full' src={noticia.map((e) => e.img)} />
-            {noticia.map((e) =>
-              e.content.map((e) => (
-                <div key={e.content}>
-                  <p key={e.content} className='text-base py-2'>
-                    {e.content}
-                  </p>
-                </div>
-              ))
-            )}
+            <img
+              className='w-full'
+              src={noticia.map((e) => e.images.wide.urlTemplate)}
+            />
+            {noticia.map((e) => e.body)}
           </div>
           <div>
             <h5 className='font-semibold'>Notícias Relacionadas</h5>
