@@ -18,7 +18,7 @@ function App() {
         <Routes>
           {!utilizador && <Route index element={<PaginaInicial />} />}
           <Route element={<ProtectedRoutes />}>
-            <Route index element={<Home />} />
+            <Route index element={<Inicio />} />
             <Route path='ultimas' element={<Ultimas />} />
             <Route path='noticia/:fonte/:id' element={<Noticia />} />
             <Route path='dashboard' element={<NoMatch />} />
@@ -26,15 +26,6 @@ function App() {
           </Route>
         </Routes>
       </header>
-    </div>
-  );
-}
-
-function Home() {
-  return (
-    <div className='text-center pt-80 pb-96'>
-      <div className='text-5xl font-bold'>Primeiro Jornal.</div>
-      <div>A sua audioteca de notícias portuguesas.</div>
     </div>
   );
 }
