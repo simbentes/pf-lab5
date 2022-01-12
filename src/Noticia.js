@@ -26,8 +26,8 @@ function Noticia() {
   return (
     <div>
       <div className='md:container mx-auto px-10 lg:px-24 my-12'>
-        <div className='grid grid-cols-4 gap-4'>
-          <div className='col-span-3'>
+        <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
+          <div className='md:col-span-3'>
             <h1 className='font-bold text-5xl mb-3'>
               {noticia.map((e) => e.title.long)}
             </h1>
@@ -46,7 +46,9 @@ function Noticia() {
               src={noticia.map((e) => e.images.wide.urlTemplate)}
             />
             <div className='corpo-noticia text-base py-8'>
-              {noticia.map((e) => parse(markdown.toHTML(e.body)))}
+              {noticia.map((e) =>
+                parse(markdown.toHTML(e.body.replace("{0}", "")))
+              )}
             </div>
           </div>
           <div>
