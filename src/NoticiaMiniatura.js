@@ -13,7 +13,9 @@ function NoticiaMiniatura(props) {
       <img
         src={image}
         className='mx-auto w-full rounded-t-lg h-48 object-cover hover:cursor-pointer '
-        onClick={() => navegar("/noticia/" + props.info.id)}
+        onClick={() =>
+          navegar("/noticia/" + props.info.fonte + "/" + props.info.id)
+        }
       />
       <div className='p-2'>
         <h6 className='text-base leading-4 font-semibold'>

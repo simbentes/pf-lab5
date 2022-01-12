@@ -11,7 +11,14 @@ function Noticia() {
   const navegar = useNavigate();
 
   useEffect(() => {
-    fetch("https://pf-py-api.herokuapp.com/pub/" + id_noticia.id)
+    let urlFetch;
+    if (id_noticia.fonte === "eco") {
+      urlFetch = "https://eco.sapo.pt/wp-json/eco/v1/items/id/";
+    } else if (id_noticia.fonte === "observador") {
+      urlFetch = "https://pf-py-api.herokuapp.com/pub/";
+    }
+
+    fetch(urlFetch + id_noticia.id)
       .then((res) => res.json())
       .then((data) => {
         setNoticia([data]);
@@ -21,6 +28,7 @@ function Noticia() {
         navegar("/");
       });
   }, []);
+
   return (
     <div>
       <div className='md:container mx-auto px-10 lg:px-24 my-12'>

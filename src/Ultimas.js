@@ -34,7 +34,7 @@ function Ultimas() {
             tag: e.item.type,
             lead: e.item.lead,
             img: e.item.images.wide.urlTemplate,
-            fonte: "Eco",
+            fonte: "eco",
           };
         });
         let arr = noticias;
@@ -52,7 +52,7 @@ function Ultimas() {
             tag: e.tag,
             lead: e.lead,
             img: e.image,
-            fonte: "Observador",
+            fonte: "observador",
           };
         });
         let arr = noticias;
