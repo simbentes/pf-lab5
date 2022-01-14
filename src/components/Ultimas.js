@@ -21,16 +21,21 @@ function Ultimas() {
       .then((data) => {
         setNoticias(data);
       });
-  }, []); */
+  }, []);*/
 
   useEffect(() => {
-    fetchUltimas().then((data) => {
-      setVer(ver);
-    });
+    fetchUltimas().then(
+      (news) => {
+        console.log(news);
+        setNoticias(news);
+        setVer(true);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }, []);
 
-  let mudarCategoria = useNavigate();
-  let urlParams = useParams();
   return (
     <div className='py-5'>
       {console.log(noticias.length)}
