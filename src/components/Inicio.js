@@ -1,6 +1,6 @@
-import eco from "./eco.svg";
-import publico from "./publico.svg";
-import observador from "./observador.png";
+import eco from "../icons/eco.svg";
+import publico from "../icons/publico.svg";
+import observador from "../icons/observador.png";
 
 export default function Inicio() {
   return (

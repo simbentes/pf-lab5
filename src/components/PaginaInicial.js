@@ -1,7 +1,7 @@
-import "./css/App.css";
+import "../css/App.css";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "./firebase";
-import g_icon from "./g_icon.svg";
+import { auth } from "../firebase";
+import g_icon from "../icons/g_icon.svg";
 
 function PaginaInicial() {
   const iniciarSessaoGoogle = () => {

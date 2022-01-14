@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import eco from "./eco.svg";
-import observador from "./observador.png";
+import eco from "../icons/eco.svg";
+import observador from "../icons/observador.png";
 
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();

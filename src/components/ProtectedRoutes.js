@@ -1,4 +1,4 @@
-import { useAuth } from "./firebase";
+import { useAuth } from "../firebase";
 import { Outlet } from "react-router-dom";
 
 function ProtectedRoutes() {

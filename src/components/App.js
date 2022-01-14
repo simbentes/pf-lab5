@@ -1,6 +1,6 @@
-import "./css/App.css";
+import "./../css/App.css";
 import NavBar from "./NavBar";
-import { useAuth } from "./firebase";
+import { useAuth } from "../firebase";
 import { Routes, Route, Link, Outlet } from "react-router-dom";
 import Ultimas from "./Ultimas";
 import Noticia from "./Noticia";

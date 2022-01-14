@@ -16,7 +16,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { terminarSessao } from "./firebase";
+import { terminarSessao } from "../firebase";
 import { Link } from "react-router-dom";
 
 const solutions = [
