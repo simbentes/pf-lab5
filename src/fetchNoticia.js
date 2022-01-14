@@ -8,5 +8,5 @@ export const fetchNoticia = (fonte, id) => {
 
   return fetch(urlFetch)
     .then((res) => res.json())
-    .then((data) => [data]);
+    .then((data) => data);
 };

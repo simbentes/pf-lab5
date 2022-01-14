@@ -67,17 +67,11 @@ function Ultimas() {
   let mudarCategoria = useNavigate();
   let urlParams = useParams();
   return (
-    <div>
+    <div className='py-5'>
       {console.log(noticias.length)}
-      <button
-        onClick={() => {
-          mudarCategoria("/ultimas/desporto");
-        }}
-        className='ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
-      >
-        Desporto
-      </button>
-      <h1 className='pl-11'>Últimas Notícias</h1>
+      <h1 className='pl-11 text-center font-semibold text-2xl my-5'>
+        Últimas Notícias
+      </h1>
       <div className='container mx-auto px-10'>
         <div className='grid grid-cols-1 md:grid-cols-3'>
           {ver &&

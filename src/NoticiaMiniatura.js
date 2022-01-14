@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import eco from "./eco.svg";
+import observador from "./observador.png";
 
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();
@@ -10,7 +11,7 @@ function NoticiaMiniatura(props) {
     console.log(e);
   }
   return (
-    <div className='relative bg-white shadow-md m-3 rounded-lg pb-3'>
+    <div className='relative bg-white shadow-md m-3 rounded-lg pb-4'>
       <img
         src={image}
         className='mx-auto w-full rounded-t-lg h-48 object-cover hover:cursor-pointer '
@@ -25,11 +26,25 @@ function NoticiaMiniatura(props) {
         <p className='text-xs'>{props.info.lead}</p>
       </div>
       <div>
-        {props.info.fonte == "eco" ? (
-          <img src={eco} className='w-10 absolute bottom-2 right-2' />
-        ) : (
-          "adeus"
-        )}
+        {(() => {
+          switch (props.info.fonte) {
+            case "eco":
+              return (
+                <img src={eco} className='w-11 absolute bottom-3 right-3' />
+              );
+            case "observador":
+              return (
+                <img
+                  src={observador}
+                  className='w-28 absolute bottom-3 right-3'
+                />
+              );
+            case "publico":
+              return "Jornal Público";
+            default:
+              return null;
+          }
+        })()}
       </div>
     </div>
   );
