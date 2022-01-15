@@ -8,17 +8,16 @@ function AudioPlayer(props) {
   const [aTocar, setATocar] = useState(false);
 
   const playPause = () => {
-    
-      if (aTocar) {
-        audioNoticia.pause();
-        props.func(false);
-      } else {
-        audioNoticia.play();
-        props.func(true);
-      }
+    console.log(audioNoticia.duration);
+    if (aTocar) {
+      audioNoticia.pause();
+      props.func(false);
+    } else {
+      audioNoticia.play();
+      props.func(true);
+    }
 
-      setATocar(!aTocar);
-    
+    setATocar(!aTocar);
   };
 
   useEffect(() => {
