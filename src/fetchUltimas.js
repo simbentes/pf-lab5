@@ -18,7 +18,9 @@ export default function fetchUltimas() {
 
         noticias_arr.push(...json_tratato);
 
-        return fetch("https://observador.pt/wp-json/obs_api/v4/news/widget/");
+        return fetch(
+          "https://observador.pt/wp-json/obs_api/v4/news/widget/latest"
+        );
       })
       .then((res) => res.json())
       .then((data) => {
@@ -34,6 +36,35 @@ export default function fetchUltimas() {
           };
         });
         noticias_arr.push(...json_tratato);
+
+        return fetch("https://pf-py-api.herokuapp.com/fetch/", {
+          method: "POST",
+          body: JSON.stringify({
+            link: "https://www.publico.pt/api/list/ultimas",
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        let json_tratato = data.map((e) => {
+          return {
+            id: e.id,
+            titulo: e.tituloNoticia,
+            data: e.data,
+            tag: e.tag,
+            lead: e.descricao,
+            img: e.multimediaPrincipal,
+            fonte: "publico",
+          };
+        });
+        noticias_arr.push(...json_tratato);
+
+        noticias_arr.sort(function (a, b) {
+          return new Date(b.data) - new Date(a.data);
+        });
 
         if (noticias_arr !== []) {
           resolve(noticias_arr);

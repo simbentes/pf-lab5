@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
+import publico from "../icons/publico.svg";
 import AudioPlayer from "./AudioPlayer";
 
 function NoticiaMiniatura(props) {
@@ -53,7 +54,9 @@ function NoticiaMiniatura(props) {
                 />
               );
             case "publico":
-              return "Jornal Público";
+              return (
+                <img src={publico} className='w-5 absolute bottom-3 right-3' />
+              );
             default:
               return null;
           }

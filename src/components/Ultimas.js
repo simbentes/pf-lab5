@@ -7,22 +7,6 @@ function Ultimas() {
 
   const ref = useRef(0);
 
-  /*useEffect(() => {
-    fetch("https://pf-py-api.herokuapp.com/fetch/", {
-      method: "POST",
-      body: JSON.stringify({
-        link: "https://www.publico.pt/api/list/ultimas",
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setNoticias(data);
-      });
-  }, []);*/
-
   useEffect(() => {
     fetchUltimas().then(
       (news) => {
