@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
+import AudioPlayer from "./AudioPlayer";
 
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();
@@ -10,8 +11,17 @@ function NoticiaMiniatura(props) {
   } catch (e) {
     console.log(e);
   }
+
+  const audioATocar = (aTocar) => {
+    if (aTocar) {
+      console.log(aTocar);
+      return true;
+    }
+    return false;
+  };
+
   return (
-    <div className='relative bg-white shadow-md m-3 rounded-lg pb-4'>
+    <div className='relative bg-white shadow-md m-3 rounded-lg pb-6'>
       <img
         src={image}
         className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer '
@@ -24,6 +34,9 @@ function NoticiaMiniatura(props) {
           {props.info.titulo}
         </h6>
         <p className='text-xs'>{props.info.lead}</p>
+        <div>
+          <AudioPlayer func={audioATocar} />
+        </div>
       </div>
       <div>
         {(() => {
