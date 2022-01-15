@@ -14,7 +14,7 @@ function NoticiaMiniatura(props) {
     <div className='relative bg-white shadow-md m-3 rounded-lg pb-4'>
       <img
         src={image}
-        className='mx-auto w-full rounded-t-lg h-48 object-cover hover:cursor-pointer '
+        className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer '
         onClick={() =>
           navegar("/noticia/" + props.info.fonte + "/" + props.info.id)
         }
