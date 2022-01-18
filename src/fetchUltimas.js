@@ -18,9 +18,7 @@ export default function fetchUltimas() {
 
         noticias_arr.push(...json_tratato);
 
-        return fetch(
-          "https://observador.pt/wp-json/obs_api/v4/news/widget/latest"
-        );
+        return fetch("https://observador.pt/wp-json/obs_api/v4/news/widget/");
       })
       .then((res) => res.json())
       .then((data) => {
