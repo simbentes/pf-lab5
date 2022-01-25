@@ -8,24 +8,28 @@ import NoMatch from "./NoMatch";
 import ProtectedRoutes from "./ProtectedRoutes";
 import PaginaInicial from "./PaginaInicial";
 import Inicio from "./Inicio";
+import PlayButton from "./PlayButton";
+import OMeuFeed from "./OMeuFeed";
 
 function App() {
   const utilizador = useAuth();
   return (
     <div className='App'>
       {utilizador && <NavBar user={utilizador} />}
-      <header className='App-header'>
+      <div className='pt-5 pb-15 bg-gray-100'>
         <Routes>
           {!utilizador && <Route index element={<PaginaInicial />} />}
           <Route element={<ProtectedRoutes />}>
             <Route index element={<Inicio />} />
             <Route path='ultimas' element={<Ultimas />} />
+            <Route path='omeufeed' element={<OMeuFeed />} />
             <Route path='noticia/:fonte/:id' element={<Noticia />} />
             <Route path='dashboard' element={<NoMatch />} />
             <Route path='*' element={<NoMatch />} />
+            <Route path='playbutton' element={<PlayButton />} />
           </Route>
         </Routes>
-      </header>
+      </div>
     </div>
   );
 }
