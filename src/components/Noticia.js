@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { SaveIcon } from "@heroicons/react/solid";
 import { fetchNoticia } from "../fetchNoticia";
-import { guardarNoticia } from "../firebase";
+import { guardarNoticia, useAuth } from "../firebase";
 import parse from "html-react-parser";
 import "../css/App.css";
 import AudioPlayer from "./AudioPlayer";
@@ -12,6 +12,7 @@ import publico from "../icons/publico.svg";
 import { Remarkable } from "remarkable";
 
 function Noticia() {
+  let userID = useAuth();
   let reference = useRef({});
   let hasStarted = false;
   const [disable, setDisable] = useState(true);
@@ -30,6 +31,7 @@ function Noticia() {
             titulo: resultado.title.long,
             img: resultado.images.wide.urlTemplate,
             body: parse(md.render(resultado.body)),
+            raw_body: resultado.body,
             fonte: "eco",
           });
         } else {
@@ -50,6 +52,7 @@ function Noticia() {
                 </h2>
               );
             }),
+            raw_body: resultado.content,
             fonte: id_noticia.fonte,
           });
         }
@@ -114,7 +117,9 @@ function Noticia() {
             <div className='py-3 grid grid-cols-6 gap-4'>
               <div>
                 <button
-                  onClick={() => guardarNoticia(id_noticia.id, noticia)}
+                  onClick={() =>
+                    guardarNoticia(userID.uid, id_noticia.id, noticia)
+                  }
                   className='px-4 py-1 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 flex justify-center items-center'
                 >
                   <SaveIcon className='h-8 w-8 inline pr-2' />

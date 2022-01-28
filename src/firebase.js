@@ -50,17 +50,21 @@ export const terminarSessao = () => {
   signOut(auth);
 };
 
-export const guardarNoticia = async (id_noticia, obj_noticia) => {
+export const guardarNoticia = async (
+  id_utilizador,
+  id_noticia,
+  obj_noticia
+) => {
   const db = getFirestore();
 
   console.log("ola");
-  console.log(obj_noticia);
+  console.log(id_utilizador);
 
-  const docRef = doc(db, "utilizadores", "elciganosaakdsnkjds");
+  const docRef = doc(db, "utilizadores", id_utilizador);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    const utilizadorRef = doc(db, "utilizadores", "elciganosaakdsnkjds");
+    const utilizadorRef = doc(db, "utilizadores", id_utilizador);
     console.log("Document data:", docSnap.data());
     await updateDoc(utilizadorRef, {
       noticia_guardada: arrayUnion({
@@ -68,6 +72,7 @@ export const guardarNoticia = async (id_noticia, obj_noticia) => {
         fonte: obj_noticia.fonte,
         titulo: obj_noticia.titulo,
         img: obj_noticia.img,
+        body: obj_noticia.raw_body,
       }),
     });
   } else {
@@ -78,9 +83,10 @@ export const guardarNoticia = async (id_noticia, obj_noticia) => {
           fonte: obj_noticia.fonte,
           titulo: obj_noticia.titulo,
           img: obj_noticia.img,
+          body: obj_noticia.raw_body,
         },
       ],
     };
-    await setDoc(doc(db, "utilizadores", "elciganosaakdsnkjds"), docData);
+    await setDoc(doc(db, "utilizadores", id_utilizador), docData);
   }
 };
