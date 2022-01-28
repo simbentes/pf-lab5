@@ -46,7 +46,7 @@ function Noticia() {
         type: "body",
         id: id_noticia.id,
         gender: "female",
-        jornal: id_noticia.fonte + "4354",
+        jornal: id_noticia.fonte,
         contents: [tts_feito],
       }),
       headers: {

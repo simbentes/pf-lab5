@@ -1,9 +1,7 @@
 import { PlayIcon, PauseIcon } from "@heroicons/react/solid";
 import { useState, useEffect } from "react";
-import audio from "../fallen-down.mp3";
 
 function AudioPlayer(props) {
-  const [audioNoticia] = useState(new Audio(audio));
 
   const [aTocar, setATocar] = useState(false);
 
@@ -11,19 +9,6 @@ function AudioPlayer(props) {
     props.func();
     setATocar(!aTocar);
   };
-
-  useEffect(() => {
-    audioNoticia.addEventListener("ended", () => {
-      setATocar(false);
-      props.func(false);
-    });
-    return () => {
-      audioNoticia.removeEventListener("ended", () => {
-        setATocar(false);
-        props.func(false);
-      });
-    };
-  }, []);
 
   return (
     <div className='my-3'>
