@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { signOut } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  updateDoc,
+  getDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import {
   getAuth,
   onAuthStateChanged,
@@ -43,11 +50,37 @@ export const terminarSessao = () => {
   signOut(auth);
 };
 
-export async function guardarNoticia(id_noticia) {
+export const guardarNoticia = async (id_noticia, obj_noticia) => {
   const db = getFirestore();
-  const docData = {
-    noticia: [id_noticia],
-  };
 
-  await setDoc(doc(db, "utilizadores", "asdasd"), docData);
-}
+  console.log("ola");
+  console.log(obj_noticia);
+
+  const docRef = doc(db, "utilizadores", "elciganosaakdsnkjds");
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const utilizadorRef = doc(db, "utilizadores", "elciganosaakdsnkjds");
+    console.log("Document data:", docSnap.data());
+    await updateDoc(utilizadorRef, {
+      noticia_guardada: arrayUnion({
+        id: id_noticia,
+        fonte: obj_noticia.fonte,
+        titulo: obj_noticia.titulo,
+        img: obj_noticia.img,
+      }),
+    });
+  } else {
+    const docData = {
+      noticia_guardada: [
+        {
+          id: id_noticia,
+          fonte: obj_noticia.fonte,
+          titulo: obj_noticia.titulo,
+          img: obj_noticia.img,
+        },
+      ],
+    };
+    await setDoc(doc(db, "utilizadores", "elciganosaakdsnkjds"), docData);
+  }
+};
