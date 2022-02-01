@@ -72,7 +72,7 @@ export const guardarNoticia = async (
         fonte: obj_noticia.fonte,
         titulo: obj_noticia.titulo,
         img: obj_noticia.img,
-        body: obj_noticia.raw_body,
+        data: obj_noticia.data,
       }),
     });
   } else {
@@ -84,6 +84,7 @@ export const guardarNoticia = async (
           titulo: obj_noticia.titulo,
           img: obj_noticia.img,
           body: obj_noticia.raw_body,
+          data: obj_noticia.data,
         },
       ],
     };

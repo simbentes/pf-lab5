@@ -31,8 +31,8 @@ function Noticia() {
             titulo: resultado.title.long,
             img: resultado.images.wide.urlTemplate,
             body: parse(md.render(resultado.body)),
-            raw_body: resultado.body,
             fonte: "eco",
+            data: id_noticia.dia + "-" + id_noticia.mes + "-" + id_noticia.ano,
           });
         } else {
           setNoticia({
@@ -52,8 +52,8 @@ function Noticia() {
                 </h2>
               );
             }),
-            raw_body: resultado.content,
             fonte: id_noticia.fonte,
+            data: id_noticia.dia + "-" + id_noticia.mes + "-" + id_noticia.ano,
           });
         }
       })
