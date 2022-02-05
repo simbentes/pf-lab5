@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
-import AudioPlayer from "./AudioPlayer";
+import PlayButton from "./PlayButton";
 
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();
@@ -12,14 +12,6 @@ function NoticiaMiniatura(props) {
   } catch (e) {
     console.log(e);
   }
-
-  const audioATocar = (aTocar) => {
-    if (aTocar) {
-      console.log(aTocar);
-      return true;
-    }
-    return false;
-  };
 
   return (
     <div className='relative bg-white shadow-md m-3 rounded-lg pb-6'>
@@ -36,7 +28,7 @@ function NoticiaMiniatura(props) {
         </h6>
         <p className='text-xs'>{props.info.lead}</p>
         <div>
-          <AudioPlayer func={audioATocar} />
+        <PlayButton contents={[props.info.lead]} id={props.info.id} type="desc" jornal={props.info.fonte}/>
         </div>
       </div>
       <div>

@@ -46,12 +46,18 @@ function OMeuFeed() {
     );
   }, []);
 
+  const checkFontes =(el)=>{
+    // check if all fontes are false
+    if (!fontes.publico && !fontes.observador && !fontes.eco) return true
+    // check if elems fonte is trued in fontes
+    if((el.fonte === "publico" && fontes.publico) || (el.fonte === "eco" && fontes.eco) || (el.fonte === "observador" && fontes.observador)) return true
+    return false
+  }
+
   useEffect(() => {
-    let returnAll = false
     
     const arr_filtrado = noticias.filter((el) => {
-      console.log(el.fonte)
-      if((el.fonte === "publico" && fontes.publico) || (el.fonte === "eco" && fontes.eco) || (el.fonte === "observador" && fontes.observador)) return true
+      if (checkFontes(el)) return true
     });
       
     setDisplayNoticias(arr_filtrado);
@@ -77,7 +83,7 @@ function OMeuFeed() {
           <ButtonSection name="Fontes">
             <SortButton id="publico" content={publico} type="img" size="h-6" onChangeHandle={escolherFonte}/>
             <SortButton id="eco" content={eco} type="img" size="h-4" onChangeHandle={escolherFonte}/>
-            <SortButton id="obs" content={observador} type="img" size="h-2" onChangeHandle={escolherFonte}/>
+            <SortButton id="observador" content={observador} type="img" size="h-2" onChangeHandle={escolherFonte}/>
           </ButtonSection>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>

@@ -1,22 +1,31 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
+import { PlayIcon, PauseIcon } from "@heroicons/react/solid";
 
 const PlayButton = (props) => {
-  let reference = useRef({});
-  let hasStarted = false;
+  let reference = useRef({hasStarted: false});
   const [disable, setDisable] = useState(true);
+  const [buttonContent, setButtonContent] = useState(<p>loading</p>)
+
+  let playjsx = <PlayIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />
+  let pausejsx = <PauseIcon className='h-10 w-10 fill-slate-800' aria-hidden='true'/>
+
 
   useEffect(() => {
+    //console.log(props.contents)
+    if (props.contents == undefined) return
+
+    
     reference.current.context = new AudioContext();
     reference.current.source = reference.current.context.createBufferSource();
     fetch("https://pf-py-api.herokuapp.com/audio/", {
       method: "POST",
       body: JSON.stringify({
-        type: "body",
-        id: 167,
+        type: props.type,
+        id: props.id,
         gender: "male",
-        jornal: "obs1x",
-        contents: ["olá, novas tecnologias da comunicação"],
+        jornal: props.jornal,
+        contents: props.contents,
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -30,24 +39,32 @@ const PlayButton = (props) => {
         reference.current.source.buffer = audioBuffer;
         reference.current.source.connect(reference.current.context.destination);
         setDisable(false);
+        setButtonContent(playjsx)
       });
-  }, []);
+  }, [props.contents]);
 
   const play = () => {
-    if (!hasStarted) {
+    if(disable) return
+
+    if (!reference.current.hasStarted) {
       reference.current.source.start();
-      hasStarted = true;
+      reference.current.hasStarted = true;
+      setButtonContent(pausejsx)
     } else if (reference.current.context.state == "running") {
       reference.current.context.suspend().then();
+      setButtonContent(playjsx)
     } else if (reference.current.context.state == "suspended") {
       reference.current.context.resume().then();
+      setButtonContent(pausejsx)
     }
   };
 
   return (
-    <button disabled={disable} onClick={play}>
-      Play Audio
-    </button>
+    <div className='my-3 grid items-center rounded-lg bg-slate-200 w-full h-12 px-1'>
+      <div onClick={play} className='cursor-pointer'>
+        {buttonContent}
+      </div>
+    </div>
   );
 };
 

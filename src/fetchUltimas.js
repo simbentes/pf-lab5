@@ -5,6 +5,7 @@ export default function fetchUltimas() {
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
+          console.log(e)
           return {
             id: e.item.id,
             titulo: e.item.title.long,
@@ -23,6 +24,7 @@ export default function fetchUltimas() {
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
+          console.log(e)
           return {
             id: e.id,
             titulo: e.title,
@@ -48,6 +50,7 @@ export default function fetchUltimas() {
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
+          console.log(e)
           return {
             id: e.id,
             titulo: e.tituloNoticia,
