@@ -160,17 +160,21 @@ function NavBar(props) {
                   <div className='py-1'>
                     <Menu.Item>
                       {({ active }) => (
-                        <Link
-                          to='/'
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "font-semibold text-gray-500 hover:text-gray-900 block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Definições de Voz
-                        </Link>
+                        <div className='px-4 py-2 text-sm'>
+                          <div className='font-semibold mb-2'>Voz</div>
+                          <div className='grid grid-cols-2 justify-between'>
+                            <div className='text-center'>
+                              <button className='bg-indigo-600  text-white rounded-md py-2 px-4'>
+                                Joaquim
+                              </button>
+                            </div>
+                            <div className='text-center'>
+                              <button className='bg-gray-200 rounded-md py-2 px-4'>
+                                Joana
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       )}
                     </Menu.Item>
                     <Menu.Item>
