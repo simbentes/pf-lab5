@@ -17,9 +17,13 @@ function NoticiasGuardadas() {
         <div className='container mx-auto px-10'>
           <div className='grid grid-cols-1 lg:grid-cols-6'>
             <div className='lg:col-span-5'>
-              {noticias_arr.map((el, index) => (
-                <NoticiaMiniaturaGuardadas info={el} key={index} />
-              ))}
+              {noticias_arr.length > 0 ? (
+                noticias_arr.map((el, index) => (
+                  <NoticiaMiniaturaGuardadas info={el} key={index} />
+                ))
+              ) : (
+                <div className='pt-10 pb-96'>Sem notícias guardadas.</div>
+              )}
             </div>
           </div>
         </div>
