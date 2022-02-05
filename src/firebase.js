@@ -53,46 +53,63 @@ export const terminarSessao = () => {
 export const guardarNoticia = async (
   id_utilizador,
   id_noticia,
-  obj_noticia
+  obj_noticia,
+  checked
 ) => {
   const db = getFirestore();
 
-  console.log("ola");
-  console.log(id_utilizador);
+  if (checked) {
+    console.log("VAMOS ADICIONAR À BD");
 
-  const docRef = doc(db, "utilizadores", id_utilizador);
-  const docSnap = await getDoc(docRef);
+    const docRef = doc(db, "utilizadores", id_utilizador);
+    const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    const utilizadorRef = doc(db, "utilizadores", id_utilizador);
-    console.log("Document data:", docSnap.data());
-    await updateDoc(utilizadorRef, {
-      noticia_guardada: arrayUnion({
-        id: id_noticia,
-        fonte: obj_noticia.fonte,
-        titulo: obj_noticia.titulo,
-        img: obj_noticia.img,
-        data: obj_noticia.data,
-      }),
-    });
-  } else {
-    const docData = {
-      noticia_guardada: [
-        {
+    if (docSnap.exists()) {
+      const utilizadorRef = doc(db, "utilizadores", id_utilizador);
+      //console.log("Document data:", docSnap.data());
+      await updateDoc(utilizadorRef, {
+        noticia_guardada: arrayUnion({
           id: id_noticia,
           fonte: obj_noticia.fonte,
           titulo: obj_noticia.titulo,
           img: obj_noticia.img,
-          body: obj_noticia.raw_body,
           data: obj_noticia.data,
-        },
-      ],
-    };
-    await setDoc(doc(db, "utilizadores", id_utilizador), docData);
+        }),
+      });
+    } else {
+      const docData = {
+        noticia_guardada: [
+          {
+            id: id_noticia,
+            fonte: obj_noticia.fonte,
+            titulo: obj_noticia.titulo,
+            img: obj_noticia.img,
+            body: obj_noticia.raw_body,
+            data: obj_noticia.data,
+          },
+        ],
+      };
+      await setDoc(doc(db, "utilizadores", id_utilizador), docData);
+    }
+  } else {
+    console.log("É PARA ELIMINAR");
   }
 };
 
 export const nGuardadas = async (user_info) => {
+  const db = getFirestore();
+  const docRef = await doc(db, "utilizadores", user_info.uid);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+  }
+};
+
+export const isGuardado = async (user_info) => {
   const db = getFirestore();
   const docRef = await doc(db, "utilizadores", user_info.uid);
   const docSnap = await getDoc(docRef);

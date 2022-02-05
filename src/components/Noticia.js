@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { SaveIcon } from "@heroicons/react/solid";
 import { fetchNoticia } from "../fetchNoticia";
-import { guardarNoticia, useAuth } from "../firebase";
+import { guardarNoticia, useAuth, isGuardado } from "../firebase";
 import parse from "html-react-parser";
 import "../css/App.css";
 import AudioPlayer from "./AudioPlayer";
@@ -17,10 +17,16 @@ function Noticia() {
   let hasStarted = false;
   const [disable, setDisable] = useState(true);
 
+  const [guardado, setGuardado] = useState(false);
+
   let id_noticia = useParams();
 
   const [noticia, setNoticia] = useState({});
   const [tts, setTts] = useState([]);
+
+  useEffect(() => {
+    isGuardado(userID).then((res) => setGuardado(res));
+  }, [userID]);
 
   useEffect(() => {
     let md = new Remarkable();
@@ -115,16 +121,30 @@ function Noticia() {
             <h1 className='font-bold text-5xl mb-3'>{noticia.titulo}</h1>
             <AudioPlayer func={play} />
             <div className='py-3 grid grid-cols-6 gap-4'>
-              <div>
-                <button
-                  onClick={() =>
-                    guardarNoticia(userID.uid, id_noticia.id, noticia)
-                  }
-                  className='px-4 py-1 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 flex justify-center items-center'
+              <div className='col-span-2'>
+                <input
+                  type='checkbox'
+                  id='guardar'
+                  name='guardar'
+                  checked={guardado}
+                  className='peer hidden'
+                  onChange={(e) => {
+                    setGuardado(!guardado);
+                    guardarNoticia(
+                      userID.uid,
+                      id_noticia.id,
+                      noticia,
+                      e.target.checked
+                    );
+                  }}
+                />
+                <label
+                  htmlFor='guardar'
+                  className='px-4 py-1 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 flex justify-center items-center peer-checked:bg-gray-300 peer-checked:text-black'
                 >
                   <SaveIcon className='h-8 w-8 inline pr-2' />
-                  Guardar
-                </button>
+                  {guardado ? "Guardado" : "Guardar"}
+                </label>
               </div>
               <div className='col-end-7 col-span-3 text-right'>
                 <img
