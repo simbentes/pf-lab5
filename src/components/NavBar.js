@@ -130,12 +130,6 @@ function NavBar(props) {
             >
               O Meu Feed
             </Link>
-            <Link
-              to='/guardadas'
-              className='text-base font-medium text-gray-500 hover:text-gray-900'
-            >
-              Noticias Guardadas
-            </Link>
           </Popover.Group>
           <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
             <div className='flex justify-center items-center'>

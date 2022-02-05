@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
-import AudioPlayer from "./AudioPlayer";
+import PlayButton from "./PlayButton";
 
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();
@@ -13,28 +13,13 @@ function NoticiaMiniatura(props) {
     console.log(e);
   }
 
-  const audioATocar = (aTocar) => {
-    if (aTocar) {
-      console.log(aTocar);
-      return true;
-    }
-    return false;
-  };
-
-  const data = new Date(props.info.data);
-  console.log(data);
-
   return (
     <div className='relative bg-white shadow-md m-3 rounded-lg pb-6'>
       <img
         src={image}
         className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer '
         onClick={() =>
-          navegar(
-            `/noticia/${props.info.fonte}/${data.getFullYear()}/${
-              data.getMonth() + 1
-            }/${data.getDate()}/${props.info.id}`
-          )
+          navegar("/noticia/" + props.info.fonte + "/" + props.info.id)
         }
       />
       <div className='px-2 py-3'>
@@ -43,7 +28,7 @@ function NoticiaMiniatura(props) {
         </h6>
         <p className='text-xs'>{props.info.lead}</p>
         <div>
-          <AudioPlayer func={audioATocar} />
+        <PlayButton contents={[props.info.lead]} id={props.info.id} type="desc" jornal={props.info.fonte}/>
         </div>
       </div>
       <div>

@@ -10,7 +10,6 @@ import PaginaInicial from "./PaginaInicial";
 import Inicio from "./Inicio";
 import PlayButton from "./PlayButton";
 import OMeuFeed from "./OMeuFeed";
-import NoticiasGuardadas from "./NoticiasGuardadas";
 
 function App() {
   const utilizador = useAuth();
@@ -24,11 +23,7 @@ function App() {
             <Route index element={<Inicio />} />
             <Route path='ultimas' element={<Ultimas />} />
             <Route path='omeufeed' element={<OMeuFeed />} />
-            <Route path='guardadas' element={<NoticiasGuardadas />} />
-            <Route
-              path='noticia/:fonte/:ano/:mes/:dia/:id'
-              element={<Noticia />}
-            />
+            <Route path='noticia/:fonte/:id' element={<Noticia />} />
             <Route path='dashboard' element={<NoMatch />} />
             <Route path='*' element={<NoMatch />} />
             <Route path='playbutton' element={<PlayButton />} />

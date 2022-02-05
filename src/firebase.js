@@ -64,15 +64,35 @@ export const guardarNoticia = async (
     const docRef = doc(db, "utilizadores", id_utilizador);
     const docSnap = await getDoc(docRef);
 
+<<<<<<< HEAD
     if (docSnap.exists()) {
       const utilizadorRef = doc(db, "utilizadores", id_utilizador);
       //console.log("Document data:", docSnap.data());
       await updateDoc(utilizadorRef, {
         noticia_guardada: arrayUnion({
+=======
+  if (docSnap.exists()) {
+    const utilizadorRef = doc(db, "utilizadores", id_utilizador);
+    console.log("Document data:", docSnap.data());
+    await updateDoc(utilizadorRef, {
+      noticia_guardada: arrayUnion({
+        id: id_noticia,
+        fonte: obj_noticia.fonte,
+        titulo: obj_noticia.titulo,
+        img: obj_noticia.img,
+        body: obj_noticia.raw_body,
+      }),
+    });
+  } else {
+    const docData = {
+      noticia_guardada: [
+        {
+>>>>>>> ca81421fdf4c3d03060131d987ba6c7b65598cd7
           id: id_noticia,
           fonte: obj_noticia.fonte,
           titulo: obj_noticia.titulo,
           img: obj_noticia.img,
+<<<<<<< HEAD
           data: obj_noticia.data,
         }),
       });
@@ -121,3 +141,12 @@ export const isGuardado = async (user_info) => {
     console.log("No such document!");
   }
 };
+=======
+          body: obj_noticia.raw_body,
+        },
+      ],
+    };
+    await setDoc(doc(db, "utilizadores", id_utilizador), docData);
+  }
+};
+>>>>>>> ca81421fdf4c3d03060131d987ba6c7b65598cd7

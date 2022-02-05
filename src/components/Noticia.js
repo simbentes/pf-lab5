@@ -5,24 +5,21 @@ import { fetchNoticia } from "../fetchNoticia";
 import { guardarNoticia, useAuth, isGuardado } from "../firebase";
 import parse from "html-react-parser";
 import "../css/App.css";
-import AudioPlayer from "./AudioPlayer";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import { Remarkable } from "remarkable";
+import PlayButton from "./PlayButton";
 
 function Noticia() {
   let userID = useAuth();
-  let reference = useRef({});
-  let hasStarted = false;
-  const [disable, setDisable] = useState(true);
 
   const [guardado, setGuardado] = useState(false);
 
   let id_noticia = useParams();
+  console.log(id_noticia)
 
   const [noticia, setNoticia] = useState({});
-  const [tts, setTts] = useState([]);
 
   useEffect(() => {
     isGuardado(userID).then((res) => setGuardado(res));
@@ -32,15 +29,23 @@ function Noticia() {
     let md = new Remarkable();
     fetchNoticia(id_noticia.fonte, id_noticia.id)
       .then((resultado) => {
+
         if (id_noticia.fonte === "eco") {
+          // alterar isto para ajudar no render docorpo 
+          let expression = /{*0}/
+          console.log(resultado.body.split(expression))
           setNoticia({
             titulo: resultado.title.long,
             img: resultado.images.wide.urlTemplate,
             body: parse(md.render(resultado.body)),
+            raw_body: resultado.body,
             fonte: "eco",
-            data: id_noticia.dia + "-" + id_noticia.mes + "-" + id_noticia.ano,
+            body_array: resultado.body.split(expression)
+            // arranjar o tipo
           });
-        } else {
+        } 
+        else {
+          console.log(resultado.content.map(elem => elem.content))
           setNoticia({
             titulo: resultado.title,
             img: resultado.img,
@@ -58,8 +63,9 @@ function Noticia() {
                 </h2>
               );
             }),
+            raw_body: resultado.content,
             fonte: id_noticia.fonte,
-            data: id_noticia.dia + "-" + id_noticia.mes + "-" + id_noticia.ano,
+            body_array: resultado.content.map(elem => elem.content),
           });
         }
       })
@@ -67,51 +73,6 @@ function Noticia() {
         console.log(err);
       });
   }, []);
-  /*
-  useEffect(() => {
-    console.log(tts);
-
-    let tts_feito = markdown.toHTML(tts).replace(/(<([^>]+)>)/gi, "");
-
-    console.log(tts_feito);
-
-    reference.current.context = new AudioContext();
-    reference.current.source = reference.current.context.createBufferSource();
-
-    fetch("https://pf-py-api.herokuapp.com/audio/", {
-      method: "POST",
-      body: JSON.stringify({
-        type: "body",
-        id: id_noticia.id,
-        gender: "female",
-        jornal: id_noticia.fonte,
-        contents: [tts_feito],
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) =>
-        reference.current.context.decodeAudioData(arrayBuffer)
-      )
-      .then((audioBuffer) => {
-        reference.current.source.buffer = audioBuffer;
-        reference.current.source.connect(reference.current.context.destination);
-        setDisable(false);
-      });
-  }, [tts]);
-*/
-  const play = () => {
-    if (!hasStarted) {
-      reference.current.source.start();
-      hasStarted = true;
-    } else if (reference.current.context.state == "running") {
-      reference.current.context.suspend().then();
-    } else if (reference.current.context.state == "suspended") {
-      reference.current.context.resume().then();
-    }
-  };
 
   return (
     <div>
@@ -119,7 +80,7 @@ function Noticia() {
         <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
           <div className='md:col-span-3'>
             <h1 className='font-bold text-5xl mb-3'>{noticia.titulo}</h1>
-            <AudioPlayer func={play} />
+            <PlayButton contents={noticia.body_array} id={id_noticia.id} type="body" jornal={id_noticia.fonte}/>
             <div className='py-3 grid grid-cols-6 gap-4'>
               <div className='col-span-2'>
                 <input
