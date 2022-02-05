@@ -57,11 +57,10 @@ export const guardarNoticia = async (
   checked
 ) => {
   const db = getFirestore();
-
+  const docRef = doc(db, "utilizadores", id_utilizador);
   if (checked) {
     console.log("VAMOS ADICIONAR À BD");
 
-    const docRef = doc(db, "utilizadores", id_utilizador);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -93,6 +92,20 @@ export const guardarNoticia = async (
     }
   } else {
     console.log("É PARA ELIMINAR");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const noticias_todas = await docSnap.data().noticia_guardada;
+
+      await updateDoc(docRef, {
+        noticia_guardada: noticias_todas.filter(
+          (noticia) => noticia.id !== id_noticia
+        ),
+      });
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
   }
 };
 
@@ -109,13 +122,18 @@ export const nGuardadas = async (user_info) => {
   }
 };
 
-export const isGuardado = async (user_info) => {
+export const isGuardado = async (user_info, noticia_id) => {
   const db = getFirestore();
   const docRef = await doc(db, "utilizadores", user_info.uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return docSnap.data();
+    return (
+      docSnap.data().noticia_guardada.some((obj) => {
+        console.log(obj.id, " ///// //// ////", noticia_id);
+        return obj.id === noticia_id;
+      }) === true
+    );
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");

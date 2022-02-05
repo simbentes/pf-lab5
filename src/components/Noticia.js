@@ -17,35 +17,33 @@ function Noticia() {
   const [guardado, setGuardado] = useState(false);
 
   let id_noticia = useParams();
-  console.log(id_noticia)
 
   const [noticia, setNoticia] = useState({});
 
   useEffect(() => {
-    isGuardado(userID).then((res) => setGuardado(res));
+    isGuardado(userID, id_noticia.id).then((res) => setGuardado(res));
   }, [userID]);
 
   useEffect(() => {
     let md = new Remarkable();
     fetchNoticia(id_noticia.fonte, id_noticia.id)
       .then((resultado) => {
-
         if (id_noticia.fonte === "eco") {
-          // alterar isto para ajudar no render docorpo 
-          let expression = /{*0}/
-          console.log(resultado.body.split(expression))
+          // alterar isto para ajudar no render docorpo
+          let expression = /{*0}/;
+          console.log(resultado.body.split(expression));
           setNoticia({
             titulo: resultado.title.long,
             img: resultado.images.wide.urlTemplate,
             body: parse(md.render(resultado.body)),
             raw_body: resultado.body,
             fonte: "eco",
-            body_array: resultado.body.split(expression)
+            data: id_noticia.dia + "-" + id_noticia.mes + "-" + id_noticia.ano,
+            body_array: resultado.body.split(expression),
             // arranjar o tipo
           });
-        } 
-        else {
-          console.log(resultado.content.map(elem => elem.content))
+        } else {
+          console.log(resultado.content.map((elem) => elem.content));
           setNoticia({
             titulo: resultado.title,
             img: resultado.img,
@@ -65,7 +63,8 @@ function Noticia() {
             }),
             raw_body: resultado.content,
             fonte: id_noticia.fonte,
-            body_array: resultado.content.map(elem => elem.content),
+            data: id_noticia.dia + "-" + id_noticia.mes + "-" + id_noticia.ano,
+            body_array: resultado.content.map((elem) => elem.content),
           });
         }
       })
@@ -80,7 +79,12 @@ function Noticia() {
         <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
           <div className='md:col-span-3'>
             <h1 className='font-bold text-5xl mb-3'>{noticia.titulo}</h1>
-            <PlayButton contents={noticia.body_array} id={id_noticia.id} type="body" jornal={id_noticia.fonte}/>
+            <PlayButton
+              contents={noticia.body_array}
+              id={id_noticia.id}
+              type='body'
+              jornal={id_noticia.fonte}
+            />
             <div className='py-3 grid grid-cols-6 gap-4'>
               <div className='col-span-2'>
                 <input

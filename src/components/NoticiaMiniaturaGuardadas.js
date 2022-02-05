@@ -21,6 +21,8 @@ function NoticiaMiniaturaGuardadas(props) {
     return false;
   };
 
+  const data = new Date(props.info.data);
+
   return (
     <div className='relative bg-white shadow-md m-3 rounded-lg'>
       <div className='grid grid-cols-12'>
@@ -29,7 +31,11 @@ function NoticiaMiniaturaGuardadas(props) {
             src={image}
             className='w-full h-32 object-cover hover:cursor-pointer '
             onClick={() =>
-              navegar("/noticia/" + props.info.fonte + "/" + props.info.id)
+              navegar(
+                `/noticia/${props.info.fonte}/${data.getFullYear()}/${
+                  data.getMonth() + 1
+                }/${data.getDate()}/${props.info.id}`
+              )
             }
           />
         </div>
