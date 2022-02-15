@@ -5,7 +5,7 @@ export default function fetchUltimas() {
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
-          console.log(e)
+          console.log(e);
           return {
             id: e.item.id,
             titulo: e.item.title.long,
@@ -19,12 +19,20 @@ export default function fetchUltimas() {
 
         noticias_arr.push(...json_tratato);
 
-        return fetch("https://observador.pt/wp-json/obs_api/v4/news/widget/");
+        return fetch("https://pf-py-api.herokuapp.com/fetch/", {
+          method: "POST",
+          body: JSON.stringify({
+            link: "https://observador.pt/wp-json/obs_api/v4/news/widget/",
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
       })
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
-          console.log(e)
+          console.log(e);
           return {
             id: e.id,
             titulo: e.title,
@@ -50,7 +58,7 @@ export default function fetchUltimas() {
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
-          console.log(e)
+          console.log(e);
           return {
             id: e.id,
             titulo: e.tituloNoticia,
