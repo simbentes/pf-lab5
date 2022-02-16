@@ -8,7 +8,6 @@ import NoMatch from "./NoMatch";
 import ProtectedRoutes from "./ProtectedRoutes";
 import PaginaInicial from "./PaginaInicial";
 import Inicio from "./Inicio";
-import PlayButton from "./PlayButton";
 import OMeuFeed from "./OMeuFeed";
 import NoticiasGuardadas from "./NoticiasGuardadas";
 
@@ -32,7 +31,6 @@ function App() {
             <Route path='noticia/:fonte/:id' element={<Noticia />} />
             <Route path='dashboard' element={<NoMatch />} />
             <Route path='*' element={<NoMatch />} />
-            <Route path='playbutton' element={<PlayButton />} />
           </Route>
         </Routes>
       </div>
