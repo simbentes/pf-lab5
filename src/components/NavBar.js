@@ -6,6 +6,7 @@ import {
   LogoutIcon,
   BookmarkAltIcon,
   MicrophoneIcon,
+  MinusCircleIcon,
 } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
 import { terminarSessao } from "../firebase";
@@ -27,19 +28,75 @@ function NavBar(props) {
         className='fixed z-10 inset-0 overflow-y-auto'
       >
         <Dialog.Overlay className='fixed inset-0 bg-black opacity-30' />
-        <div className='relative bg-white rounded max-w-sm mx-auto my-auto'>
-          <Dialog.Title>Deactivate account</Dialog.Title>
-          <Dialog.Description>
-            This will permanently deactivate your account
-          </Dialog.Description>
-
-          <p>
-            Are you sure you want to deactivate your account? All of your data
-            will be permanently removed. This action cannot be undone.
-          </p>
-
-          <button onClick={() => setIsOpen(false)}>Deactivate</button>
-          <button onClick={() => setIsOpen(false)}>Cancel</button>
+        <div className='relative bg-white rounded max-w-sm mx-auto mt-48 p-5'>
+          <div className='font-semibold text-md'>
+            <MicrophoneIcon className='h-6 w-6 mr-1 inline' />
+            Definições de Voz
+          </div>
+          <div>
+            <div className='py-5'>
+              <div className='font-medium pb-4 text-sm'>Pessoa</div>
+              <div className='grid grid-cols-2 justify-between mb-12'>
+                <div className='relative text-center'>
+                  <input
+                    type='radio'
+                    id='masculina'
+                    name='voz'
+                    value='masculina'
+                    className='peer hidden'
+                  />
+                  <label
+                    htmlFor='masculina'
+                    className='bg-gray-200 rounded-tl-md rounded-bl-md  py-3.5 absolute right-0 left-0  peer-checked:bg-indigo-600 peer-checked:text-white'
+                  >
+                    Joaquim
+                  </label>
+                </div>
+                <div className='relative text-center'>
+                  <input
+                    type='radio'
+                    id='feminina'
+                    name='voz'
+                    value='CSS'
+                    className='peer hidden'
+                  />
+                  <label
+                    htmlFor='feminina'
+                    className='bg-gray-200 rounded-tr-md rounded-br-md py-3.5 absolute right-0 left-0  peer-checked:bg-indigo-600 peer-checked:text-white'
+                  >
+                    Joana
+                  </label>
+                </div>
+              </div>
+              <div className='pt-5'>
+                <div className='font-medium pb-2 text-sm'>Velocidade</div>
+                <input
+                  type='range'
+                  id='velocidade'
+                  name='velocidade'
+                  min='0'
+                  max='50'
+                  className='w-full'
+                />
+              </div>
+              <div className='pt-5'>
+                <div className='font-medium pb-2 text-sm'>Pitch</div>
+                <input
+                  type='range'
+                  id='pitch'
+                  name='velocidade'
+                  min='0'
+                  max='50'
+                  className='w-full'
+                />
+              </div>
+            </div>
+          </div>
+          <div className='text-right'>
+            <button className='bg-gray-200 rounded-md py-2 px-4 mx-1'>
+              Repor
+            </button>
+          </div>
         </div>
       </Dialog>
       <Popover className='relative bg-white'>
