@@ -30,7 +30,7 @@ function NoticiaMiniatura(props) {
       />
       <div className='px-2 py-3'>
         <h6 className='text-base leading-5 font-semibold mb-2'>
-          {props.info.titulo}
+          {props.info.titulo.replace( /(<([^>]+)>)/ig, '')/*props.info.titulo*/}
         </h6>
         <p className='text-xs'>{props.info.lead}</p>
         <div className='absolute bottom-8 right-2.5 left-2.5'>
