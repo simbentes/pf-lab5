@@ -31,7 +31,9 @@ function Ultimas() {
       <div className='container mx-auto px-10'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {noticias &&
-            noticias.map((el) => <NoticiaMiniatura info={el} key={el.id} />)}
+            noticias.map((el, index) => (
+              <NoticiaMiniatura info={el} key={index} />
+            ))}
         </div>
       </div>
     </div>
