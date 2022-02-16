@@ -17,7 +17,7 @@ function App() {
   return (
     <div className='App'>
       {utilizador && <NavBar user={utilizador} />}
-      <div className='pb-15 bg-gray-100'>
+      <div className='pt-5 pb-15 bg-gray-100'>
         <Routes>
           {!utilizador && <Route index element={<PaginaInicial />} />}
           <Route element={<ProtectedRoutes />}>
