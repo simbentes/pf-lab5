@@ -1,42 +1,73 @@
-import { useState } from "react";
-import { Dialog } from "@headlessui/react";
+import React from "react";
+import { useState, useEffect, useRef } from "react";
+import { PlayIcon, PauseIcon } from "@heroicons/react/solid";
 
-function PlayButton() {
-  let [isOpen, setIsOpen] = useState(true);
+const PlayButton = (props) => {
+  let reference = useRef({ hasStarted: false });
+  const [disable, setDisable] = useState(true);
+  const [buttonContent, setButtonContent] = useState(<p>loading</p>);
+
+  let playjsx = (
+    <PlayIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />
+  );
+  let pausejsx = (
+    <PauseIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />
+  );
+
+  useEffect(() => {
+    //console.log(props.contents)
+    if (props.contents == undefined) return;
+
+    reference.current.context = new AudioContext();
+    reference.current.source = reference.current.context.createBufferSource();
+    fetch("https://pf-py-api.herokuapp.com/audio/", {
+      method: "POST",
+      body: JSON.stringify({
+        type: props.type,
+        id: props.id,
+        gender: "male",
+        jornal: props.jornal,
+        contents: props.contents,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) =>
+        reference.current.context.decodeAudioData(arrayBuffer)
+      )
+      .then((audioBuffer) => {
+        reference.current.source.buffer = audioBuffer;
+        reference.current.source.connect(reference.current.context.destination);
+        setDisable(false);
+        setButtonContent(playjsx);
+      });
+  }, [props.contents]);
+
+  const play = () => {
+    if (disable) return;
+
+    if (!reference.current.hasStarted) {
+      reference.current.source.start();
+      reference.current.hasStarted = true;
+      setButtonContent(pausejsx);
+    } else if (reference.current.context.state == "running") {
+      reference.current.context.suspend().then();
+      setButtonContent(playjsx);
+    } else if (reference.current.context.state == "suspended") {
+      reference.current.context.resume().then();
+      setButtonContent(pausejsx);
+    }
+  };
+
   return (
-    <div className='grid grid-cols-2 justify-between'>
-      <div className='text-center'>
-        <input
-          type='radio'
-          id='masculina'
-          name='voz'
-          value='masculina'
-          className='peer hidden'
-        />
-        <label
-          htmlFor='masculina'
-          className='bg-gray-200 rounded-md py-2 px-4 peer-checked:bg-indigo-600 peer-checked:text-white'
-        >
-          Joaquim
-        </label>
-      </div>
-      <div className='text-center'>
-        <input
-          type='radio'
-          id='feminina'
-          name='voz'
-          value='CSS'
-          className='peer hidden'
-        />
-        <label
-          htmlFor='feminina'
-          className='bg-gray-200 rounded-md py-2 px-4 peer-checked:bg-indigo-600 peer-checked:text-white'
-        >
-          Joana
-        </label>
+    <div className='my-3 grid items-center rounded-lg bg-slate-200 w-full h-12 px-1'>
+      <div onClick={play} className='cursor-pointer'>
+        {buttonContent}
       </div>
     </div>
   );
-}
+};
 
 export default PlayButton;
