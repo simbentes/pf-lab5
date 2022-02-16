@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth, nGuardadas } from "../firebase";
 import NoticiaMiniaturaGuardadas from "./NoticiaMiniaturaGuardadas";
+import { BookmarkAltIcon } from "@heroicons/react/outline";
 
 function NoticiasGuardadas() {
   const user = useAuth();
@@ -11,7 +12,10 @@ function NoticiasGuardadas() {
   return (
     <div>
       <div className='container mx-auto px-10'>
-        <h1 className='pl-3 font-semibold text-2xl my-5'>Notícias Guardadas</h1>
+        <h1 className='pl-3 font-semibold text-2xl my-5 flex items-center'>
+          <BookmarkAltIcon className='h-10 w-10 mr-2' />
+          Notícias Guardadas
+        </h1>
       </div>
       <div className='py-6'>
         <div className='container mx-auto px-10'>

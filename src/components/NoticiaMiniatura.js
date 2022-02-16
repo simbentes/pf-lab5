@@ -4,6 +4,7 @@ import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import PlayButton from "./PlayButton";
 
+
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();
   let image;
