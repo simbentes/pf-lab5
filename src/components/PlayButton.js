@@ -66,6 +66,7 @@ const PlayButton = (props) => {
       <div onClick={play} className='cursor-pointer'>
         {buttonContent}
       </div>
+      
     </div>
   );
 };
