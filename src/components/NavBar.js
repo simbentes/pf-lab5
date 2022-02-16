@@ -74,9 +74,12 @@ function NavBar(props) {
                   type='range'
                   id='velocidade'
                   name='velocidade'
-                  min='0'
-                  max='50'
+                  min='0.25'
+                  max='4'
+                  step='0.01'
+                  value='1'
                   className='w-full'
+                  onMouseUp={(e) => console.log(e.target.value)}
                 />
               </div>
               <div className='pt-5'>
@@ -85,9 +88,12 @@ function NavBar(props) {
                   type='range'
                   id='pitch'
                   name='velocidade'
-                  min='0'
-                  max='50'
+                  min='-20'
+                  max='20'
+                  step='0.1'
+                  value='0'
                   className='w-full'
+                  onMouseUp={(e) => console.log(e.target.value)}
                 />
               </div>
             </div>
