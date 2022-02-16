@@ -5,3 +5,7 @@
 .corpo-noticia a {
   color: rgb(79, 70, 229);
 }
+
+.altura-index {
+  height: calc(100vh - 104px);
+}

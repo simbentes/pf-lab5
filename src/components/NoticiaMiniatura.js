@@ -4,7 +4,6 @@ import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import PlayButton from "./PlayButton";
 
-
 function NoticiaMiniatura(props) {
   const navegar = useNavigate();
   let image;
@@ -17,10 +16,10 @@ function NoticiaMiniatura(props) {
   const data = new Date(props.info.data);
 
   return (
-    <div className='relative bg-white shadow-md m-3 rounded-lg pb-6'>
+    <div className='relative bg-white shadow-md m-3 rounded-lg pb-24'>
       <img
         src={image}
-        className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer '
+        className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer'
         onClick={() =>
           navegar(
             `/noticia/${props.info.fonte}/${data.getFullYear()}/${
@@ -34,7 +33,7 @@ function NoticiaMiniatura(props) {
           {props.info.titulo}
         </h6>
         <p className='text-xs'>{props.info.lead}</p>
-        <div>
+        <div className='absolute bottom-8 right-2.5 left-2.5'>
           <PlayButton
             contents={[props.info.lead]}
             id={props.info.id}

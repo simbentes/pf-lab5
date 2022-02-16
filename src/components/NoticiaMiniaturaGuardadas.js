@@ -29,7 +29,7 @@ function NoticiaMiniaturaGuardadas(props) {
         <div className='col-span-3'>
           <img
             src={image}
-            className='w-full h-32 object-cover hover:cursor-pointer '
+            className='w-full h-full object-cover hover:cursor-pointer rounded-tl-lg rounded-bl-lg'
             onClick={() =>
               navegar(
                 `/noticia/${props.info.fonte}/${data.getFullYear()}/${
@@ -47,11 +47,11 @@ function NoticiaMiniaturaGuardadas(props) {
                   {props.info.titulo}
                 </h6>
               </div>
-              <div className='col-end-12 text-right'>
+              <div className='col-span-2 col-end-13 text-right'>
                 {(() => {
                   switch (props.info.fonte) {
                     case "eco":
-                      return <img src={eco} className='w-11 inline' />;
+                      return <img src={eco} className='w-14 inline' />;
                     case "observador":
                       return <img src={observador} className='w-28 inline' />;
                     case "publico":
