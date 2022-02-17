@@ -57,14 +57,14 @@ export const guardarNoticia = async (
   checked
 ) => {
   const db = getFirestore();
-  const docRef = doc(db, "utilizadores", id_utilizador);
+  const docRef = doc(db, "noticias_guardadas", id_utilizador);
   if (checked) {
     console.log("VAMOS ADICIONAR À BD");
 
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const utilizadorRef = doc(db, "utilizadores", id_utilizador);
+      const utilizadorRef = doc(db, "noticias_guardadas", id_utilizador);
       //console.log("Document data:", docSnap.data());
       await updateDoc(utilizadorRef, {
         noticia_guardada: arrayUnion({
@@ -88,7 +88,7 @@ export const guardarNoticia = async (
           },
         ],
       };
-      await setDoc(doc(db, "utilizadores", id_utilizador), docData);
+      await setDoc(doc(db, "noticias_guardadas", id_utilizador), docData);
     }
   } else {
     console.log("É PARA ELIMINAR");
@@ -111,7 +111,7 @@ export const guardarNoticia = async (
 
 export const nGuardadas = async (user_info) => {
   const db = getFirestore();
-  const docRef = await doc(db, "utilizadores", user_info.uid);
+  const docRef = await doc(db, "noticias_guardadas", user_info.uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -124,7 +124,7 @@ export const nGuardadas = async (user_info) => {
 
 export const isGuardado = async (user_info, noticia_id) => {
   const db = getFirestore();
-  const docRef = await doc(db, "utilizadores", user_info.uid);
+  const docRef = await doc(db, "noticias_guardadas", user_info.uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -138,4 +138,29 @@ export const isGuardado = async (user_info, noticia_id) => {
     // doc.data() will be undefined in this case
     console.log("No such document!");
   }
+};
+
+export const definicoesAudio = async (id_utilizador, genero, vel, pitch) => {
+  const db = getFirestore();
+  const docRef = doc(db, "definicoes_audio", id_utilizador);
+
+  console.log("VAMOS ADICIONAR À BD");
+  console.log("hello");
+  const docData = {
+    genero: genero,
+    vel: vel,
+    pitch: pitch,
+  };
+  await setDoc(doc(db, "definicoes_audio", id_utilizador), docData);
+};
+
+export const isDefAudio = async (user_info) => {
+  const db = getFirestore();
+  const docRef = await doc(db, "definicoes_audio", user_info);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  }
+  return false;
 };

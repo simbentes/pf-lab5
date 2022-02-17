@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import NoticiaMiniatura from "./NoticiaMiniatura";
 import fetchUltimas from "../fetchUltimas";
+import { isDefAudio, useAuth } from "../firebase";
 
 function Ultimas() {
   const [noticias, setNoticias] = useState([]);
@@ -23,6 +24,23 @@ function Ultimas() {
     ref.current = ref.current + 1;
   });
 
+  const [defAudio, setDefAudio] = useState({
+    genero: "male",
+    vel: 1,
+    pitch: 0,
+  });
+
+  const userInfo = useAuth();
+
+  useEffect(() => {
+    isDefAudio(userInfo.uid).then((res) => {
+      console.log(res);
+      if (res !== false) {
+        setDefAudio(res);
+      }
+    });
+  }, []);
+
   return (
     <div className='py-5'>
       <h1 className='pl-11 text-center font-semibold text-2xl my-5'>
@@ -32,7 +50,7 @@ function Ultimas() {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {noticias &&
             noticias.map((el, index) => (
-              <NoticiaMiniatura info={el} key={index} />
+              <NoticiaMiniatura info={el} key={index} def_audio={defAudio} />
             ))}
         </div>
       </div>

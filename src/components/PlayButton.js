@@ -1,4 +1,5 @@
 import React from "react";
+import { useAuth, isDefAudio } from "../firebase";
 import { useState, useEffect, useRef } from "react";
 import { PlayIcon, PauseIcon } from "@heroicons/react/solid";
 
@@ -25,7 +26,7 @@ const PlayButton = (props) => {
       body: JSON.stringify({
         type: props.type,
         id: props.id,
-        gender: "male",
+        gender: props.def_audio.genero,
         jornal: props.jornal,
         contents: props.contents,
       }),
@@ -66,7 +67,6 @@ const PlayButton = (props) => {
       <div onClick={play} className='cursor-pointer'>
         {buttonContent}
       </div>
-      
     </div>
   );
 };

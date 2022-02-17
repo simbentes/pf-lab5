@@ -1,4 +1,5 @@
 import "./../css/App.css";
+import React from "react";
 import NavBar from "./NavBar";
 import { useAuth } from "../firebase";
 import { Routes, Route, Link, Outlet } from "react-router-dom";
@@ -13,6 +14,7 @@ import NoticiasGuardadas from "./NoticiasGuardadas";
 
 function App() {
   const utilizador = useAuth();
+
   return (
     <div className='App'>
       {utilizador && <NavBar user={utilizador} />}

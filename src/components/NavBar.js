@@ -1,5 +1,4 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Menu, Popover, Transition, Dialog } from "@headlessui/react";
 import {
   MenuIcon,
@@ -9,7 +8,7 @@ import {
   MinusCircleIcon,
 } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
-import { terminarSessao } from "../firebase";
+import { terminarSessao, definicoesAudio, isDefAudio } from "../firebase";
 import { Link } from "react-router-dom";
 
 function classNames(...classes) {
@@ -18,10 +17,30 @@ function classNames(...classes) {
 
 function NavBar(props) {
   const navegar = useNavigate();
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [defAudio, setDefAudio] = useState({
+    genero: "male",
+    vel: 1,
+    pitch: 0,
+  });
+
+  const novasDefAudio = (uid, genero, vel, pitch) => {
+    console.log("hello");
+
+    definicoesAudio(uid, genero, vel, pitch);
+  };
+
+  const verDefAudio = () => {
+    isDefAudio(props.user.uid).then((res) => {
+      console.log(res);
+      if (res !== false) {
+        setDefAudio(res);
+      }
+    });
+  };
+
   return (
     <>
-      {console.log(isOpen)}
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -40,13 +59,22 @@ function NavBar(props) {
                 <div className='relative text-center'>
                   <input
                     type='radio'
-                    id='masculina'
+                    id='masculino'
                     name='voz'
-                    value='masculina'
+                    value='male'
                     className='peer hidden'
+                    checked={defAudio.genero == "male" ? true : false}
+                    onChange={(e) => {
+                      setDefAudio({
+                        genero: "male",
+                        vel: 1,
+                        pitch: 0,
+                      });
+                      novasDefAudio(props.user.uid, e.target.value, 1, 0);
+                    }}
                   />
                   <label
-                    htmlFor='masculina'
+                    htmlFor='masculino'
                     className='bg-gray-200 rounded-tl-md rounded-bl-md  py-3.5 absolute right-0 left-0  peer-checked:bg-indigo-600 peer-checked:text-white'
                   >
                     Joaquim
@@ -55,13 +83,22 @@ function NavBar(props) {
                 <div className='relative text-center'>
                   <input
                     type='radio'
-                    id='feminina'
+                    id='feminino'
                     name='voz'
-                    value='CSS'
+                    value='female'
                     className='peer hidden'
+                    checked={defAudio.genero == "female" ? true : false}
+                    onChange={(e) => {
+                      setDefAudio({
+                        genero: "female",
+                        vel: 1,
+                        pitch: 0,
+                      });
+                      novasDefAudio(props.user.uid, e.target.value, 1, 0);
+                    }}
                   />
                   <label
-                    htmlFor='feminina'
+                    htmlFor='feminino'
                     className='bg-gray-200 rounded-tr-md rounded-br-md py-3.5 absolute right-0 left-0  peer-checked:bg-indigo-600 peer-checked:text-white'
                   >
                     Joana
@@ -79,7 +116,9 @@ function NavBar(props) {
                   step='0.01'
                   value='1'
                   className='w-full'
-                  onMouseUp={(e) => console.log(e.target.value)}
+                  onChange={(e) => {
+                    novasDefAudio(props.user.uid, "simao", e.target.value, 0);
+                  }}
                 />
               </div>
               <div className='pt-5'>
@@ -93,7 +132,14 @@ function NavBar(props) {
                   step='0.1'
                   value='0'
                   className='w-full'
-                  onMouseUp={(e) => console.log(e.target.value)}
+                  onChange={(e) => {
+                    novasDefAudio(
+                      props.user.uid,
+                      "simao",
+                      "simao",
+                      e.target.value
+                    );
+                  }}
                 />
               </div>
             </div>
@@ -164,7 +210,10 @@ function NavBar(props) {
                         {({ active }) => (
                           <div
                             className='font-semibold px-4 py-2 text-sm hover:cursor-pointer hover:text-gray-900 hover:bg-gray-100'
-                            onClick={() => setIsOpen(true)}
+                            onClick={() => {
+                              verDefAudio();
+                              setIsOpen(true);
+                            }}
                           >
                             <MicrophoneIcon className='h-6 w-6 mr-1 inline' />
                             Definições de Voz
