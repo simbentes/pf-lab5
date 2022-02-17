@@ -10,25 +10,29 @@ import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import { Remarkable } from "remarkable";
 import PlayButton from "./PlayButton";
+import fetchUltimas from "../fetchUltimas";
+import NoticiaMiniatura from "./NoticiaMiniatura";
 
 function Noticia() {
+  const [noticias, setNoticias] = useState([]);
+
   let userID = useAuth();
 
   const [guardado, setGuardado] = useState(false);
 
-  let id_noticia = useParams();
+  let noticia_param = useParams();
 
   const [noticia, setNoticia] = useState({});
 
   useEffect(() => {
-    isGuardado(userID, id_noticia.id).then((res) => setGuardado(res));
+    isGuardado(userID, noticia_param.id).then((res) => setGuardado(res));
   }, [userID]);
 
   useEffect(() => {
     let md = new Remarkable();
-    fetchNoticia(id_noticia.fonte, id_noticia.id)
+    fetchNoticia(noticia_param.fonte, noticia_param.id)
       .then((resultado) => {
-        if (id_noticia.fonte === "eco") {
+        if (noticia_param.fonte === "eco") {
           // alterar isto para ajudar no render docorpo
           let expression = /{*0}/;
           console.log(resultado.body.split(expression));
@@ -38,7 +42,7 @@ function Noticia() {
             body: parse(md.render(resultado.body)),
             raw_body: resultado.body,
             fonte: "eco",
-            data: id_noticia.dia + "-" + id_noticia.mes + "-" + id_noticia.ano,
+            data: noticia_param.dia + "-" + noticia_param.mes + "-" + noticia_param.ano,
             body_array: resultado.body.split(expression),
             // arranjar o tipo
           });
@@ -62,8 +66,8 @@ function Noticia() {
               );
             }),
             raw_body: resultado.content,
-            fonte: id_noticia.fonte,
-            data: id_noticia.dia + "-" + id_noticia.mes + "-" + id_noticia.ano,
+            fonte: noticia_param.fonte,
+            data: noticia_param.dia + "-" + noticia_param.mes + "-" + noticia_param.ano,
             body_array: resultado.content.map((elem) => elem.content),
           });
         }
@@ -71,19 +75,30 @@ function Noticia() {
       .catch((err) => {
         console.log(err);
       });
+
+    fetchUltimas(3, noticia_param.id, noticia_param.fonte).then(
+      (news) => {
+        console.log(news);
+        setNoticias(news);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }, []);
 
   return (
     <div>
-      <div className='md:container mx-auto px-10 lg:px-24'>
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
-          <div className='md:col-span-3'>
+      <div className='md:container mx-auto'>
+        <div className='grid grid-cols-1 md:grid-cols-12 gap-4 px-10'>
+          <div className='md:col-span-8'>
             <h1 className='font-bold text-5xl mb-3'>{noticia.titulo}</h1>
             <PlayButton
               contents={noticia.body_array}
-              id={id_noticia.id}
+              id={noticia_param.id}
               type='body'
-              jornal={id_noticia.fonte}
+              jornal={noticia_param.fonte}
+              def_audio={{ genero: "male", vel: 1, pitch: 0 }}
             />
             <div className='py-3 grid grid-cols-6 gap-4'>
               <div className='col-span-2'>
@@ -95,12 +110,7 @@ function Noticia() {
                   className='peer hidden'
                   onChange={(e) => {
                     setGuardado(!guardado);
-                    guardarNoticia(
-                      userID.uid,
-                      id_noticia.id,
-                      noticia,
-                      e.target.checked
-                    );
+                    guardarNoticia(userID.uid, noticia_param.id, noticia, e.target.checked);
                   }}
                 />
                 <label
@@ -115,7 +125,7 @@ function Noticia() {
                 <img
                   className='inline h-8'
                   src={(() => {
-                    switch (id_noticia.fonte) {
+                    switch (noticia_param.fonte) {
                       case "publico":
                         return publico;
                         break;
@@ -134,8 +144,17 @@ function Noticia() {
             <img className='w-full' src={noticia.img} />
             <div className='corpo-noticia text-base py-8'>{noticia.body}</div>
           </div>
-          <div>
-            <h5 className='font-semibold'>Notícias Relacionadas</h5>
+          <div className='col-span-4'>
+            {noticia_param.fonte == "eco" ? (
+              <h5 className='font-semibold'>Notícias Relacionadas</h5>
+            ) : (
+              <h5 className='font-semibold'>Outras Notícias</h5>
+            )}
+
+            <div>
+              {noticias &&
+                noticias.map((el, index) => <NoticiaMiniatura info={el} key={index} def_audio={{ genero: "male", vel: 1, pitch: 0 }} />)}
+            </div>
           </div>
         </div>
       </div>

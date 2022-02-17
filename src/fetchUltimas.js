@@ -1,6 +1,25 @@
-export default function fetchUltimas() {
+export default function fetchUltimas(num = 25, id = null, fonte) {
   const noticias_arr = [];
   return new Promise((resolve, reject) => {
+    if (fonte == "eco") {
+      fetch(`https://eco.sapo.pt/wp-json/eco/v1/items/id/${id}/related`)
+        .then((res) => res.json())
+        .then((data) => {
+          let json_tratato = data.map((e) => {
+            return {
+              id: e.item.id,
+              titulo: e.item.title.long,
+              data: e.item.pubDate,
+              tag: e.item.type,
+              lead: e.item.lead,
+              img: e.item.images.wide.urlTemplate,
+              fonte: "eco",
+            };
+          });
+
+          resolve(json_tratato);
+        });
+    }
     fetch("https://eco.sapo.pt/wp-json/eco/v1/lists/latest")
       .then((res) => res.json())
       .then((data) => {
@@ -76,7 +95,14 @@ export default function fetchUltimas() {
         });
 
         if (noticias_arr !== []) {
-          resolve(noticias_arr);
+          if (num < 25) {
+            console.log(noticias_arr);
+            console.log(id);
+            const noticias_arr_reduzido = noticias_arr.filter((e, i) => i < num + 1 && e.id != id);
+            resolve(noticias_arr_reduzido);
+          } else {
+            resolve(noticias_arr);
+          }
         } else {
           reject(new Error("Array Vazio"));
         }
