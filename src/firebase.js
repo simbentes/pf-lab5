@@ -122,7 +122,7 @@ export const isGuardado = async (noticia_id) => {
   }
 };
 
-export const definicoesAudio = async (id_utilizador, genero, vel, pitch) => {
+export const definicoesAudio = async (genero, vel, pitch) => {
   const db = getFirestore();
   const docRef = doc(db, "definicoes_audio", auth.currentUser.uid);
 

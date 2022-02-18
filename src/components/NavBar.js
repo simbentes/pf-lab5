@@ -5,10 +5,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth, terminarSessao, definicoesAudio, isDefAudio } from "../firebase";
 import { Link } from "react-router-dom";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 function NavBar() {
   const user = useAuth();
 
@@ -20,19 +16,23 @@ function NavBar() {
     pitch: 0,
   });
 
-  const novasDefAudio = (uid, genero, vel, pitch) => {
+  const novasDefAudio = (genero, vel, pitch) => {
     console.log("hello");
 
-    definicoesAudio(uid, genero, vel, pitch);
+    definicoesAudio(genero, vel, pitch);
   };
 
   const verDefAudio = () => {
-    isDefAudio(user.uid).then((res) => {
+    isDefAudio().then((res) => {
       console.log(res);
       if (res !== false) {
         setDefAudio(res);
       }
     });
+  };
+
+  const classNames = (...classes) => {
+    return classes.filter(Boolean).join(" ");
   };
 
   return (
@@ -62,7 +62,7 @@ function NavBar() {
                         vel: 1,
                         pitch: 0,
                       });
-                      novasDefAudio(user.uid, e.target.value, 1, 0);
+                      novasDefAudio(e.target.value, 1, 0);
                     }}
                   />
                   <label
@@ -86,7 +86,7 @@ function NavBar() {
                         vel: 1,
                         pitch: 0,
                       });
-                      novasDefAudio(user.uid, e.target.value, 1, 0);
+                      novasDefAudio(e.target.value, 1, 0);
                     }}
                   />
                   <label
@@ -106,10 +106,10 @@ function NavBar() {
                   min='0.25'
                   max='4'
                   step='0.01'
-                  value='1'
+                  defaultValue={1}
                   className='w-full'
-                  onChange={(e) => {
-                    novasDefAudio(user.uid, "simao", e.target.value, 0);
+                  onMouseUp={(e) => {
+                    novasDefAudio("simao", e.target.value, 0);
                   }}
                 />
               </div>
@@ -119,13 +119,13 @@ function NavBar() {
                   type='range'
                   id='pitch'
                   name='velocidade'
-                  min='-20'
-                  max='20'
-                  step='0.1'
-                  value='0'
+                  min={-20}
+                  max={20}
+                  step={0.1}
+                  defaultValue={1}
                   className='w-full'
-                  onChange={(e) => {
-                    novasDefAudio(user.uid, "simao", "simao", e.target.value);
+                  onMouseUp={(e) => {
+                    novasDefAudio("simao", "simao", e.target.value);
                   }}
                 />
               </div>
