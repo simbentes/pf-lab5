@@ -11,7 +11,6 @@ const PlayButton = React.forwardRef((props, ref) => {
   let pausejsx = <PauseIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />;
 
   useEffect(() => {
-    //console.log(ref)
     if (ref != null) ref.current.pause_func = pause;
   });
 
@@ -19,7 +18,6 @@ const PlayButton = React.forwardRef((props, ref) => {
     if (props.contents == undefined) return;
 
     reference.current.times += 1;
-    //console.log(reference.current.times)
 
     reference.current.context = new AudioContext();
     reference.current.source = reference.current.context.createBufferSource();
@@ -44,7 +42,7 @@ const PlayButton = React.forwardRef((props, ref) => {
         try {
           reference.current.source.buffer = audioBuffer;
         } catch (e) {
-          //console.log(e)
+          console.log(e);
         }
         reference.current.source.connect(reference.current.context.destination);
         setDisable(false);
@@ -61,7 +59,6 @@ const PlayButton = React.forwardRef((props, ref) => {
   const play_pause = () => {
     if (disable) return;
 
-    console.log(reference.current.context.state);
     if (props.pauseAllFunc != undefined) props.pauseAllFunc();
 
     if (!reference.current.hasStarted) {

@@ -16,8 +16,6 @@ function NavBar() {
   const [defAudio, setDefAudio] = useState({});
 
   const novasDefAudio = (genero, vel, pitch) => {
-    console.log("hello");
-
     definicoesAudio(genero, vel, pitch);
   };
 
@@ -41,7 +39,6 @@ function NavBar() {
   };
 
   const reporDef = () => {
-    console.log(inputVel.current.defaultValue);
     inputVel.current.value = 1;
     inputPitch.current.value = 0;
   };

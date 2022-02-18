@@ -17,7 +17,6 @@ function NoticiaMiniaturaGuardadas(props) {
 
   const audioATocar = (aTocar) => {
     if (aTocar) {
-      console.log(aTocar);
       return true;
     }
     return false;

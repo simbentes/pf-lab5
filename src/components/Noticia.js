@@ -37,7 +37,6 @@ function Noticia() {
         if (noticia_param.fonte === "eco") {
           // alterar isto para ajudar no render docorpo
           let expression = /{*0}/;
-          console.log(resultado.body.split(expression));
           setNoticia({
             titulo: resultado.title.long,
             img: resultado.images.wide.urlTemplate,
@@ -80,7 +79,6 @@ function Noticia() {
     //fazer fetch das "outras noticias" (ou "noticias relacionadas" se forem a noticia for do jornal ECO)
     fetchUltimas(3, noticia_param.id, noticia_param.fonte).then(
       (news) => {
-        console.log(news);
         setNoticias(news);
       },
       (err) => {

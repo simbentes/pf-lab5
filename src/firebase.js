@@ -43,13 +43,10 @@ export const guardarNoticia = async (id_noticia, obj_noticia, checked) => {
   const db = getFirestore();
   const docRef = doc(db, "noticias_guardadas", auth.currentUser.uid);
   if (checked) {
-    console.log("VAMOS ADICIONAR À BD");
-
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       const utilizadorRef = doc(db, "noticias_guardadas", auth.currentUser.uid);
-      //console.log("Document data:", docSnap.data());
       await updateDoc(utilizadorRef, {
         noticia_guardada: arrayUnion({
           id: id_noticia,
@@ -75,7 +72,6 @@ export const guardarNoticia = async (id_noticia, obj_noticia, checked) => {
       await setDoc(doc(db, "noticias_guardadas", auth.currentUser.uid), docData);
     }
   } else {
-    console.log("É PARA ELIMINAR");
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -112,7 +108,6 @@ export const isGuardado = async (noticia_id) => {
   if (docSnap.exists()) {
     return (
       docSnap.data().noticia_guardada.some((obj) => {
-        console.log(obj.id, " ///// //// ////", noticia_id);
         return obj.id === noticia_id;
       }) === true
     );
@@ -126,8 +121,6 @@ export const definicoesAudio = async (genero, vel, pitch) => {
   const db = getFirestore();
   const docRef = doc(db, "definicoes_audio", auth.currentUser.uid);
 
-  console.log("VAMOS ADICIONAR À BD");
-  console.log("hello");
   const docData = {
     genero: genero,
     vel: vel,

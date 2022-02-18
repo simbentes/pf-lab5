@@ -20,7 +20,6 @@ function Ultimas() {
   useEffect(() => {
     fetchUltimas().then(
       (news) => {
-        console.log(news);
         setNoticias(news);
         setArrayRefs(news.map((noticia) => React.createRef()));
       },
@@ -36,9 +35,7 @@ function Ultimas() {
 
   useEffect(() => {
     isDefAudio().then((res) => {
-      console.log(res);
       if (res !== false) {
-        console.log("  ///////((((DEEEEUUUUUUUUUUUUU))))  " + res);
         setDefAudio(res);
       }
     });

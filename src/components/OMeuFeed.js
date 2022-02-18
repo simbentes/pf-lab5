@@ -29,16 +29,15 @@ function OMeuFeed() {
   const escolherTema = (id, estado) => {
     setTemas({ ...temas, [id]: estado });
   };
-  
-  const [arrayRefs, setArrayRefs] = useState([])
+
+  const [arrayRefs, setArrayRefs] = useState([]);
 
   useEffect(() => {
     fetchMeuFeed().then(
       (news) => {
-        console.log(news);
         setNoticias(news);
         setDisplayNoticias(news);
-        setArrayRefs(news.map(noticia => React.createRef()))
+        setArrayRefs(news.map((noticia) => React.createRef()));
       },
       (err) => {
         console.log(err);
@@ -60,15 +59,14 @@ function OMeuFeed() {
   };
 
   const pauseAllAudios = () => {
-    arrayRefs.forEach(elem => {
+    arrayRefs.forEach((elem) => {
       try {
-        if (elem.current != null) elem.current.pause_func()
+        if (elem.current != null) elem.current.pause_func();
+      } catch (e) {
+        console.log(e);
       }
-      catch (e){
-        console.log(e)
-      }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     const arr_filtrado = noticias.filter((el) => checkFontes(el));
@@ -88,14 +86,14 @@ function OMeuFeed() {
       fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => {
         setNoticias(res);
         setDisplayNoticias(res);
-        setArrayRefs(res.map(noticia => React.createRef()))
+        setArrayRefs(res.map((noticia) => React.createRef()));
       });
     } else {
       //se não, fazer fetch das ultimas 25 noticias dos 3 jornais (10 público, 10 observador, 5 eco)
       fetchMeuFeed().then((news) => {
         setNoticias(news);
         setDisplayNoticias(news);
-        setArrayRefs(news.map(noticia => React.createRef()))
+        setArrayRefs(news.map((noticia) => React.createRef()));
       });
     }
   }, [temas]);
@@ -122,7 +120,15 @@ function OMeuFeed() {
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {displayNoticias &&
-            displayNoticias.map((el, index) => <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={el.id} def_audio={{ genero: "male", vel: 1, pitch: 0 }} />)}
+            displayNoticias.map((el, index) => (
+              <NoticiaMiniatura
+                ref={arrayRefs[index]}
+                pauseAllFunc={pauseAllAudios}
+                info={el}
+                key={el.id}
+                def_audio={{ genero: "male", vel: 1, pitch: 0 }}
+              />
+            ))}
         </div>
       </div>
     </div>

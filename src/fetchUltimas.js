@@ -24,7 +24,6 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
-          console.log(e);
           return {
             id: e.item.id,
             titulo: e.item.title.long,
@@ -51,7 +50,6 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
-          console.log(e);
           return {
             id: e.id,
             titulo: e.title,
@@ -77,7 +75,6 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
       .then((res) => res.json())
       .then((data) => {
         let json_tratato = data.map((e) => {
-          console.log(e);
           return {
             id: e.id,
             titulo: e.tituloNoticia,
@@ -96,8 +93,6 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
 
         if (noticias_arr !== []) {
           if (num < 25) {
-            console.log(noticias_arr);
-            console.log(id);
             const noticias_arr_reduzido = noticias_arr.filter((e, i) => i < num + 1 && e.id != id);
             resolve(noticias_arr_reduzido);
           } else {
