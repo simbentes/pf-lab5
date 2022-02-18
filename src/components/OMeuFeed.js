@@ -84,12 +84,14 @@ function OMeuFeed() {
     };
 
     if (temTemas()) {
+      //se tiver temas selecionados fazer fetch com as fontes selecionadas
       fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => {
         setNoticias(res);
         setDisplayNoticias(res);
         setArrayRefs(res.map(noticia => React.createRef()))
       });
     } else {
+      //se não, fazer fetch das ultimas 25 noticias dos 3 jornais (10 público, 10 observador, 5 eco)
       fetchMeuFeed().then((news) => {
         setNoticias(news);
         setDisplayNoticias(news);
