@@ -22,9 +22,8 @@ function App() {
               <Route index element={<Inicio />} />
               <Route path='ultimas' element={<Ultimas />} />
               <Route path='omeufeed' element={<OMeuFeed />} />
-              <Route path='guardadas' element={<NoticiasGuardadas />} />
               <Route path='noticia/:fonte/:ano/:mes/:dia/:id' element={<Noticia />} />
-              <Route path='noticia/:fonte/:id' element={<Noticia />} />
+              <Route path='guardadas' element={<NoticiasGuardadas />} />
               <Route path='*' element={<NoMatch />} />
             </Route>
           </Route>
