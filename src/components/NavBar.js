@@ -1,21 +1,17 @@
 import { Fragment, useState, useEffect } from "react";
 import { Menu, Popover, Transition, Dialog } from "@headlessui/react";
-import {
-  MenuIcon,
-  LogoutIcon,
-  BookmarkAltIcon,
-  MicrophoneIcon,
-  MinusCircleIcon,
-} from "@heroicons/react/outline";
-import { useNavigate } from "react-router-dom";
-import { terminarSessao, definicoesAudio, isDefAudio } from "../firebase";
+import { MenuIcon, LogoutIcon, BookmarkAltIcon, MicrophoneIcon, MinusCircleIcon } from "@heroicons/react/outline";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAuth, terminarSessao, definicoesAudio, isDefAudio } from "../firebase";
 import { Link } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function NavBar(props) {
+function NavBar() {
+  const user = useAuth();
+
   const navegar = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [defAudio, setDefAudio] = useState({
@@ -31,7 +27,7 @@ function NavBar(props) {
   };
 
   const verDefAudio = () => {
-    isDefAudio(props.user.uid).then((res) => {
+    isDefAudio(user.uid).then((res) => {
       console.log(res);
       if (res !== false) {
         setDefAudio(res);
@@ -41,11 +37,7 @@ function NavBar(props) {
 
   return (
     <>
-      <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className='fixed z-10 inset-0 overflow-y-auto'
-      >
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className='fixed z-10 inset-0 overflow-y-auto'>
         <Dialog.Overlay className='fixed inset-0 bg-black opacity-30' />
         <div className='relative bg-white rounded max-w-sm mx-auto mt-48 p-5'>
           <div className='font-semibold text-md'>
@@ -70,7 +62,7 @@ function NavBar(props) {
                         vel: 1,
                         pitch: 0,
                       });
-                      novasDefAudio(props.user.uid, e.target.value, 1, 0);
+                      novasDefAudio(user.uid, e.target.value, 1, 0);
                     }}
                   />
                   <label
@@ -94,7 +86,7 @@ function NavBar(props) {
                         vel: 1,
                         pitch: 0,
                       });
-                      novasDefAudio(props.user.uid, e.target.value, 1, 0);
+                      novasDefAudio(user.uid, e.target.value, 1, 0);
                     }}
                   />
                   <label
@@ -117,7 +109,7 @@ function NavBar(props) {
                   value='1'
                   className='w-full'
                   onChange={(e) => {
-                    novasDefAudio(props.user.uid, "simao", e.target.value, 0);
+                    novasDefAudio(user.uid, "simao", e.target.value, 0);
                   }}
                 />
               </div>
@@ -133,21 +125,14 @@ function NavBar(props) {
                   value='0'
                   className='w-full'
                   onChange={(e) => {
-                    novasDefAudio(
-                      props.user.uid,
-                      "simao",
-                      "simao",
-                      e.target.value
-                    );
+                    novasDefAudio(user.uid, "simao", "simao", e.target.value);
                   }}
                 />
               </div>
             </div>
           </div>
           <div className='text-right'>
-            <button className='bg-gray-200 rounded-md py-2 px-4 mx-1'>
-              Repor
-            </button>
+            <button className='bg-gray-200 rounded-md py-2 px-4 mx-1'>Repor</button>
           </div>
         </div>
       </Dialog>
@@ -166,16 +151,10 @@ function NavBar(props) {
               </Popover.Button>
             </div>
             <Popover.Group as='nav' className='hidden md:flex space-x-10'>
-              <Link
-                to='/ultimas'
-                className='text-base font-medium text-gray-500 hover:text-gray-900 px-3 mx-2'
-              >
+              <Link to='/ultimas' className='text-base font-medium text-gray-500 hover:text-gray-900 px-3 mx-2'>
                 Últimas
               </Link>
-              <Link
-                to='/omeufeed'
-                className='text-base font-medium text-gray-500 hover:text-gray-900 px-3 mx-2'
-              >
+              <Link to='/omeufeed' className='text-base font-medium text-gray-500 hover:text-gray-900 px-3 mx-2'>
                 O Meu Feed
               </Link>
             </Popover.Group>
@@ -185,12 +164,9 @@ function NavBar(props) {
                   <Menu.Button className='inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500'>
                     <div className='flex justify-center items-center'>
                       <div>
-                        <img
-                          src={props.user.photoURL}
-                          className='rounded-full mx-auto h-9 mr-2'
-                        ></img>
+                        <img src={user.photoURL} className='rounded-full mx-auto h-9 mr-2'></img>
                       </div>
-                      <div>{props.user.displayName}</div>
+                      <div>{user.displayName}</div>
                     </div>
                   </Menu.Button>
                 </div>
@@ -225,9 +201,7 @@ function NavBar(props) {
                           <Link
                             to='/guardadas'
                             className={classNames(
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
+                              active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                               "font-semibold text-gray-500 hover:text-gray-900 block px-4 py-2 text-sm"
                             )}
                           >
@@ -245,9 +219,7 @@ function NavBar(props) {
                               navegar("/");
                             }}
                             className={classNames(
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
+                              active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                               "block px-4 py-2 text-sm border-t-2"
                             )}
                           >
@@ -264,6 +236,7 @@ function NavBar(props) {
           </div>
         </div>
       </Popover>
+      <Outlet />
     </>
   );
 }

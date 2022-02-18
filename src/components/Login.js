@@ -3,7 +3,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase";
 import g_icon from "../icons/g_icon.svg";
 
-function PaginaInicial() {
+function Login() {
   const iniciarSessaoGoogle = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
@@ -30,4 +30,4 @@ function PaginaInicial() {
   );
 }
 
-export default PaginaInicial;
+export default Login;
