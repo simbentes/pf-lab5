@@ -11,8 +11,6 @@ import OMeuFeed from "./OMeuFeed";
 import NoticiasGuardadas from "./NoticiasGuardadas";
 
 function App() {
-  const utilizador = useAuth();
-
   return (
     <>
       <BrowserRouter>
