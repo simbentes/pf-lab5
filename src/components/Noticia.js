@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { SaveIcon } from "@heroicons/react/solid";
 import { fetchNoticia } from "../fetchNoticia";
 import { guardarNoticia, useAuth, isGuardado } from "../firebase";
+import GuardarButton from "./GuardarButton";
 import parse from "html-react-parser";
 import "../css/App.css";
 import eco from "../icons/eco.svg";
@@ -87,6 +88,11 @@ function Noticia() {
     );
   }, []);
 
+  const adicionarNoticia = (is_checked, noticia_id, noticia_info) => {
+    setGuardado(!guardado);
+    guardarNoticia(userID.uid, noticia_param.id, noticia_info, is_checked);
+  };
+
   return (
     <div>
       <div className='md:container mx-auto'>
@@ -102,24 +108,7 @@ function Noticia() {
             />
             <div className='py-3 grid grid-cols-6 gap-4'>
               <div className='col-span-2'>
-                <input
-                  type='checkbox'
-                  id='guardar'
-                  name='guardar'
-                  checked={guardado}
-                  className='peer hidden'
-                  onChange={(e) => {
-                    setGuardado(!guardado);
-                    guardarNoticia(userID.uid, noticia_param.id, noticia, e.target.checked);
-                  }}
-                />
-                <label
-                  htmlFor='guardar'
-                  className='px-4 py-1 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 flex justify-center items-center peer-checked:bg-gray-300 peer-checked:text-black'
-                >
-                  <SaveIcon className='h-8 w-8 inline pr-2' />
-                  {guardado ? "Guardado" : "Guardar"}
-                </label>
+                <GuardarButton is_saved={guardado} onChangeHandle={adicionarNoticia} info={noticia} />
               </div>
               <div className='col-end-7 col-span-3 text-right'>
                 <img

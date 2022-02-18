@@ -134,12 +134,37 @@ export const fetchTemaNoticia = (arr_antigo, temas, fontes) => {
           return new Date(b.data) - new Date(a.data);
         });
 
+
+
+
+
+
+
+
+
+
+        
+
         if (arr_noticias != []) {
           console.log(arr_noticias);
           resolve(arr_noticias);
         } else {
           reject(new Error("Array Vazio"));
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       });
   });
 };
