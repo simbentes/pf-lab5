@@ -3,8 +3,12 @@ import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import PlayButton from "./PlayButton";
+import React from 'react';
 
-function NoticiaMiniatura(props) {
+const NoticiaMiniatura = React.forwardRef((props, ref) => {
+
+  
+
   const navegar = useNavigate();
   let image;
   try {
@@ -40,6 +44,8 @@ function NoticiaMiniatura(props) {
             type='desc'
             jornal={props.info.fonte}
             def_audio={props.def_audio}
+            ref={ref}
+            pauseAllFunc={props.pauseAllFunc}
           />
         </div>
       </div>
@@ -68,6 +74,6 @@ function NoticiaMiniatura(props) {
       </div>
     </div>
   );
-}
+})
 
 export default NoticiaMiniatura;

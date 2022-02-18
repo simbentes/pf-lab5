@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NoticiaMiniatura from "./NoticiaMiniatura";
 import { fetchMeuFeed, fetchTemaNoticia } from "../fetchMeuFeed";
 import eco from "../icons/eco.svg";
@@ -29,14 +29,16 @@ function OMeuFeed() {
   const escolherTema = (id, estado) => {
     setTemas({ ...temas, [id]: estado });
   };
+  
+  const [arrayRefs, setArrayRefs] = useState([])
 
   useEffect(() => {
-    //fazer fetch das ultimas 25 noticias dos 3 jornais (10 público, 10 observador, 5 eco)
     fetchMeuFeed().then(
       (news) => {
         console.log(news);
         setNoticias(news);
         setDisplayNoticias(news);
+        setArrayRefs(news.map(noticia => React.createRef()))
       },
       (err) => {
         console.log(err);
@@ -44,27 +46,36 @@ function OMeuFeed() {
     );
   }, []);
 
-  useEffect(() => {
-    const checkFontes = (el) => {
-      // check if all fontes are false
-      if (!fontes.publico && !fontes.observador && !fontes.eco) return true;
-      // check if elems fonte is trued in fontes
-      if (
-        (el.fonte === "publico" && fontes.publico) ||
-        (el.fonte === "eco" && fontes.eco) ||
-        (el.fonte === "observador" && fontes.observador)
-      )
-        return true;
-      return false;
-    };
+  const checkFontes = (el) => {
+    // check if all fontes are false
+    if (!fontes.publico && !fontes.observador && !fontes.eco) return true;
+    // check if elems fonte is trued in fontes
+    if (
+      (el.fonte === "publico" && fontes.publico) ||
+      (el.fonte === "eco" && fontes.eco) ||
+      (el.fonte === "observador" && fontes.observador)
+    )
+      return true;
+    return false;
+  };
 
-    //filtar notícias pela fonte
+  const pauseAllAudios = () => {
+    arrayRefs.forEach(elem => {
+      try {
+        if (elem.current != null) elem.current.pause_func()
+      }
+      catch (e){
+        console.log(e)
+      }
+    })
+  }
+
+  useEffect(() => {
     const arr_filtrado = noticias.filter((el) => checkFontes(el));
     setDisplayNoticias(arr_filtrado);
   }, [fontes]);
 
   useEffect(() => {
-    //verificar se existem temas selecionados
     const temTemas = () => {
       for (let prop in temas) {
         if (temas[prop] === true) return true;
@@ -73,16 +84,16 @@ function OMeuFeed() {
     };
 
     if (temTemas()) {
-      //se tiver temas selecionados fazer fetch com as fontes selecionadas
       fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => {
         setNoticias(res);
         setDisplayNoticias(res);
+        setArrayRefs(res.map(noticia => React.createRef()))
       });
     } else {
-      //se não, fazer fetch das ultimas 25 noticias dos 3 jornais (10 público, 10 observador, 5 eco)
       fetchMeuFeed().then((news) => {
         setNoticias(news);
         setDisplayNoticias(news);
+        setArrayRefs(news.map(noticia => React.createRef()))
       });
     }
   }, [temas]);
@@ -109,7 +120,7 @@ function OMeuFeed() {
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {displayNoticias &&
-            displayNoticias.map((el) => <NoticiaMiniatura info={el} key={el.id} def_audio={{ genero: "male", vel: 1, pitch: 0 }} />)}
+            displayNoticias.map((el, index) => <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={el.id} def_audio={{ genero: "male", vel: 1, pitch: 0 }} />)}
         </div>
       </div>
     </div>
