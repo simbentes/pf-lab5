@@ -35,6 +35,8 @@ const PlayButton = React.forwardRef((props, ref) => {
         gender: props.def_audio.genero,
         jornal: props.jornal,
         contents: props.contents,
+        speed: 1,
+        pitch: 0
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -71,8 +73,6 @@ const PlayButton = React.forwardRef((props, ref) => {
     if (props.pauseAllFunc != undefined) props.pauseAllFunc()
 
     if (!reference.current.hasStarted) {
-      
-
       reference.current.source.start();
       reference.current.hasStarted = true;
       setButtonContent(pausejsx);
@@ -80,8 +80,6 @@ const PlayButton = React.forwardRef((props, ref) => {
       reference.current.context.suspend().then();
       setButtonContent(playjsx);
     } else if (reference.current.context.state == "suspended") {
-      
-
       reference.current.context.resume().then();
       setButtonContent(pausejsx);
     }
