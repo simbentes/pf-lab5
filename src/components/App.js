@@ -1,8 +1,7 @@
 import "./../css/App.css";
-import React from "react";
 import NavBar from "./NavBar";
 import { useAuth } from "../firebase";
-import { Routes, Route, Link, Outlet } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Ultimas from "./Ultimas";
 import Noticia from "./Noticia";
 import NoMatch from "./NoMatch";
@@ -28,7 +27,6 @@ function App() {
             <Route path='guardadas' element={<NoticiasGuardadas />} />
             <Route path='noticia/:fonte/:ano/:mes/:dia/:id' element={<Noticia />} />
             <Route path='noticia/:fonte/:id' element={<Noticia />} />
-            <Route path='dashboard' element={<NoMatch />} />
             <Route path='*' element={<NoMatch />} />
           </Route>
         </Routes>

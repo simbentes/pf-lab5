@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import NoticiaMiniatura from "./NoticiaMiniatura";
-import fetchUltimas from "../fetchUltimas";
-import fetchMeuFeed from "../fetchUltimas";
+import { fetchMeuFeed, fetchTemaNoticia } from "../fetchMeuFeed";
 import eco from "../icons/eco.svg";
 import publico from "../icons/publico.svg";
 import observador from "../icons/observador.png";
@@ -17,6 +16,7 @@ function OMeuFeed() {
     observador: false,
   });
   const [temas, setTemas] = useState({
+    sociedade: false,
     politica: false,
     economia: false,
     mundo: false,
@@ -31,7 +31,7 @@ function OMeuFeed() {
   };
 
   useEffect(() => {
-    fetchUltimas().then(
+    fetchMeuFeed().then(
       (news) => {
         console.log(news);
         setNoticias(news);
@@ -57,12 +57,30 @@ function OMeuFeed() {
   };
 
   useEffect(() => {
-    const arr_filtrado = noticias.filter((el) => {
-      if (checkFontes(el)) return true;
-    });
+    const arr_filtrado = noticias.filter((el) => checkFontes(el));
 
     setDisplayNoticias(arr_filtrado);
-  }, [fontes, temas]);
+  }, [fontes]);
+
+  useEffect(() => {
+    console.log(temas);
+
+    const temTemas = () => {
+      for (let prop in temas) {
+        if (temas[prop] === true) return true;
+      }
+      return false;
+    };
+
+    if (temTemas()) {
+      fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => setDisplayNoticias(res));
+    } else {
+      fetchMeuFeed().then((news) => {
+        setNoticias(news);
+        setDisplayNoticias(news);
+      });
+    }
+  }, [temas]);
 
   return (
     <div className='py-5'>
@@ -70,6 +88,7 @@ function OMeuFeed() {
       <div className='container mx-auto px-10'>
         <div className='pb-7'>
           <ButtonSection name='Temas'>
+            <SortButton id='sociedade' content='Sociedade' type='text' onChangeHandle={escolherTema} />
             <SortButton id='politica' content='Política' type='text' onChangeHandle={escolherTema} />
             <SortButton id='economia' content='Economia' type='text' onChangeHandle={escolherTema} />
             <SortButton id='mundo' content='Mundo' type='text' onChangeHandle={escolherTema} />

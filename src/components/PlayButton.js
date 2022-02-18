@@ -8,12 +8,8 @@ const PlayButton = (props) => {
   const [disable, setDisable] = useState(true);
   const [buttonContent, setButtonContent] = useState(<p>loading</p>);
 
-  let playjsx = (
-    <PlayIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />
-  );
-  let pausejsx = (
-    <PauseIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />
-  );
+  let playjsx = <PlayIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />;
+  let pausejsx = <PauseIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />;
 
   useEffect(() => {
     //console.log(props.contents)
@@ -35,9 +31,7 @@ const PlayButton = (props) => {
       },
     })
       .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) =>
-        reference.current.context.decodeAudioData(arrayBuffer)
-      )
+      .then((arrayBuffer) => reference.current.context.decodeAudioData(arrayBuffer))
       .then((audioBuffer) => {
         reference.current.source.buffer = audioBuffer;
         reference.current.source.connect(reference.current.context.destination);
