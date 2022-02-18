@@ -6,7 +6,6 @@ import Ultimas from "./Ultimas";
 import Noticia from "./Noticia";
 import NoMatch from "./NoMatch";
 import ProtectedRoutes from "./ProtectedRoutes";
-import Login from "./Login";
 import Inicio from "./Inicio";
 import OMeuFeed from "./OMeuFeed";
 import NoticiasGuardadas from "./NoticiasGuardadas";
