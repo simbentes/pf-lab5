@@ -2,9 +2,7 @@ import { PlayIcon, PauseIcon } from "@heroicons/react/solid";
 import { useState, useEffect } from "react";
 
 function AudioPlayer(props) {
-
   const [aTocar, setATocar] = useState(false);
-
   const playPause = () => {
     props.func();
     setATocar(!aTocar);
@@ -17,10 +15,7 @@ function AudioPlayer(props) {
           {!aTocar ? (
             <PlayIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />
           ) : (
-            <PauseIcon
-              className='h-10 w-10 fill-slate-800'
-              aria-hidden='true'
-            />
+            <PauseIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />
           )}
         </div>
       </div>
