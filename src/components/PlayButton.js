@@ -1,10 +1,8 @@
 import React from "react";
-import { useAuth, isDefAudio } from "../firebase";
 import { useState, useEffect, useRef } from "react";
 import { PlayIcon, PauseIcon } from "@heroicons/react/solid";
 
 const PlayButton = React.forwardRef((props, ref) => {
-
   let reference = useRef({ hasStarted: false, times: 0 });
   const [disable, setDisable] = useState(true);
   const [buttonContent, setButtonContent] = useState(<p>loading</p>);
@@ -14,15 +12,13 @@ const PlayButton = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     //console.log(ref)
-    if (ref != null) ref.current.pause_func = pause
+    if (ref != null) ref.current.pause_func = pause;
   });
 
-
   useEffect(() => {
-    
     if (props.contents == undefined) return;
 
-    reference.current.times += 1
+    reference.current.times += 1;
     //console.log(reference.current.times)
 
     reference.current.context = new AudioContext();
@@ -36,7 +32,7 @@ const PlayButton = React.forwardRef((props, ref) => {
         jornal: props.jornal,
         contents: props.contents,
         speed: 1,
-        pitch: 0
+        pitch: 0,
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -45,32 +41,28 @@ const PlayButton = React.forwardRef((props, ref) => {
       .then((response) => response.arrayBuffer())
       .then((arrayBuffer) => reference.current.context.decodeAudioData(arrayBuffer))
       .then((audioBuffer) => {
-        try{
+        try {
           reference.current.source.buffer = audioBuffer;
-        }
-        catch (e) {
+        } catch (e) {
           //console.log(e)
         }
         reference.current.source.connect(reference.current.context.destination);
         setDisable(false);
         setButtonContent(playjsx);
-        
-        
       });
   }, [props.contents]);
-
 
   const pause = () => {
     if (disable || !reference.current.hasStarted) return;
     reference.current.context.suspend().then();
     setButtonContent(playjsx);
-  }
+  };
 
   const play_pause = () => {
-    if (disable ) return;
+    if (disable) return;
 
-    console.log(reference.current.context.state)
-    if (props.pauseAllFunc != undefined) props.pauseAllFunc()
+    console.log(reference.current.context.state);
+    if (props.pauseAllFunc != undefined) props.pauseAllFunc();
 
     if (!reference.current.hasStarted) {
       reference.current.source.start();

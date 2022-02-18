@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { useAuth, nGuardadas } from "../firebase";
+import { nGuardadas } from "../firebase";
 import NoticiaMiniaturaGuardadas from "./NoticiaMiniaturaGuardadas";
 import { BookmarkAltIcon } from "@heroicons/react/outline";
 
 function NoticiasGuardadas() {
-  const user = useAuth();
   const [noticias_arr, setNoticias_arr] = useState([]);
   useEffect(() => {
-    nGuardadas(user).then((res) => setNoticias_arr(res.noticia_guardada));
-  }, [user]);
+    //dar display das notícias guardadas
+    nGuardadas().then((res) => setNoticias_arr(res.noticia_guardada));
+  }, []);
   return (
     <div>
       <div className='container mx-auto px-10'>
@@ -22,9 +22,7 @@ function NoticiasGuardadas() {
           <div className='grid grid-cols-1 lg:grid-cols-6'>
             <div className='lg:col-span-5'>
               {noticias_arr.length > 0 ? (
-                noticias_arr.map((el, index) => (
-                  <NoticiaMiniaturaGuardadas info={el} key={index} />
-                ))
+                noticias_arr.map((el, index) => <NoticiaMiniaturaGuardadas info={el} key={index} />)
               ) : (
                 <div className='pt-10 pb-96'>Sem notícias guardadas.</div>
               )}

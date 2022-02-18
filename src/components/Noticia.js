@@ -2,7 +2,7 @@ import "../css/App.css";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { fetchNoticia } from "../fetchNoticia";
-import { guardarNoticia, useAuth, isGuardado } from "../firebase";
+import { guardarNoticia, isGuardado } from "../firebase";
 import GuardarButton from "./GuardarButton";
 import parse from "html-react-parser";
 import eco from "../icons/eco.svg";
@@ -17,21 +17,18 @@ function Noticia() {
   const [noticia, setNoticia] = useState({});
   const [noticias, setNoticias] = useState([]);
   const [guardado, setGuardado] = useState(false);
-  const userID = useAuth();
   const noticia_param = useParams();
 
   //guardar notícia - enviamos como callback para o componente GuardarButton
   const adicionarNoticia = (is_checked, noticia_id, noticia_info) => {
     setGuardado(!guardado);
-    guardarNoticia(userID.uid, noticia_param.id, noticia_info, is_checked);
+    guardarNoticia(noticia_param.id, noticia_info, is_checked);
   };
 
   useEffect(() => {
-    //verificar se está guardado
-    isGuardado(userID, noticia_param.id).then((res) => setGuardado(res));
-  }, [userID]);
+    //verificar se a notícia está guardada
+    isGuardado(noticia_param.id).then((res) => setGuardado(res));
 
-  useEffect(() => {
     const md = new Remarkable();
 
     //fazer fetch da noticia com id e fonte recebido no url

@@ -4,11 +4,10 @@ import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import AudioPlayer from "./AudioPlayer";
 import GuardarButton from "./GuardarButton";
-import { useAuth, guardarNoticia } from "../firebase";
+import { guardarNoticia } from "../firebase";
 import { Link } from "react-router-dom";
 
 function NoticiaMiniaturaGuardadas(props) {
-  let userID = useAuth();
   let image;
   try {
     image = props.info.img;
@@ -29,7 +28,7 @@ function NoticiaMiniaturaGuardadas(props) {
   const [guardado, setGuardado] = useState(true);
   const removerNoticia = (is_checked, noticia_id, noticia_info) => {
     setGuardado(!guardado);
-    guardarNoticia(userID.uid, noticia_id, noticia_info, is_checked);
+    guardarNoticia(noticia_id, noticia_info, is_checked);
   };
 
   return (

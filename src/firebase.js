@@ -1,19 +1,8 @@
 import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { signOut } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  updateDoc,
-  getDoc,
-  arrayUnion,
-} from "firebase/firestore";
-import {
-  getAuth,
-  onAuthStateChanged,
-  reauthenticateWithRedirect,
-} from "firebase/auth";
+import { getFirestore, doc, setDoc, updateDoc, getDoc, arrayUnion } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, reauthenticateWithRedirect } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FB_API,
@@ -50,21 +39,16 @@ export const terminarSessao = () => {
   signOut(auth);
 };
 
-export const guardarNoticia = async (
-  id_utilizador,
-  id_noticia,
-  obj_noticia,
-  checked
-) => {
+export const guardarNoticia = async (id_noticia, obj_noticia, checked) => {
   const db = getFirestore();
-  const docRef = doc(db, "noticias_guardadas", id_utilizador);
+  const docRef = doc(db, "noticias_guardadas", auth.currentUser.uid);
   if (checked) {
     console.log("VAMOS ADICIONAR À BD");
 
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const utilizadorRef = doc(db, "noticias_guardadas", id_utilizador);
+      const utilizadorRef = doc(db, "noticias_guardadas", auth.currentUser.uid);
       //console.log("Document data:", docSnap.data());
       await updateDoc(utilizadorRef, {
         noticia_guardada: arrayUnion({
@@ -88,7 +72,7 @@ export const guardarNoticia = async (
           },
         ],
       };
-      await setDoc(doc(db, "noticias_guardadas", id_utilizador), docData);
+      await setDoc(doc(db, "noticias_guardadas", auth.currentUser.uid), docData);
     }
   } else {
     console.log("É PARA ELIMINAR");
@@ -98,9 +82,7 @@ export const guardarNoticia = async (
       const noticias_todas = await docSnap.data().noticia_guardada;
 
       await updateDoc(docRef, {
-        noticia_guardada: noticias_todas.filter(
-          (noticia) => noticia.id !== id_noticia
-        ),
+        noticia_guardada: noticias_todas.filter((noticia) => noticia.id !== id_noticia),
       });
     } else {
       // doc.data() will be undefined in this case
@@ -109,9 +91,9 @@ export const guardarNoticia = async (
   }
 };
 
-export const nGuardadas = async (user_info) => {
+export const nGuardadas = async () => {
   const db = getFirestore();
-  const docRef = await doc(db, "noticias_guardadas", user_info.uid);
+  const docRef = await doc(db, "noticias_guardadas", auth.currentUser.uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -122,9 +104,9 @@ export const nGuardadas = async (user_info) => {
   }
 };
 
-export const isGuardado = async (user_info, noticia_id) => {
+export const isGuardado = async (noticia_id) => {
   const db = getFirestore();
-  const docRef = await doc(db, "noticias_guardadas", user_info.uid);
+  const docRef = await doc(db, "noticias_guardadas", auth.currentUser.uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -142,7 +124,7 @@ export const isGuardado = async (user_info, noticia_id) => {
 
 export const definicoesAudio = async (id_utilizador, genero, vel, pitch) => {
   const db = getFirestore();
-  const docRef = doc(db, "definicoes_audio", id_utilizador);
+  const docRef = doc(db, "definicoes_audio", auth.currentUser.uid);
 
   console.log("VAMOS ADICIONAR À BD");
   console.log("hello");
@@ -151,12 +133,12 @@ export const definicoesAudio = async (id_utilizador, genero, vel, pitch) => {
     vel: vel,
     pitch: pitch,
   };
-  await setDoc(doc(db, "definicoes_audio", id_utilizador), docData);
+  await setDoc(doc(db, "definicoes_audio", auth.currentUser.uid), docData);
 };
 
-export const isDefAudio = async (user_info) => {
+export const isDefAudio = async () => {
   const db = getFirestore();
-  const docRef = await doc(db, "definicoes_audio", user_info);
+  const docRef = await doc(db, "definicoes_audio", auth.currentUser.uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
