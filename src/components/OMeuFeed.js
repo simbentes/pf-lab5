@@ -63,8 +63,6 @@ function OMeuFeed() {
   }, [fontes]);
 
   useEffect(() => {
-    console.log(temas);
-
     const temTemas = () => {
       for (let prop in temas) {
         if (temas[prop] === true) return true;
