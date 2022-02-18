@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useRef } from "react";
 import { Menu, Popover, Transition, Dialog } from "@headlessui/react";
 import { MenuIcon, LogoutIcon, BookmarkAltIcon, MicrophoneIcon, MinusCircleIcon } from "@heroicons/react/outline";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -9,6 +9,9 @@ function NavBar() {
   const user = useAuth();
 
   const navegar = useNavigate();
+  const inputGenero = useRef(null);
+  const inputVel = useRef(null);
+  const inputPitch = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [defAudio, setDefAudio] = useState({
     genero: "male",
@@ -35,9 +38,22 @@ function NavBar() {
     return classes.filter(Boolean).join(" ");
   };
 
+  const reporDef = () => {
+    console.log(inputVel.current.defaultValue);
+    inputVel.current.value = 1;
+    inputPitch.current.value = 0;
+  };
+
   return (
     <>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className='fixed z-10 inset-0 overflow-y-auto'>
+      <Dialog
+        open={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+          novasDefAudio("male", inputVel.current.value, inputPitch.current.value);
+        }}
+        className='fixed z-10 inset-0 overflow-y-auto'
+      >
         <Dialog.Overlay className='fixed inset-0 bg-black opacity-30' />
         <div className='relative bg-white rounded max-w-sm mx-auto mt-48 p-5'>
           <div className='font-semibold text-md'>
@@ -62,7 +78,6 @@ function NavBar() {
                         vel: 1,
                         pitch: 0,
                       });
-                      novasDefAudio(e.target.value, 1, 0);
                     }}
                   />
                   <label
@@ -86,7 +101,6 @@ function NavBar() {
                         vel: 1,
                         pitch: 0,
                       });
-                      novasDefAudio(e.target.value, 1, 0);
                     }}
                   />
                   <label
@@ -100,39 +114,37 @@ function NavBar() {
               <div className='pt-5'>
                 <div className='font-medium pb-2 text-sm'>Velocidade</div>
                 <input
+                  ref={inputVel}
                   type='range'
                   id='velocidade'
                   name='velocidade'
-                  min='0.25'
-                  max='4'
-                  step='0.01'
-                  defaultValue={1}
+                  min={0.25}
+                  max={4}
+                  step={0.01}
+                  defaultValue={defAudio.vel}
                   className='w-full'
-                  onMouseUp={(e) => {
-                    novasDefAudio("simao", e.target.value, 0);
-                  }}
                 />
               </div>
               <div className='pt-5'>
                 <div className='font-medium pb-2 text-sm'>Pitch</div>
                 <input
+                  ref={inputPitch}
                   type='range'
                   id='pitch'
-                  name='velocidade'
+                  name='pitch'
                   min={-20}
                   max={20}
                   step={0.1}
-                  defaultValue={1}
+                  defaultValue={defAudio.pitch}
                   className='w-full'
-                  onMouseUp={(e) => {
-                    novasDefAudio("simao", "simao", e.target.value);
-                  }}
                 />
               </div>
             </div>
           </div>
           <div className='text-right'>
-            <button className='bg-gray-200 rounded-md py-2 px-4 mx-1'>Repor</button>
+            <button className='bg-gray-200 rounded-md py-2 px-4 mx-1' onClick={reporDef}>
+              Repor
+            </button>
           </div>
         </div>
       </Dialog>
