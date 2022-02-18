@@ -13,11 +13,7 @@ function NavBar() {
   const inputVel = useRef(null);
   const inputPitch = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [defAudio, setDefAudio] = useState({
-    genero: "male",
-    vel: 1,
-    pitch: 0,
-  });
+  const [defAudio, setDefAudio] = useState({});
 
   const novasDefAudio = (genero, vel, pitch) => {
     console.log("hello");
@@ -30,6 +26,12 @@ function NavBar() {
       console.log(res);
       if (res !== false) {
         setDefAudio(res);
+      } else {
+        setDefAudio({
+          genero: "male",
+          vel: 1,
+          pitch: 0,
+        });
       }
     });
   };
@@ -50,7 +52,7 @@ function NavBar() {
         open={isOpen}
         onClose={() => {
           setIsOpen(false);
-          novasDefAudio("male", inputVel.current.value, inputPitch.current.value);
+          novasDefAudio(defAudio.genero, inputVel.current.value, inputPitch.current.value);
         }}
         className='fixed z-10 inset-0 overflow-y-auto'
       >
@@ -75,8 +77,8 @@ function NavBar() {
                     onChange={(e) => {
                       setDefAudio({
                         genero: "male",
-                        vel: 1,
-                        pitch: 0,
+                        vel: inputVel.current.value,
+                        pitch: inputPitch.current.value,
                       });
                     }}
                   />
@@ -98,8 +100,8 @@ function NavBar() {
                     onChange={(e) => {
                       setDefAudio({
                         genero: "female",
-                        vel: 1,
-                        pitch: 0,
+                        vel: inputVel.current.value,
+                        pitch: inputPitch.current.value,
                       });
                     }}
                   />
