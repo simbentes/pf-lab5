@@ -31,6 +31,7 @@ function OMeuFeed() {
   };
 
   useEffect(() => {
+    //fazer fetch das ultimas 25 noticias dos 3 jornais (10 público, 10 observador, 5 eco)
     fetchMeuFeed().then(
       (news) => {
         console.log(news);
@@ -43,26 +44,27 @@ function OMeuFeed() {
     );
   }, []);
 
-  const checkFontes = (el) => {
-    // check if all fontes are false
-    if (!fontes.publico && !fontes.observador && !fontes.eco) return true;
-    // check if elems fonte is trued in fontes
-    if (
-      (el.fonte === "publico" && fontes.publico) ||
-      (el.fonte === "eco" && fontes.eco) ||
-      (el.fonte === "observador" && fontes.observador)
-    )
-      return true;
-    return false;
-  };
-
   useEffect(() => {
-    const arr_filtrado = noticias.filter((el) => checkFontes(el));
+    const checkFontes = (el) => {
+      // check if all fontes are false
+      if (!fontes.publico && !fontes.observador && !fontes.eco) return true;
+      // check if elems fonte is trued in fontes
+      if (
+        (el.fonte === "publico" && fontes.publico) ||
+        (el.fonte === "eco" && fontes.eco) ||
+        (el.fonte === "observador" && fontes.observador)
+      )
+        return true;
+      return false;
+    };
 
+    //filtar notícias pela fonte
+    const arr_filtrado = noticias.filter((el) => checkFontes(el));
     setDisplayNoticias(arr_filtrado);
   }, [fontes]);
 
   useEffect(() => {
+    //verificar se existem temas selecionados
     const temTemas = () => {
       for (let prop in temas) {
         if (temas[prop] === true) return true;
@@ -71,11 +73,13 @@ function OMeuFeed() {
     };
 
     if (temTemas()) {
+      //se tiver temas selecionados fazer fetch com as fontes selecionadas
       fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => {
         setNoticias(res);
         setDisplayNoticias(res);
       });
     } else {
+      //se não, fazer fetch das ultimas 25 noticias dos 3 jornais (10 público, 10 observador, 5 eco)
       fetchMeuFeed().then((news) => {
         setNoticias(news);
         setDisplayNoticias(news);

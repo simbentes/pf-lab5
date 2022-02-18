@@ -1,11 +1,10 @@
+import "../css/App.css";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { SaveIcon } from "@heroicons/react/solid";
 import { fetchNoticia } from "../fetchNoticia";
 import { guardarNoticia, useAuth, isGuardado } from "../firebase";
 import GuardarButton from "./GuardarButton";
 import parse from "html-react-parser";
-import "../css/App.css";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
@@ -15,22 +14,27 @@ import fetchUltimas from "../fetchUltimas";
 import NoticiaMiniatura from "./NoticiaMiniatura";
 
 function Noticia() {
-  const [noticias, setNoticias] = useState([]);
-
-  let userID = useAuth();
-
-  const [guardado, setGuardado] = useState(false);
-
-  let noticia_param = useParams();
-
   const [noticia, setNoticia] = useState({});
+  const [noticias, setNoticias] = useState([]);
+  const [guardado, setGuardado] = useState(false);
+  const userID = useAuth();
+  const noticia_param = useParams();
+
+  //guardar notícia - enviamos como callback para o componente GuardarButton
+  const adicionarNoticia = (is_checked, noticia_id, noticia_info) => {
+    setGuardado(!guardado);
+    guardarNoticia(userID.uid, noticia_param.id, noticia_info, is_checked);
+  };
 
   useEffect(() => {
+    //verificar se está guardado
     isGuardado(userID, noticia_param.id).then((res) => setGuardado(res));
   }, [userID]);
 
   useEffect(() => {
-    let md = new Remarkable();
+    const md = new Remarkable();
+
+    //fazer fetch da noticia com id e fonte recebido no url
     fetchNoticia(noticia_param.fonte, noticia_param.id)
       .then((resultado) => {
         if (noticia_param.fonte === "eco") {
@@ -48,7 +52,6 @@ function Noticia() {
             // arranjar o tipo
           });
         } else {
-          console.log(resultado.content.map((elem) => elem.content));
           setNoticia({
             titulo: resultado.title,
             img: resultado.img,
@@ -77,6 +80,7 @@ function Noticia() {
         console.log(err);
       });
 
+    //fazer fetch das "outras noticias" (ou "noticias relacionadas" se forem a noticia for do jornal ECO)
     fetchUltimas(3, noticia_param.id, noticia_param.fonte).then(
       (news) => {
         console.log(news);
@@ -87,11 +91,6 @@ function Noticia() {
       }
     );
   }, []);
-
-  const adicionarNoticia = (is_checked, noticia_id, noticia_info) => {
-    setGuardado(!guardado);
-    guardarNoticia(userID.uid, noticia_param.id, noticia_info, is_checked);
-  };
 
   return (
     <div>
@@ -139,7 +138,6 @@ function Noticia() {
             ) : (
               <h5 className='font-semibold'>Outras Notícias</h5>
             )}
-
             <div>
               {noticias &&
                 noticias.map((el, index) => <NoticiaMiniatura info={el} key={index} def_audio={{ genero: "male", vel: 1, pitch: 0 }} />)}

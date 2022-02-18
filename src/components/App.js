@@ -1,14 +1,13 @@
-import "./../css/App.css";
-import NavBar from "./NavBar";
-import { useAuth } from "../firebase";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NoticiasGuardadas from "./NoticiasGuardadas";
+import ProtectedRoutes from "./ProtectedRoutes";
+import NavBar from "./NavBar";
 import Ultimas from "./Ultimas";
 import Noticia from "./Noticia";
 import NoMatch from "./NoMatch";
-import ProtectedRoutes from "./ProtectedRoutes";
 import Inicio from "./Inicio";
 import OMeuFeed from "./OMeuFeed";
-import NoticiasGuardadas from "./NoticiasGuardadas";
+import Login from "./Login";
 
 function App() {
   return (
