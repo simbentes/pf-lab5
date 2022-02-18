@@ -14,7 +14,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<ProtectedRoutes />}>
+          <Route path='/*' element={<ProtectedRoutes />}>
             <Route element={<NavBar />}>
               <Route index element={<Inicio />} />
               <Route path='ultimas' element={<Ultimas />} />

@@ -41,7 +41,7 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
         return fetch("https://pf-py-api.herokuapp.com/fetch/", {
           method: "POST",
           body: JSON.stringify({
-            link: "https://observador.pt/wp-json/obs_api/v4/news/widget/",
+            link: "https://observador.pt/wp-json/obs_api/v4/news/widget/latest/",
           }),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
