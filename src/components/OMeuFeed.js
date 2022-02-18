@@ -71,7 +71,10 @@ function OMeuFeed() {
     };
 
     if (temTemas()) {
-      fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => setDisplayNoticias(res));
+      fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => {
+        setNoticias(res);
+        setDisplayNoticias(res);
+      });
     } else {
       fetchMeuFeed().then((news) => {
         setNoticias(news);
