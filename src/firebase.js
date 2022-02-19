@@ -127,6 +127,8 @@ export const definicoesAudio = async (genero, vel, pitch) => {
     pitch: pitch,
   };
   await setDoc(doc(db, "definicoes_audio", auth.currentUser.uid), docData);
+
+  window.location.reload();
 };
 
 export const isDefAudio = async () => {

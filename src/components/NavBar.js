@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef } from "react";
+import { Fragment, useState, useRef, useEffect } from "react";
 import { Menu, Popover, Transition, Dialog } from "@headlessui/react";
 import { MenuIcon, LogoutIcon, BookmarkAltIcon, MicrophoneIcon, MinusCircleIcon } from "@heroicons/react/outline";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -18,10 +18,13 @@ function NavBar() {
   const novasDefAudio = (genero, vel, pitch) => {
     definicoesAudio(genero, vel, pitch);
   };
+  
 
   const verDefAudio = () => {
     isDefAudio().then((res) => {
       console.log(res);
+      inputVel.current.value = res.vel;
+      inputPitch.current.value = res.pitch;
       if (res !== false) {
         setDefAudio(res);
       } else {
@@ -118,9 +121,9 @@ function NavBar() {
                   id='velocidade'
                   name='velocidade'
                   min={0.25}
-                  max={4}
+                  max={2.5}
                   step={0.01}
-                  defaultValue={defAudio.vel}
+                  defaultValue={1}
                   className='w-full'
                 />
               </div>
@@ -131,10 +134,10 @@ function NavBar() {
                   type='range'
                   id='pitch'
                   name='pitch'
-                  min={-20}
-                  max={20}
+                  min={-15}
+                  max={15}
                   step={0.1}
-                  defaultValue={defAudio.pitch}
+                  defaultValue={0}
                   className='w-full'
                 />
               </div>

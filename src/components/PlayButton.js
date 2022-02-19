@@ -17,6 +17,7 @@ const PlayButton = React.forwardRef((props, ref) => {
   useEffect(() => {
     if (props.contents == undefined) return;
 
+    console.log("vel: ", typeof props.def_audio.vel, "pitch: ", typeof props.def_audio.pitch);
     reference.current.times += 1;
 
     reference.current.context = new AudioContext();
@@ -29,8 +30,8 @@ const PlayButton = React.forwardRef((props, ref) => {
         gender: props.def_audio.genero,
         jornal: props.jornal,
         contents: props.contents,
-        speed: 1,
-        pitch: 0,
+        speed: Number(props.def_audio.vel),
+        pitch: Number(props.def_audio.pitch),
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
