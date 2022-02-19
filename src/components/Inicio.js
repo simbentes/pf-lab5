@@ -1,7 +1,7 @@
+import "./../css/App.css";
 import eco from "../icons/eco.svg";
 import publico from "../icons/publico.svg";
 import observador from "../icons/observador.png";
-import "./../css/App.css";
 
 export default function Inicio() {
   return (

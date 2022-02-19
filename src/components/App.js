@@ -7,7 +7,6 @@ import Noticia from "./Noticia";
 import NoMatch from "./NoMatch";
 import Inicio from "./Inicio";
 import OMeuFeed from "./OMeuFeed";
-import Login from "./Login";
 
 function App() {
   return (

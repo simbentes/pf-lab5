@@ -1,20 +1,19 @@
 import { useState } from "react";
+import { guardarNoticia } from "../firebase";
+import { Link } from "react-router-dom";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import AudioPlayer from "./AudioPlayer";
 import GuardarButton from "./GuardarButton";
-import { guardarNoticia } from "../firebase";
-import { Link } from "react-router-dom";
 
 function NoticiaMiniaturaGuardadas(props) {
-  let image;
-  try {
-    image = props.info.img;
-  } catch (e) {
-    console.log(e);
-  }
-
+  const data = new Date(props.info.data);
+  const [guardado, setGuardado] = useState(true);
+  const removerNoticia = (is_checked, noticia_id, noticia_info) => {
+    setGuardado(!guardado);
+    guardarNoticia(noticia_id, noticia_info, is_checked);
+  };
   const audioATocar = (aTocar) => {
     if (aTocar) {
       return true;
@@ -22,13 +21,12 @@ function NoticiaMiniaturaGuardadas(props) {
     return false;
   };
 
-  const data = new Date(props.info.data);
-
-  const [guardado, setGuardado] = useState(true);
-  const removerNoticia = (is_checked, noticia_id, noticia_info) => {
-    setGuardado(!guardado);
-    guardarNoticia(noticia_id, noticia_info, is_checked);
-  };
+  let image;
+  try {
+    image = props.info.img;
+  } catch (e) {
+    console.log(e);
+  }
 
   return (
     <div className='relative bg-white shadow-md m-3 rounded-lg'>
