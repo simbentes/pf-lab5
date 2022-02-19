@@ -2,12 +2,15 @@ import "../css/App.css";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { fetchNoticia } from "../fetchNoticia";
-import { guardarNoticia, isGuardado } from "../firebase";
+import { guardarNoticia, useAuth, isGuardado } from "../firebase";
 import GuardarButton from "./GuardarButton";
 import parse from "html-react-parser";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
+import mainEco from "../imagens/eco.png"
+import mainObs from "../imagens/obs.png"
+import mainPub from "../imagens/pub.png"
 import { Remarkable } from "remarkable";
 import PlayButton from "./PlayButton";
 import fetchUltimas from "../fetchUltimas";
@@ -17,18 +20,23 @@ function Noticia() {
   const [noticia, setNoticia] = useState({});
   const [noticias, setNoticias] = useState([]);
   const [guardado, setGuardado] = useState(false);
+  const userID = useAuth();
   const noticia_param = useParams();
+
+
 
   //guardar notícia - enviamos como callback para o componente GuardarButton
   const adicionarNoticia = (is_checked, noticia_id, noticia_info) => {
     setGuardado(!guardado);
-    guardarNoticia(noticia_param.id, noticia_info, is_checked);
+    guardarNoticia(userID.uid, noticia_param.id, noticia_info, is_checked);
   };
 
   useEffect(() => {
-    //verificar se a notícia está guardada
-    isGuardado(noticia_param.id).then((res) => setGuardado(res));
+    //verificar se está guardado
+    isGuardado(userID, noticia_param.id).then((res) => setGuardado(res));
+  }, [userID]);
 
+  useEffect(() => {
     const md = new Remarkable();
 
     //fazer fetch da noticia com id e fonte recebido no url
@@ -37,6 +45,7 @@ function Noticia() {
         if (noticia_param.fonte === "eco") {
           // alterar isto para ajudar no render docorpo
           let expression = /{*0}/;
+          console.log(resultado.body.split(expression));
           setNoticia({
             titulo: resultado.title.long,
             img: resultado.images.wide.urlTemplate,
@@ -48,9 +57,23 @@ function Noticia() {
             // arranjar o tipo
           });
         } else {
+          let imagem = resultado.img
+          if (resultado.img == "no image"){
+            switch(noticia_param.fonte){
+              case "observador":
+                imagem = mainObs
+                break;
+              case "publico":
+                imagem = mainPub
+                break;
+              case "eco":
+                imagem = mainEco
+                break;
+            }
+          }
           setNoticia({
             titulo: resultado.title,
-            img: resultado.img,
+            img: imagem,
             body: resultado.content.map((e, index) => {
               if (e.type === "p") {
                 return (
@@ -79,6 +102,7 @@ function Noticia() {
     //fazer fetch das "outras noticias" (ou "noticias relacionadas" se forem a noticia for do jornal ECO)
     fetchUltimas(3, noticia_param.id, noticia_param.fonte).then(
       (news) => {
+        console.log(news);
         setNoticias(news);
       },
       (err) => {
