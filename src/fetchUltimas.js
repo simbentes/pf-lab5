@@ -16,7 +16,7 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
               fonte: "eco",
             };
           });
-
+          
           resolve(json_tratato);
         });
     }
