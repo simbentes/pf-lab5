@@ -18,7 +18,6 @@ function NavBar() {
   const novasDefAudio = (genero, vel, pitch) => {
     definicoesAudio(genero, vel, pitch);
   };
-  
 
   const verDefAudio = () => {
     isDefAudio().then((res) => {
