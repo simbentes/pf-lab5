@@ -30,16 +30,21 @@ export const fetchMeuFeed = () => {
       })
       .then((res) => res.json())
       .then((data) => {
-        let json_tratato = data.map((e) => {
-          return {
-            id: e.id,
-            titulo: e.title,
-            data: e.publish_date,
-            tag: e.tag,
-            lead: e.lead,
-            img: e.image,
-            fonte: "observador",
-          };
+        //console.log(data)
+        let json_tratato = []
+        data.forEach((e) => {
+          // verificação para remover podcasts pois não têm texto
+          if (!e.title.includes("As notícias")){
+            json_tratato.push({
+              id: e.id,
+              titulo: e.title,
+              data: e.publish_date,
+              tag: e.tag,
+              lead: e.lead,
+              img: e.image,
+              fonte: "observador",
+            })
+          }
         });
         noticias_arr.push(...json_tratato);
 

@@ -4,13 +4,32 @@ import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import PlayButton from "./PlayButton";
+import mainEco from "../imagens/eco.png"
+import mainObs from "../imagens/obs.png"
+import mainPub from "../imagens/pub.png"
 
 const NoticiaMiniatura = React.forwardRef((props, ref) => {
   const data = new Date(props.info.data);
 
   let image;
   try {
-    image = props.info.img;
+    if (props.info.img == ""){
+      switch (props.info.fonte) {
+        case "eco":
+          image = mainEco
+          break;
+        case "observador":
+          image = mainObs
+          break;
+        case "publico":
+          image = mainPub
+          break;
+        default:
+          return null;
+      }
+    }
+    else image = props.info.img;
+    
   } catch (e) {
     image = observador;
     console.log(e);

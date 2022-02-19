@@ -38,6 +38,7 @@ function OMeuFeed() {
         setNoticias(news);
         setDisplayNoticias(news);
         setArrayRefs(news.map((noticia) => React.createRef()));
+        console.log(news)
       },
       (err) => {
         console.log(err);
@@ -67,6 +68,16 @@ function OMeuFeed() {
       }
     });
   };
+
+  const refreshAllAudios = () => {
+    arrayRefs.forEach((elem) => {
+      try {
+        if (elem.current != null) elem.current.refresh_func();
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  }
 
   useEffect(() => {
     const arr_filtrado = noticias.filter((el) => checkFontes(el));
@@ -102,6 +113,7 @@ function OMeuFeed() {
     <div className='py-5'>
       <h1 className='pl-11 text-center font-semibold text-2xl my-5'>O Meu Feed</h1>
       <div className='container mx-auto px-10'>
+        <button onClick={refreshAllAudios}>Refresh</button>
         <div className='pb-7'>
           <ButtonSection name='Temas'>
             <SortButton id='sociedade' content='Sociedade' type='text' onChangeHandle={escolherTema} />
