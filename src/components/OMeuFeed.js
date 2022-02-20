@@ -24,9 +24,12 @@ function OMeuFeed() {
     desporto: false,
   });
   const escolherFonte = (id, estado) => {
+    pauseAllAudios()
     setFontes({ ...fontes, [id]: estado });
+    
   };
   const escolherTema = (id, estado) => {
+    pauseAllAudios()
     setTemas({ ...temas, [id]: estado });
   };
 
@@ -60,6 +63,7 @@ function OMeuFeed() {
   };
 
   const pauseAllAudios = () => {
+    console.log(arrayRefs)
     arrayRefs.forEach((elem) => {
       try {
         if (elem.current != null) elem.current.pause_func();
@@ -82,7 +86,12 @@ function OMeuFeed() {
   useEffect(() => {
     const arr_filtrado = noticias.filter((el) => checkFontes(el));
     setDisplayNoticias(arr_filtrado);
+    refreshAllAudios()
   }, [fontes]);
+
+  useEffect(()=>{
+    return () => {pauseAllAudios()}
+  }, [])
 
   useEffect(() => {
     const temTemas = () => {
