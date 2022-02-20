@@ -8,6 +8,7 @@ import g_icon from "../icons/g_icon.svg";
 function Login() {
   const auth = getAuth();
   const num_tel = useRef();
+  const input_codigo = useRef();
   const [resultado, setResultado] = useState({});
   const [enterTel, setEnterTel] = useState(true);
   const [alerta, setAlerta] = useState("");
@@ -39,6 +40,7 @@ function Login() {
         // user in with confirmationResult.confirm(code).
         setResultado(confirmationResult);
         setEnterTel(!enterTel);
+
         // ...
       })
       .catch((error) => {
@@ -59,7 +61,9 @@ function Login() {
       })
       .catch((error) => {
         // User couldn't sign in (bad verification code?)
-        // ...
+        setAlerta("Código inválido.");
+        input_codigo.current.value = "";
+        alert("Código inválido.");
       });
   };
 
@@ -107,6 +111,7 @@ function Login() {
               <h1 className='py-5 text-md text-left'>Introduzir código enviado.</h1>
               <form>
                 <input
+                  ref={input_codigo}
                   type='number'
                   pattern='[0-9]*'
                   maxLength={6}
@@ -115,6 +120,7 @@ function Login() {
                     if (e.target.value.length == 6) confimarCodigo(e.target.value); //limits to 6 digit entry
                   }}
                 />
+                <div>{alerta}</div>
               </form>
             </div>
           )}
