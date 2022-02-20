@@ -13,8 +13,16 @@ function Ultimas() {
     pitch: 0,
   });
 
+  
+
   const pauseAllAudios = () => {
-    arrayRefs.forEach((elem) => elem.current.pause_func());
+    arrayRefs.forEach((elem) => {
+      try {
+        if (elem.current != null) elem.current.pause_func();
+      } catch (e) {
+        console.log(e);
+      }
+    });
   };
 
   useEffect(() => {
