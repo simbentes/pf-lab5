@@ -6,8 +6,11 @@ import publico from "../icons/publico.svg";
 import observador from "../icons/observador.png";
 import SortButton from "./SortButton";
 import ButtonSection from "./ButtonSection";
+import { hasFiltros, saveFitros } from "../firebase";
 
 function OMeuFeed() {
+  const renders = useRef(0);
+  const [arrayRefs, setArrayRefs] = useState([]);
   const [noticias, setNoticias] = useState([]);
   const [displayNoticias, setDisplayNoticias] = useState([]);
   const [fontes, setFontes] = useState({
@@ -24,13 +27,13 @@ function OMeuFeed() {
     desporto: false,
   });
   const escolherFonte = (id, estado) => {
+    saveFitros(temas, { ...fontes, [id]: estado });
     setFontes({ ...fontes, [id]: estado });
   };
   const escolherTema = (id, estado) => {
+    saveFitros({ ...temas, [id]: estado }, fontes);
     setTemas({ ...temas, [id]: estado });
   };
-
-  const [arrayRefs, setArrayRefs] = useState([]);
 
   useEffect(() => {
     fetchMeuFeed().then(
@@ -38,12 +41,20 @@ function OMeuFeed() {
         setNoticias(news);
         setDisplayNoticias(news);
         setArrayRefs(news.map((noticia) => React.createRef()));
-        console.log(news)
+        console.log(news);
       },
       (err) => {
         console.log(err);
       }
     );
+
+    //verificar no firebase se exitem filtros selecionados e dar checked ao que estão
+    hasFiltros().then((filtros) => {
+      if (filtros) {
+        setTemas(filtros.temas);
+        setFontes(filtros.fontes);
+      }
+    });
   }, []);
 
   const checkFontes = (el) => {
@@ -77,7 +88,7 @@ function OMeuFeed() {
         console.log(e);
       }
     });
-  }
+  };
 
   useEffect(() => {
     const arr_filtrado = noticias.filter((el) => checkFontes(el));
@@ -116,18 +127,24 @@ function OMeuFeed() {
         <button onClick={refreshAllAudios}>Refresh</button>
         <div className='pb-7'>
           <ButtonSection name='Temas'>
-            <SortButton id='sociedade' content='Sociedade' type='text' onChangeHandle={escolherTema} />
-            <SortButton id='politica' content='Política' type='text' onChangeHandle={escolherTema} />
-            <SortButton id='economia' content='Economia' type='text' onChangeHandle={escolherTema} />
-            <SortButton id='mundo' content='Mundo' type='text' onChangeHandle={escolherTema} />
-            <SortButton id='cultura' content='Cultura' type='text' onChangeHandle={escolherTema} />
-            <SortButton id='desporto' content='Desporto' type='text' onChangeHandle={escolherTema} />
+            <SortButton id='sociedade' content='Sociedade' type='text' onChangeHandle={escolherTema} is_checked={temas.sociedade} />
+            <SortButton id='politica' content='Política' type='text' onChangeHandle={escolherTema} is_checked={temas.politica} />
+            <SortButton id='economia' content='Economia' type='text' onChangeHandle={escolherTema} is_checked={temas.economia} />
+            <SortButton id='mundo' content='Mundo' type='text' onChangeHandle={escolherTema} is_checked={temas.mundo} />
+            <SortButton id='cultura' content='Cultura' type='text' onChangeHandle={escolherTema} is_checked={temas.cultura} />
+            <SortButton id='desporto' content='Desporto' type='text' onChangeHandle={escolherTema} is_checked={temas.desporto} />
           </ButtonSection>
-
           <ButtonSection name='Fontes'>
-            <SortButton id='publico' content={publico} type='img' size='h-6' onChangeHandle={escolherFonte} />
-            <SortButton id='eco' content={eco} type='img' size='h-4' onChangeHandle={escolherFonte} />
-            <SortButton id='observador' content={observador} type='img' size='h-2' onChangeHandle={escolherFonte} />
+            <SortButton id='publico' content={publico} type='img' size='h-6' onChangeHandle={escolherFonte} is_checked={fontes.publico} />
+            <SortButton id='eco' content={eco} type='img' size='h-4' onChangeHandle={escolherFonte} is_checked={fontes.eco} />
+            <SortButton
+              id='observador'
+              content={observador}
+              type='img'
+              size='h-2'
+              onChangeHandle={escolherFonte}
+              is_checked={fontes.observador}
+            />
           </ButtonSection>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>

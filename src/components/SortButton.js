@@ -13,6 +13,7 @@ const SortButton = (props) => {
         onChange={(e) => {
           props.onChangeHandle(e.target.name, e.target.checked);
         }}
+        checked={props.is_checked}
       />
       <label htmlFor={props.id} className='rounded-full py-2.5 px-3 bg-slate-300 peer-checked:bg-indigo-400 peer-checked:text-white'>
         {buttonContent}
