@@ -1,5 +1,5 @@
 import "../css/App.css";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { fetchNoticia } from "../fetchNoticia";
 import { guardarNoticia, useAuth, isGuardado } from "../firebase";
@@ -22,6 +22,19 @@ function Noticia() {
   const [guardado, setGuardado] = useState(false);
   const userID = useAuth();
   const noticia_param = useParams();
+
+  const [arrayRefs, setArrayRefs] = useState([React.createRef()]);
+
+  const pauseAllAudios = () => {
+    console.log(arrayRefs)
+    arrayRefs.forEach((elem) => {
+      try {
+        if (elem.current != null) elem.current.pause_func();
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  };
 
 
 
@@ -104,6 +117,8 @@ function Noticia() {
       (news) => {
         console.log(news);
         setNoticias(news);
+        let array = news.map(element => React.createRef());
+        setArrayRefs([...arrayRefs, ...array])
       },
       (err) => {
         console.log(err);
@@ -123,10 +138,12 @@ function Noticia() {
               type='body'
               jornal={noticia_param.fonte}
               def_audio={{ genero: "male", vel: 1, pitch: 0 }}
+              ref={arrayRefs[0]}
+              pauseAllFunc={pauseAllAudios}
             />
             <div className='py-3 grid grid-cols-6 gap-4'>
               <div className='col-span-2'>
-                <GuardarButton is_saved={guardado} onChangeHandle={adicionarNoticia} info={noticia} />
+                <GuardarButton is_saved={guardado} onChangeHandle={adicionarNoticia} info={noticia} />        
               </div>
               <div className='col-end-7 col-span-3 text-right'>
                 <img
@@ -159,7 +176,7 @@ function Noticia() {
             )}
             <div>
               {noticias &&
-                noticias.map((el, index) => <NoticiaMiniatura info={el} key={index} def_audio={{ genero: "male", vel: 1, pitch: 0 }} />)}
+                noticias.map((el, index) => <NoticiaMiniatura ref={arrayRefs[index+1]} pauseAllFunc={pauseAllAudios} info={el} key={index} def_audio={{ genero: "male", vel: 1, pitch: 0 }} />)}
             </div>
           </div>
         </div>

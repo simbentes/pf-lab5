@@ -98,6 +98,8 @@ const PlayButton = React.forwardRef((props, ref) => {
 
     if (props.pauseAllFunc != undefined) props.pauseAllFunc();
 
+    //console.log(ref)
+
     if (!reference.current.hasStarted) {
       reference.current.source.start();
       reference.current.hasStarted = true;
