@@ -8,9 +8,9 @@ import parse from "html-react-parser";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
-import mainEco from "../imagens/eco.png"
-import mainObs from "../imagens/obs.png"
-import mainPub from "../imagens/pub.png"
+import mainEco from "../imagens/eco.png";
+import mainObs from "../imagens/obs.png";
+import mainPub from "../imagens/pub.png";
 import { Remarkable } from "remarkable";
 import PlayButton from "./PlayButton";
 import fetchUltimas from "../fetchUltimas";
@@ -26,7 +26,7 @@ function Noticia() {
   const [arrayRefs, setArrayRefs] = useState([React.createRef()]);
 
   const pauseAllAudios = () => {
-    console.log(arrayRefs)
+    console.log(arrayRefs);
     arrayRefs.forEach((elem) => {
       try {
         if (elem.current != null) elem.current.pause_func();
@@ -36,17 +36,15 @@ function Noticia() {
     });
   };
 
-
-
   //guardar notícia - enviamos como callback para o componente GuardarButton
   const adicionarNoticia = (is_checked, noticia_id, noticia_info) => {
     setGuardado(!guardado);
-    guardarNoticia(userID.uid, noticia_param.id, noticia_info, is_checked);
+    guardarNoticia(noticia_param.id, noticia_info, is_checked);
   };
 
   useEffect(() => {
     //verificar se está guardado
-    isGuardado(userID, noticia_param.id).then((res) => setGuardado(res));
+    isGuardado(noticia_param.id).then((res) => setGuardado(res));
   }, [userID]);
 
   useEffect(() => {
@@ -70,17 +68,17 @@ function Noticia() {
             // arranjar o tipo
           });
         } else {
-          let imagem = resultado.img
-          if (resultado.img == "no image"){
-            switch(noticia_param.fonte){
+          let imagem = resultado.img;
+          if (resultado.img == "no image") {
+            switch (noticia_param.fonte) {
               case "observador":
-                imagem = mainObs
+                imagem = mainObs;
                 break;
               case "publico":
-                imagem = mainPub
+                imagem = mainPub;
                 break;
               case "eco":
-                imagem = mainEco
+                imagem = mainEco;
                 break;
             }
           }
@@ -117,8 +115,8 @@ function Noticia() {
       (news) => {
         console.log(news);
         setNoticias(news);
-        let array = news.map(element => React.createRef());
-        setArrayRefs([...arrayRefs, ...array])
+        let array = news.map((element) => React.createRef());
+        setArrayRefs([...arrayRefs, ...array]);
       },
       (err) => {
         console.log(err);
@@ -143,7 +141,7 @@ function Noticia() {
             />
             <div className='py-3 grid grid-cols-6 gap-4'>
               <div className='col-span-2'>
-                <GuardarButton is_saved={guardado} onChangeHandle={adicionarNoticia} info={noticia} />        
+                <GuardarButton is_saved={guardado} onChangeHandle={adicionarNoticia} info={noticia} />
               </div>
               <div className='col-end-7 col-span-3 text-right'>
                 <img
@@ -176,7 +174,15 @@ function Noticia() {
             )}
             <div>
               {noticias &&
-                noticias.map((el, index) => <NoticiaMiniatura ref={arrayRefs[index+1]} pauseAllFunc={pauseAllAudios} info={el} key={index} def_audio={{ genero: "male", vel: 1, pitch: 0 }} />)}
+                noticias.map((el, index) => (
+                  <NoticiaMiniatura
+                    ref={arrayRefs[index + 1]}
+                    pauseAllFunc={pauseAllAudios}
+                    info={el}
+                    key={index}
+                    def_audio={{ genero: "male", vel: 1, pitch: 0 }}
+                  />
+                ))}
             </div>
           </div>
         </div>

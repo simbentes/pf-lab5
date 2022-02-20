@@ -69,6 +69,9 @@ export const guardarNoticia = async (id_noticia, obj_noticia, checked) => {
           },
         ],
       };
+      console.log(id_noticia);
+      console.log(obj_noticia);
+      console.log(checked);
       await setDoc(doc(db, "noticias_guardadas", auth.currentUser.uid), docData);
     }
   } else {
