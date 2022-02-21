@@ -4,32 +4,30 @@ import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import PlayButton from "./PlayButton";
-import mainEco from "../imagens/eco.png"
-import mainObs from "../imagens/obs.png"
-import mainPub from "../imagens/pub.png"
+import mainEco from "../imagens/eco.png";
+import mainObs from "../imagens/obs.png";
+import mainPub from "../imagens/pub.png";
 
 const NoticiaMiniatura = React.forwardRef((props, ref) => {
   const data = new Date(props.info.data);
 
   let image;
   try {
-    if (props.info.img == ""){
+    if (props.info.img == "") {
       switch (props.info.fonte) {
         case "eco":
-          image = mainEco
+          image = mainEco;
           break;
         case "observador":
-          image = mainObs
+          image = mainObs;
           break;
         case "publico":
-          image = mainPub
+          image = mainPub;
           break;
         default:
           return null;
       }
-    }
-    else image = props.info.img;
-    
+    } else image = props.info.img;
   } catch (e) {
     image = observador;
     console.log(e);
@@ -40,7 +38,7 @@ const NoticiaMiniatura = React.forwardRef((props, ref) => {
       <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
         <img src={image} className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer' />
       </Link>
-      <div className='px-2 py-3'>
+      <div className='p-3'>
         <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
           <h6 className='text-base leading-5 font-semibold mb-2'>{props.info.titulo.replace(/(<([^>]+)>)/gi, "") /*props.info.titulo*/}</h6>
           <p className='text-xs'>{props.info.lead}</p>
@@ -57,19 +55,22 @@ const NoticiaMiniatura = React.forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div>
-        {(() => {
-          switch (props.info.fonte) {
-            case "eco":
-              return <img src={eco} className='w-11 absolute bottom-3 right-3' />;
-            case "observador":
-              return <img src={observador} className='w-28 absolute bottom-3 right-3' />;
-            case "publico":
-              return <img src={publico} className='w-5 absolute bottom-3 right-3' />;
-            default:
-              return null;
-          }
-        })()}
+      <div className='flex justify-between items-center absolute bottom-3 left-3 right-3'>
+        <div className='text-xs'>FONTE</div>
+        <div>
+          {(() => {
+            switch (props.info.fonte) {
+              case "eco":
+                return <img src={eco} className='w-11 ' />;
+              case "observador":
+                return <img src={observador} className='w-28' />;
+              case "publico":
+                return <img src={publico} className='w-5' />;
+              default:
+                return null;
+            }
+          })()}
+        </div>
       </div>
     </div>
   );
