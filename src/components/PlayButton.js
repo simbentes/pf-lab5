@@ -77,6 +77,7 @@ const PlayButton = React.forwardRef((props, ref) => {
     if (disable || !reference.current.hasStarted) return;
     reference.current.context.suspend().then();
     setButtonContent(playjsx);
+    //ref.current.state = "suspended";
     setLoading("");
   };
 
