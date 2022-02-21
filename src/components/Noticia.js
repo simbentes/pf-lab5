@@ -48,22 +48,21 @@ function Noticia() {
   }, [userID]);
 
   const removeCurlyBracketsNumerals = (body) => {
-    console.log(body)
-    let newbody = body
-    let counter = 0
-    let hasBrackets = true
+    console.log(body);
+    let newbody = body;
+    let counter = 0;
+    let hasBrackets = true;
 
     while (hasBrackets) {
-      let bracket = "{" + counter + "}"
+      let bracket = "{" + counter + "}";
 
-      if (newbody.includes(bracket)){
-        newbody = newbody.replace(bracket, "")
-        counter++
-      }
-      else hasBrackets = false
+      if (newbody.includes(bracket)) {
+        newbody = newbody.replace(bracket, "");
+        counter++;
+      } else hasBrackets = false;
     }
-    return newbody
-  }
+    return newbody;
+  };
 
   useEffect(() => {
     const md = new Remarkable();
@@ -73,12 +72,11 @@ function Noticia() {
       .then((resultado) => {
         if (noticia_param.fonte === "eco") {
           // alterar isto para ajudar no render docorpo
-          
+
           setNoticia({
             titulo: resultado.title.long,
             img: resultado.images.wide.urlTemplate,
             body: parse(md.render(removeCurlyBracketsNumerals(resultado.body))),
-            raw_body: resultado.body,
             fonte: "eco",
             data: noticia_param.dia + "-" + noticia_param.mes + "-" + noticia_param.ano,
             body_array: resultado.body,
@@ -103,20 +101,27 @@ function Noticia() {
             titulo: resultado.title,
             img: imagem,
             body: resultado.content.map((e, index) => {
-              if (e.type === "p") {
-                return (
-                  <p key={index} className='mb-5'>
-                    {e.content}
-                  </p>
-                );
+              switch (e.type) {
+                case "p":
+                  return (
+                    <p key={index} className='mb-5'>
+                      {e.content}
+                    </p>
+                  );
+                  break;
+                case "h2":
+                  return (
+                    <h2 key={index} className='mb-5 font-semibold text-2xl'>
+                      {e.content}
+                    </h2>
+                  );
+                  break;
+                case "video":
+                  return parse(e.content);
+                  break;
+                case "audio":
               }
-              return (
-                <h2 key={index} className='mb-5 font-semibold text-2xl'>
-                  {e.content}
-                </h2>
-              );
             }),
-            raw_body: resultado.content,
             fonte: noticia_param.fonte,
             data: noticia_param.dia + "-" + noticia_param.mes + "-" + noticia_param.ano,
             body_array: resultado.content.map((elem) => elem.content),
