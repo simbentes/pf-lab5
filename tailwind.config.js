@@ -2,7 +2,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontSize: {
+      xxxs: ".25rem",
       xxs: ".5rem",
+      xs: ".8rem",
       base: "1rem",
       lg: "1.125rem",
       xl: "1.25rem",

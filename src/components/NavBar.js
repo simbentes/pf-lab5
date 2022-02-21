@@ -4,6 +4,7 @@ import { MenuIcon, LogoutIcon, BookmarkAltIcon, MicrophoneIcon, MinusCircleIcon 
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth, terminarSessao, definicoesAudio, isDefAudio } from "../firebase";
 import { Link } from "react-router-dom";
+import Footer from "./Footer";
 
 function NavBar() {
   const user = useAuth();
@@ -256,6 +257,7 @@ function NavBar() {
         </div>
       </Popover>
       <Outlet />
+      <Footer />
     </>
   );
 }
