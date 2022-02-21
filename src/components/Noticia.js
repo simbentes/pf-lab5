@@ -47,6 +47,24 @@ function Noticia() {
     isGuardado(noticia_param.id).then((res) => setGuardado(res));
   }, [userID]);
 
+  const removeCurlyBracketsNumerals = (body) => {
+    console.log(body)
+    let newbody = body
+    let counter = 0
+    let hasBrackets = true
+
+    while (hasBrackets) {
+      let bracket = "{" + counter + "}"
+
+      if (newbody.includes(bracket)){
+        newbody = newbody.replace(bracket, "")
+        counter++
+      }
+      else hasBrackets = false
+    }
+    return newbody
+  }
+
   useEffect(() => {
     const md = new Remarkable();
 
@@ -55,16 +73,15 @@ function Noticia() {
       .then((resultado) => {
         if (noticia_param.fonte === "eco") {
           // alterar isto para ajudar no render docorpo
-          let expression = /{*0}/;
-          console.log(resultado.body.split(expression));
+          
           setNoticia({
             titulo: resultado.title.long,
             img: resultado.images.wide.urlTemplate,
-            body: parse(md.render(resultado.body)),
+            body: parse(md.render(removeCurlyBracketsNumerals(resultado.body))),
             raw_body: resultado.body,
             fonte: "eco",
             data: noticia_param.dia + "-" + noticia_param.mes + "-" + noticia_param.ano,
-            body_array: resultado.body.split(expression),
+            body_array: resultado.body,
             // arranjar o tipo
           });
         } else {
