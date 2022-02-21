@@ -98,17 +98,20 @@ const PlayButton = React.forwardRef((props, ref) => {
 
     if (props.pauseAllFunc != undefined) props.pauseAllFunc();
 
-    //console.log(ref)
+    console.log(ref.current.state)
 
     if (!reference.current.hasStarted) {
       reference.current.source.start();
       reference.current.hasStarted = true;
       setButtonContent(pausejsx);
-    } else if (reference.current.context.state == "running") {
+      ref.current.state = "running"
+    } else if (ref.current.state == "running" || reference.current.context.state == "running") {
       reference.current.context.suspend().then();
-      setButtonContent(playjsx);
-    } else if (reference.current.context.state == "suspended") {
+      ref.current.state = "suspended"
+      setButtonContent(playjsx);      
+    } else if (ref.current.state == "suspended" || reference.current.context.state == "suspended") {
       reference.current.context.resume().then();
+      ref.current.state = "running"
       setButtonContent(pausejsx);
     }
   };
