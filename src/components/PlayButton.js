@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { PlayIcon, PauseIcon, RefreshIcon } from "@heroicons/react/solid";
 
 const PlayButton = React.forwardRef((props, ref) => {
-  let playjsx = <PlayIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />;
-  let pausejsx = <PauseIcon className='h-10 w-10 fill-slate-800' aria-hidden='true' />;
+  let playjsx = <PlayIcon className='h-10 w-10 fill-slate-800 hover:fill-slate-900' aria-hidden='true' />;
+  let pausejsx = <PauseIcon className='h-10 w-10 fill-slate-800 hover:fill-slate-900' aria-hidden='true' />;
   let loadingjsx = "Loading";
 
   let reference = useRef({ hasStarted: false, times: 0 });
@@ -119,7 +119,7 @@ const PlayButton = React.forwardRef((props, ref) => {
         {buttonContent}
       </div>
       <div onClick={refresh} className='cursor-pointer col-end-13 text-right'>
-        <RefreshIcon className='h-7 w-7 mr-1.5 fill-slate-800' aria-hidden='true' />
+        <RefreshIcon className='h-7 w-7 mr-1.5 fill-slate-800 hover:fill-slate-900' aria-hidden='true' />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import observador from "../icons/observador.png";
 import SortButton from "./SortButton";
 import ButtonSection from "./ButtonSection";
 import { hasFiltros, saveFitros } from "../firebase";
+import { RefreshIcon } from "@heroicons/react/solid";
 
 function OMeuFeed() {
   const renders = useRef(0);
@@ -26,11 +27,10 @@ function OMeuFeed() {
     cultura: false,
     desporto: false,
   });
-  
+
   const escolherFonte = (id, estado) => {
     saveFitros(temas, { ...fontes, [id]: estado });
     setFontes({ ...fontes, [id]: estado });
-    
   };
   const escolherTema = (id, estado) => {
     saveFitros({ ...temas, [id]: estado }, fontes);
@@ -73,7 +73,7 @@ function OMeuFeed() {
   };
 
   const pauseAllAudios = () => {
-    console.log(arrayRefs)
+    console.log(arrayRefs);
     arrayRefs.forEach((elem) => {
       try {
         if (elem.current != null) elem.current.pause_func();
@@ -96,12 +96,14 @@ function OMeuFeed() {
   useEffect(() => {
     const arr_filtrado = noticias.filter((el) => checkFontes(el));
     setDisplayNoticias(arr_filtrado);
-    refreshAllAudios()
+    refreshAllAudios();
   }, [fontes]);
 
-  useEffect(()=>{
-    return () => {pauseAllAudios()}
-  }, [])
+  useEffect(() => {
+    return () => {
+      pauseAllAudios();
+    };
+  }, []);
 
   useEffect(() => {
     const temTemas = () => {
