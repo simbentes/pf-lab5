@@ -13,7 +13,7 @@ const NoticiaMiniatura = React.forwardRef((props, ref) => {
 
   let image;
   try {
-    if (props.info.img == "") {
+    if (props.info.img == "" || props.info.img == null) {
       switch (props.info.fonte) {
         case "eco":
           image = mainEco;
