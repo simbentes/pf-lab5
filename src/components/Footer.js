@@ -39,11 +39,11 @@ function Footer() {
           <div className='text-left'>© {date.getFullYear()} Primeiro Jornal. Todos os direitos reservados.</div>
           <div className='text-right'>
             Desenvolvido por{" "}
-            <a href='https://github.com/luisfls95' target={"_blank"} className='font-semibold'>
+            <a href='https://github.com/luisfls95' target={"_blank"} className='font-semibold hover:text-indigo-600'>
               Luís Simões
             </a>{" "}
             e{" "}
-            <a href='https://github.com/simbentes' target={"_blank"} className='font-semibold'>
+            <a href='https://github.com/simbentes' target={"_blank"} className='font-semibold hover:text-indigo-600'>
               Simão Bentes
             </a>
             .
