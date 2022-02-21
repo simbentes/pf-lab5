@@ -38,10 +38,10 @@ const NoticiaMiniatura = React.forwardRef((props, ref) => {
       <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
         <img src={image} className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer' />
       </Link>
-      <div className='p-3'>
+      <div className='p-4'>
         <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
           <h6 className='text-base leading-5 font-semibold mb-2'>{props.info.titulo.replace(/(<([^>]+)>)/gi, "") /*props.info.titulo*/}</h6>
-          <p className='text-xs'>{props.info.lead}</p>
+          <p className='text-base'>{props.info.lead}</p>
         </Link>
         <div className='absolute bottom-8 right-2.5 left-2.5'>
           <PlayButton
