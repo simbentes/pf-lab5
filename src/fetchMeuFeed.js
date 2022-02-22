@@ -96,34 +96,73 @@ export const fetchTemaNoticia = (arr_antigo, temas, fontes) => {
         arr_temas.push(prop);
       }
     }
-    Promise.all(
-      arr_temas.map((u) =>
-        fetch("https://pf-py-api.herokuapp.com/fetch/", {
-          method: "POST",
-          body: JSON.stringify({
-            link: `https://www.publico.pt/api/list/${u}`,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        })
-      )
-    )
+
+    const promises_publico = arr_temas.map((tema) =>
+      fetch("https://pf-py-api.herokuapp.com/fetch/", {
+        method: "POST",
+        body: JSON.stringify({
+          link: `https://www.publico.pt/api/list/${tema}`,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+    );
+
+    const promises_eco = arr_temas.map((tema) => fetch(`https://eco.sapo.pt/wp-json/eco/v1/lists/tag/slug/${tema}/items`));
+
+    Promise.all([...promises_publico, ...promises_eco])
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((res) => {
-        res.forEach((e) => {
-          e.forEach((el) => {
-            arr_noticias.push({
-              id: el.id,
-              titulo: el.tituloNoticia,
-              data: el.data,
-              tag: el.tags,
-              lead: el.descricao,
-              img: el.multimediaPrincipal,
-              fonte: "publico",
+        console.log(res);
+        res.forEach((e_array) => {
+          let domain;
+          try {
+            domain = new URL(e_array[0].shareUrl);
+          } catch (e) {
+            domain = new URL(e_array[0].item.links.webUri);
+          }
+
+          console.log(domain.hostname);
+
+          if (domain.hostname == "www.publico.pt") {
+            e_array.forEach((el) => {
+              arr_noticias.push({
+                id: el.id,
+                titulo: el.tituloNoticia,
+                data: el.data,
+                tag: el.tags,
+                lead: el.descricao,
+                img: el.multimediaPrincipal,
+                fonte: "publico",
+              });
             });
-          });
+          } else if (domain.hostname == "eco.sapo.pt") {
+            e_array.forEach((el) => {
+              let imagem_eco;
+              try {
+                imagem_eco = el.item.images.wide.urlTemplate;
+              } catch {
+                imagem_eco = null;
+              }
+              arr_noticias.push({
+                id: el.item.id,
+                titulo: el.item.title.long,
+                data: el.item.pubDate,
+                tag: el.item.type,
+                lead: el.item.lead,
+                img: imagem_eco,
+                fonte: "eco",
+              });
+            });
+          }
         });
+        /*   Promise.all(promises_eco)
+          .then((responses) => Promise.all(responses.map((res) => res.json())))
+          .then((res) => {
+            console.log(res);
+            
+          });*/
 
         /* const checkTemas = (el) => {
           if (el.tag == "sociedade" || el.tag == "Sociedade") return true;
@@ -140,12 +179,18 @@ export const fetchTemaNoticia = (arr_antigo, temas, fontes) => {
           return new Date(b.data) - new Date(a.data);
         });
 
-        if (arr_noticias.length != 0) {
-          console.log(arr_noticias);
-          resolve(arr_noticias);
-        } else {
-          reject(new Error("Array Vazio"));
-        }
+        //quando todos os fetchs estiverem resolvidos, podemos lançar o array de noti
+        Promise.allSettled([...promises_publico, ...promises_eco]).then((results) => {
+          const tudo = results.every((el) => el.status == "fulfilled");
+
+          if (tudo) {
+            console.log(results);
+            console.log(arr_noticias);
+            resolve(arr_noticias);
+          } else {
+            reject(new Error("Array Vazio"));
+          }
+        });
       });
   });
 };

@@ -55,7 +55,6 @@ function OMeuFeed() {
           tecnologia: false,
         });
       } else {
-        console.log(filtros);
         setTemas(filtros.temas);
         setFontes(filtros.fontes);
       }
@@ -76,13 +75,10 @@ function OMeuFeed() {
   };
 
   const pauseAllAudios = () => {
-    console.log(arrayRefs);
     arrayRefs.forEach((elem) => {
       try {
         if (elem.current != null) elem.current.pause_func();
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     });
   };
 
@@ -90,9 +86,7 @@ function OMeuFeed() {
     arrayRefs.forEach((elem) => {
       try {
         if (elem.current != null) elem.current.refresh_func();
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     });
   };
 
@@ -115,9 +109,7 @@ function OMeuFeed() {
   }, []);
 
   useEffect(() => {
-    setDisplayNoticias([]);
-
-    console.log(temas);
+    setNoticias([]);
 
     const temTemas = () => {
       for (let prop in temas) {
@@ -140,7 +132,6 @@ function OMeuFeed() {
           setNoticias(news);
           setDisplayNoticias(news);
           setArrayRefs(news.map((noticia) => React.createRef()));
-          console.log("fdss", news);
         });
       }
     }
@@ -148,6 +139,7 @@ function OMeuFeed() {
 
   return (
     <div className='py-5'>
+      {console.log("display", displayNoticias)}
       <h1 className='pl-11 text-center font-semibold text-2xl my-5'>O Meu Feed</h1>
       <div className='container mx-auto px-10'>
         <button onClick={refreshAllAudios}>Refresh</button>
@@ -178,9 +170,9 @@ function OMeuFeed() {
           </ButtonSection>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-          {displayNoticias.length > 0
+          {noticias.length > 0
             ? displayNoticias.map((el, index) => (
-                <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={el.id} def_audio={defAudio} />
+                <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={index} def_audio={defAudio} />
               ))
             : loadingMin.map((e) => <LoadingMiniatura key={e} />)}
         </div>
