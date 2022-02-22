@@ -35,7 +35,7 @@ const NoticiaMiniatura = React.forwardRef((props, ref) => {
   }
 
   return (
-    <div className='relative bg-white shadow-md m-3 rounded-lg pb-24 hover:shadow-xl'>
+    <div className='relative bg-white shadow-md m-3 rounded-lg pb-24 hover:shadow-lg'>
       <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
         <img src={image} className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer' />
       </Link>

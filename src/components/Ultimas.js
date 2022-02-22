@@ -4,16 +4,15 @@ import fetchUltimas from "../fetchUltimas";
 import { isDefAudio } from "../firebase";
 
 function Ultimas() {
+  const loadingMiniatura = "";
   const ref = useRef(0);
-  const [noticias, setNoticias] = useState([]);
+  const [noticias, setNoticias] = useState([loadingMiniatura, loadingMiniatura, loadingMiniatura]);
   const [arrayRefs, setArrayRefs] = useState([]);
   const [defAudio, setDefAudio] = useState({
     genero: "male",
     vel: 1,
     pitch: 0,
   });
-
-  
 
   const pauseAllAudios = () => {
     arrayRefs.forEach((elem) => {

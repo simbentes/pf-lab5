@@ -2,7 +2,7 @@ import "../css/App.css";
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { fetchNoticia } from "../fetchNoticia";
-import { guardarNoticia, useAuth, isGuardado } from "../firebase";
+import { guardarNoticia, useAuth, isGuardado, isDefAudio } from "../firebase";
 import GuardarButton from "./GuardarButton";
 import parse from "html-react-parser";
 import eco from "../icons/eco.svg";
@@ -22,6 +22,11 @@ function Noticia() {
   const [guardado, setGuardado] = useState(false);
   const userID = useAuth();
   const noticia_param = useParams();
+  const [defAudio, setDefAudio] = useState({
+    genero: "male",
+    vel: 1,
+    pitch: 0,
+  });
 
   const [arrayRefs, setArrayRefs] = useState([React.createRef()]);
 
@@ -64,17 +69,16 @@ function Noticia() {
     return newbody;
   };
 
-  useEffect(() => {
+  const carregarNoticias = () => {
     const md = new Remarkable();
-
     //fazer fetch da noticia com id e fonte recebido no url
     fetchNoticia(noticia_param.fonte, noticia_param.id)
       .then((resultado) => {
         if (noticia_param.fonte === "eco") {
           // alterar isto para ajudar no render docorpo
-
           setNoticia({
             titulo: resultado.title.long,
+            desc: <h5 className={"font-medium mb-7"}>{resultado.lead}</h5>,
             img: resultado.images.wide.urlTemplate,
             body: parse(md.render(removeCurlyBracketsNumerals(resultado.body))),
             fonte: "eco",
@@ -100,6 +104,11 @@ function Noticia() {
           setNoticia({
             titulo: resultado.title,
             img: imagem,
+            desc: resultado.desc.map((e, index) => (
+              <h5 className={"font-medium mb-7"} key={index}>
+                {e.content}
+              </h5>
+            )),
             body: resultado.content.map((e, index) => {
               switch (e.type) {
                 case "p":
@@ -149,14 +158,31 @@ function Noticia() {
         console.log(err);
       }
     );
+  };
+
+  useEffect(() => {
+    //fazer fetch das noticias
+    carregarNoticias();
+
+    isDefAudio().then((res) => {
+      if (res !== false) {
+        setDefAudio(res);
+      }
+    });
   }, []);
+
+  useEffect(() => {
+    //fazer fetch das noticias se os parameters mudarem
+    carregarNoticias();
+  }, [noticia_param]);
 
   return (
     <div className='py-12'>
       <div className='lg:container mx-auto'>
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-4 px-10'>
           <div className='lg:col-span-8'>
-            <h1 className='font-bold text-4xl mb-8 leading-10'>{noticia.titulo}</h1>
+            <h1 className='font-bold text-4xl mb-4 leading-10'>{noticia.titulo}</h1>
+            {noticia.desc}
             <PlayButton
               contents={noticia.body_array}
               id={noticia_param.id}
@@ -199,13 +225,7 @@ function Noticia() {
             <div>
               {noticias &&
                 noticias.map((el, index) => (
-                  <NoticiaMiniatura
-                    ref={arrayRefs[index + 1]}
-                    pauseAllFunc={pauseAllAudios}
-                    info={el}
-                    key={index}
-                    def_audio={{ genero: "male", vel: 1, pitch: 0 }}
-                  />
+                  <NoticiaMiniatura ref={arrayRefs[index + 1]} pauseAllFunc={pauseAllAudios} info={el} key={index} def_audio={defAudio} />
                 ))}
             </div>
           </div>

@@ -6,7 +6,7 @@ import publico from "../icons/publico.svg";
 import observador from "../icons/observador.png";
 import SortButton from "./SortButton";
 import ButtonSection from "./ButtonSection";
-import { hasFiltros, saveFitros } from "../firebase";
+import { hasFiltros, saveFitros, isDefAudio } from "../firebase";
 import { RefreshIcon } from "@heroicons/react/solid";
 
 function OMeuFeed() {
@@ -26,6 +26,11 @@ function OMeuFeed() {
     mundo: false,
     cultura: false,
     desporto: false,
+  });
+  const [defAudio, setDefAudio] = useState({
+    genero: "male",
+    vel: 1,
+    pitch: 0,
   });
 
   const escolherFonte = (id, estado) => {
@@ -100,6 +105,12 @@ function OMeuFeed() {
   }, [fontes]);
 
   useEffect(() => {
+    isDefAudio().then((res) => {
+      if (res !== false) {
+        setDefAudio(res);
+      }
+    });
+
     return () => {
       pauseAllAudios();
     };
@@ -160,13 +171,7 @@ function OMeuFeed() {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {displayNoticias &&
             displayNoticias.map((el, index) => (
-              <NoticiaMiniatura
-                ref={arrayRefs[index]}
-                pauseAllFunc={pauseAllAudios}
-                info={el}
-                key={el.id}
-                def_audio={{ genero: "male", vel: 1, pitch: 0 }}
-              />
+              <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={el.id} def_audio={defAudio} />
             ))}
         </div>
       </div>
