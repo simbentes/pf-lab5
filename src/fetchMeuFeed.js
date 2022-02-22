@@ -31,10 +31,10 @@ export const fetchMeuFeed = () => {
       .then((res) => res.json())
       .then((data) => {
         //console.log(data)
-        let json_tratato = []
+        let json_tratato = [];
         data.forEach((e) => {
           // verificação para remover podcasts pois não têm texto
-          if (!e.title.includes("As notícias")){
+          if (!e.title.includes("As notícias")) {
             json_tratato.push({
               id: e.id,
               titulo: e.title,
@@ -43,7 +43,7 @@ export const fetchMeuFeed = () => {
               lead: e.lead,
               img: e.image,
               fonte: "observador",
-            })
+            });
           }
         });
         noticias_arr.push(...json_tratato);
@@ -92,6 +92,7 @@ export const fetchTemaNoticia = (arr_antigo, temas, fontes) => {
     let arr_temas = [];
     for (let prop in temas) {
       if (temas[prop] === true) {
+        console.log(prop);
         arr_temas.push(prop);
       }
     }
@@ -116,7 +117,7 @@ export const fetchTemaNoticia = (arr_antigo, temas, fontes) => {
               id: el.id,
               titulo: el.tituloNoticia,
               data: el.data,
-              tag: "sociedade",
+              tag: el.tags,
               lead: el.descricao,
               img: el.multimediaPrincipal,
               fonte: "publico",
@@ -139,7 +140,8 @@ export const fetchTemaNoticia = (arr_antigo, temas, fontes) => {
           return new Date(b.data) - new Date(a.data);
         });
 
-        if (arr_noticias != []) {
+        if (arr_noticias.length != 0) {
+          console.log(arr_noticias);
           resolve(arr_noticias);
         } else {
           reject(new Error("Array Vazio"));

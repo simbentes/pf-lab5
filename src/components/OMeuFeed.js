@@ -19,14 +19,7 @@ function OMeuFeed() {
     eco: false,
     observador: false,
   });
-  const [temas, setTemas] = useState({
-    sociedade: false,
-    politica: false,
-    economia: false,
-    mundo: false,
-    cultura: false,
-    desporto: false,
-  });
+  const [temas, setTemas] = useState(null);
   const [defAudio, setDefAudio] = useState({
     genero: "male",
     vel: 1,
@@ -43,21 +36,26 @@ function OMeuFeed() {
   };
 
   useEffect(() => {
-    fetchMeuFeed().then(
-      (news) => {
-        setNoticias(news);
-        setDisplayNoticias(news);
-        setArrayRefs(news.map((noticia) => React.createRef()));
-        console.log(news);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-
     //verificar no firebase se exitem filtros selecionados e dar checked ao que estão
     hasFiltros().then((filtros) => {
-      if (filtros) {
+      if (filtros === false) {
+        setTemas({
+          publico: false,
+          eco: false,
+          observador: false,
+        });
+        setFontes({
+          politica: false,
+          sociedade: false,
+          coronavirus: false,
+          economia: false,
+          cultura: false,
+          desporto: false,
+          ciencia: false,
+          tecnologia: false,
+        });
+      } else {
+        console.log(filtros);
         setTemas(filtros.temas);
         setFontes(filtros.fontes);
       }
@@ -117,6 +115,10 @@ function OMeuFeed() {
   }, []);
 
   useEffect(() => {
+    setDisplayNoticias([]);
+
+    console.log(temas);
+
     const temTemas = () => {
       for (let prop in temas) {
         if (temas[prop] === true) return true;
@@ -124,20 +126,23 @@ function OMeuFeed() {
       return false;
     };
 
-    if (temTemas()) {
-      //se tiver temas selecionados fazer fetch com as fontes selecionadas
-      fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => {
-        setNoticias(res);
-        setDisplayNoticias(res);
-        setArrayRefs(res.map((noticia) => React.createRef()));
-      });
-    } else {
-      //se não, fazer fetch das ultimas 25 noticias dos 3 jornais (10 público, 10 observador, 5 eco)
-      fetchMeuFeed().then((news) => {
-        setNoticias(news);
-        setDisplayNoticias(news);
-        setArrayRefs(news.map((noticia) => React.createRef()));
-      });
+    if (temas !== null) {
+      if (temTemas()) {
+        //se tiver temas selecionados fazer fetch com as fontes selecionadas
+        fetchTemaNoticia(displayNoticias, temas, fontes).then((res) => {
+          setNoticias(res);
+          setDisplayNoticias(res);
+          setArrayRefs(res.map((noticia) => React.createRef()));
+        });
+      } else {
+        //se não, fazer fetch das ultimas 25 noticias dos 3 jornais (10 público, 10 observador, 5 eco)
+        fetchMeuFeed().then((news) => {
+          setNoticias(news);
+          setDisplayNoticias(news);
+          setArrayRefs(news.map((noticia) => React.createRef()));
+          console.log("fdss", news);
+        });
+      }
     }
   }, [temas]);
 
@@ -147,14 +152,18 @@ function OMeuFeed() {
       <div className='container mx-auto px-10'>
         <button onClick={refreshAllAudios}>Refresh</button>
         <div className='pb-7'>
-          <ButtonSection name='Temas'>
-            <SortButton id='sociedade' content='Sociedade' type='text' onChangeHandle={escolherTema} is_checked={temas.sociedade} />
-            <SortButton id='politica' content='Política' type='text' onChangeHandle={escolherTema} is_checked={temas.politica} />
-            <SortButton id='economia' content='Economia' type='text' onChangeHandle={escolherTema} is_checked={temas.economia} />
-            <SortButton id='mundo' content='Mundo' type='text' onChangeHandle={escolherTema} is_checked={temas.mundo} />
-            <SortButton id='cultura' content='Cultura' type='text' onChangeHandle={escolherTema} is_checked={temas.cultura} />
-            <SortButton id='desporto' content='Desporto' type='text' onChangeHandle={escolherTema} is_checked={temas.desporto} />
-          </ButtonSection>
+          {temas !== null && (
+            <ButtonSection name='Temas'>
+              <SortButton id='politica' content='Política' type='text' onChangeHandle={escolherTema} is_checked={temas.politica} />
+              <SortButton id='sociedade' content='Sociedade' type='text' onChangeHandle={escolherTema} is_checked={temas.sociedade} />
+              <SortButton id='coronavirus' content='Covid-19' type='text' onChangeHandle={escolherTema} is_checked={temas.coronavirus} />
+              <SortButton id='economia' content='Economia' type='text' onChangeHandle={escolherTema} is_checked={temas.economia} />
+              <SortButton id='cultura' content='Cultura' type='text' onChangeHandle={escolherTema} is_checked={temas.cultura} />
+              <SortButton id='desporto' content='Desporto' type='text' onChangeHandle={escolherTema} is_checked={temas.desporto} />
+              <SortButton id='ciencia' content='Ciência' type='text' onChangeHandle={escolherTema} is_checked={temas.ciencia} />
+              <SortButton id='tecnologia' content='Tecnologia' type='text' onChangeHandle={escolherTema} is_checked={temas.tecnologia} />
+            </ButtonSection>
+          )}
           <ButtonSection name='Fontes'>
             <SortButton id='publico' content={publico} type='img' size='h-6' onChangeHandle={escolherFonte} is_checked={fontes.publico} />
             <SortButton id='eco' content={eco} type='img' size='h-4' onChangeHandle={escolherFonte} is_checked={fontes.eco} />
@@ -169,7 +178,7 @@ function OMeuFeed() {
           </ButtonSection>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-          {noticias.length > 0
+          {displayNoticias.length > 0
             ? displayNoticias.map((el, index) => (
                 <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={el.id} def_audio={defAudio} />
               ))

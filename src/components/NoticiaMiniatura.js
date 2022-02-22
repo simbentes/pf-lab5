@@ -5,9 +5,9 @@ import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import PlayButton from "./PlayButton";
 import parse from "html-react-parser";
-import mainEco from "../imagens/eco.png";
-import mainObs from "../imagens/obs.png";
-import mainPub from "../imagens/pub.png";
+import mainEco from "../img/eco.png";
+import mainObs from "../img/obs.png";
+import mainPub from "../img/pub.png";
 
 const NoticiaMiniatura = React.forwardRef((props, ref) => {
   const data = new Date(props.info.data);
