@@ -37,10 +37,10 @@ function NoticiaMiniaturaGuardadas(props) {
             <img src={image} className='w-full h-full object-cover hover:cursor-pointer rounded-tl-lg rounded-bl-lg' />
           </Link>
         </div>
-        <div className='col-span-9'>
-          <div className='py-3 px-4'>
+        <div className='col-span-9 flex items-center'>
+          <div className='py-3 px-4 w-full'>
             <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
-              <div className='pt-3 pb-2 grid grid-cols-12 gap-4'>
+              <div className='pb-2 grid grid-cols-12 gap-4'>
                 <div className='col-start-1 col-end-11'>
                   <h6 className='text-base leading-5 font-semibold mb-2'>{parse("" + props.info.titulo)}</h6>
                 </div>

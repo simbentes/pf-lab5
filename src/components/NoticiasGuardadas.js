@@ -10,7 +10,8 @@ function NoticiasGuardadas() {
     nGuardadas().then((res) => setNoticias_arr(res.noticia_guardada));
   }, []);
   return (
-    <div className='pt-3'>
+    <div className={noticias_arr.length < 2 ? "pt-3 pb-36" : "pt-3 pb-6"}>
+      {console.log(noticias_arr.length)}
       <div className='container mx-auto px-10'>
         <h1 className='pl-3 font-semibold text-2xl my-5 flex items-center'>
           <BookmarkAltIcon className='h-10 w-10 mr-2' />
@@ -24,7 +25,7 @@ function NoticiasGuardadas() {
               {noticias_arr.length > 0 ? (
                 noticias_arr.map((el, index) => <NoticiaMiniaturaGuardadas info={el} key={index} />)
               ) : (
-                <div className='pt-10 pb-96'>Sem notícias guardadas.</div>
+                <div className='pt-20 pb-10 font-semibold ml-5 text-5xl'>Sem notícias guardadas.</div>
               )}
             </div>
           </div>
