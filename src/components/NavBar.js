@@ -256,7 +256,7 @@ function NavBar() {
           </div>
         </div>
       </Popover>
-      <div className='mt-32'>
+      <div className='mt-24'>
         <Outlet />
       </div>
       <Footer />
