@@ -69,6 +69,32 @@ function Noticia() {
     return newbody;
   };
 
+  const separateByCurlyBrackets = (body) => {
+    console.log(body)
+    let newBody = []
+    let rest = body
+    let hasBrackets = true
+    let count = 0
+
+    while (hasBrackets){
+      let bracket = "{" + count + "}";
+      if (rest.includes(bracket)){
+        let split = rest.split(bracket)
+        newBody.push(split.shift())
+        rest = split[0]
+        count++
+      }
+      else {
+        newBody.push(rest)
+        hasBrackets = false
+      }
+    }
+
+    console.log(newBody)
+
+    return newBody
+  }
+
   const carregarNoticias = () => {
     const md = new Remarkable();
     //fazer fetch da noticia com id e fonte recebido no url
@@ -83,7 +109,7 @@ function Noticia() {
             body: parse(md.render(removeCurlyBracketsNumerals(resultado.body))),
             fonte: "eco",
             data: noticia_param.dia + "-" + noticia_param.mes + "-" + noticia_param.ano,
-            body_array: resultado.body,
+            body_array: separateByCurlyBrackets(resultado.body),
             // arranjar o tipo
           });
         } else {

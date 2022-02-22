@@ -35,7 +35,7 @@ const PlayButton = React.forwardRef((props, ref) => {
       return;
     }
 
-    console.log(props.contents)
+    console.log(props.contents.length)
 
     reference.current.context = new AudioContext();
     reference.current.source = reference.current.context.createBufferSource();
