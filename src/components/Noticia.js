@@ -120,6 +120,11 @@ function Noticia() {
                   return parse(e.content);
                   break;
                 case "audio":
+                  return (
+                    <audio key={index} controls>
+                      <source src={index} type='audio/mp3' />
+                    </audio>
+                  );
               }
             }),
             fonte: noticia_param.fonte,
