@@ -121,7 +121,7 @@ function Noticia() {
                   break;
                 case "audio":
                   return (
-                    <audio key={index} controls>
+                    <audio key={index} className='w-full' controls>
                       <source src={index} type='audio/mp3' />
                     </audio>
                   );
