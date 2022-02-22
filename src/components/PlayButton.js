@@ -29,11 +29,13 @@ const PlayButton = React.forwardRef((props, ref) => {
   }, [props.contents]);
 
   const fetch_audio = () => {
-    if (props.contents[0] == null) {
+    if (props.contents[0] == null || props.contents[0] == "") {
       setButtonContent("Sem audio");
       setLoading("");
       return;
     }
+
+    console.log(props.contents)
 
     reference.current.context = new AudioContext();
     reference.current.source = reference.current.context.createBufferSource();

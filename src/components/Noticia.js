@@ -138,7 +138,16 @@ function Noticia() {
             }),
             fonte: noticia_param.fonte,
             data: noticia_param.dia + "-" + noticia_param.mes + "-" + noticia_param.ano,
-            body_array: resultado.content.map((elem) => elem.content),
+            body_array: resultado.content.map((elem, index) => {
+              if (elem.type != "audio" && elem.type != "video"){
+                return elem.content
+              }
+              else if (index == 0){
+                console.log(resultado.desc[0])
+                return resultado.desc[0].content
+              }
+              
+            }),
           });
         }
       })
