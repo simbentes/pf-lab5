@@ -15,7 +15,7 @@ const SortButton = (props) => {
         }}
         checked={props.is_checked}
       />
-      <label htmlFor={props.id} className='rounded-full py-2.5 px-3 bg-slate-300 peer-checked:bg-indigo-400 peer-checked:text-white'>
+      <label htmlFor={props.id} className='rounded-lg py-2.5 px-3 bg-slate-300 peer-checked:bg-indigo-400 peer-checked:text-white'>
         {buttonContent}
       </label>
     </div>

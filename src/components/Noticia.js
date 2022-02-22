@@ -57,7 +57,7 @@ function Noticia() {
       let bracket = "{" + counter + "}";
 
       if (newbody.includes(bracket)) {
-        newbody = newbody.replace(bracket, "");
+        newbody = newbody.replace(bracket, "‎");
         counter++;
       } else hasBrackets = false;
     }
@@ -105,14 +105,14 @@ function Noticia() {
                 case "p":
                   return (
                     <p key={index} className='mb-5'>
-                      {e.content}
+                      {parse(e.content)}
                     </p>
                   );
                   break;
                 case "h2":
                   return (
                     <h2 key={index} className='mb-5 font-semibold text-2xl'>
-                      {e.content}
+                      {parse(e.content)}
                     </h2>
                   );
                   break;
@@ -152,11 +152,11 @@ function Noticia() {
   }, []);
 
   return (
-    <div>
-      <div className='md:container mx-auto'>
-        <div className='grid grid-cols-1 md:grid-cols-12 gap-4 px-10'>
-          <div className='md:col-span-8'>
-            <h1 className='font-bold text-5xl mb-3'>{noticia.titulo}</h1>
+    <div className='py-12'>
+      <div className='lg:container mx-auto'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-4 px-10'>
+          <div className='lg:col-span-8'>
+            <h1 className='font-bold text-4xl mb-8 leading-10'>{noticia.titulo}</h1>
             <PlayButton
               contents={noticia.body_array}
               id={noticia_param.id}
@@ -166,38 +166,35 @@ function Noticia() {
               ref={arrayRefs[0]}
               pauseAllFunc={pauseAllAudios}
             />
-            <div className='py-3 grid grid-cols-6 gap-4'>
+            <div className='py-3 grid grid-cols-6 mt-2 gap-4 items-center'>
               <div className='col-span-2'>
                 <GuardarButton is_saved={guardado} onChangeHandle={adicionarNoticia} info={noticia} />
               </div>
               <div className='col-end-7 col-span-3 text-right'>
-                <img
-                  className='inline h-8'
-                  src={(() => {
-                    switch (noticia_param.fonte) {
-                      case "publico":
-                        return publico;
-                        break;
-                      case "eco":
-                        return eco;
-                        break;
-                      case "observador":
-                        return observador;
-                        break;
-                    }
-                  })()}
-                />
+                {(() => {
+                  switch (noticia_param.fonte) {
+                    case "publico":
+                      return <img className='inline h-8' src={publico} />;
+                      break;
+                    case "eco":
+                      return <img className='inline h-8' src={eco} />;
+                      break;
+                    case "observador":
+                      return <img className='inline w-36' src={observador} />;
+                      break;
+                  }
+                })()}
               </div>
             </div>
-            <div></div>
-            <img className='w-full' src={noticia.img} />
+            <hr className='border-2 my-4' />
+            <img className='w-full pt-3.5' src={noticia.img} />
             <div className='corpo-noticia text-base py-8'>{noticia.body}</div>
           </div>
           <div className='col-span-4'>
             {noticia_param.fonte == "eco" ? (
-              <h5 className='font-semibold'>Notícias Relacionadas</h5>
+              <h5 className='font-semibold pl-3'>Notícias Relacionadas</h5>
             ) : (
-              <h5 className='font-semibold'>Outras Notícias</h5>
+              <h5 className='font-semibold pl-3'>Outras Notícias</h5>
             )}
             <div>
               {noticias &&

@@ -4,6 +4,7 @@ import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
 import PlayButton from "./PlayButton";
+import parse from "html-react-parser";
 import mainEco from "../imagens/eco.png";
 import mainObs from "../imagens/obs.png";
 import mainPub from "../imagens/pub.png";
@@ -34,14 +35,14 @@ const NoticiaMiniatura = React.forwardRef((props, ref) => {
   }
 
   return (
-    <div className='relative bg-white shadow-md m-3 rounded-lg pb-24'>
+    <div className='relative bg-white shadow-md m-3 rounded-lg pb-24 hover:shadow-xl'>
       <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
         <img src={image} className='mx-auto w-full rounded-t-lg h-60 object-cover hover:cursor-pointer' />
       </Link>
       <div className='p-4'>
         <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
-          <h6 className='text-base leading-5 font-semibold mb-2'>{props.info.titulo.replace(/(<([^>]+)>)/gi, "") /*props.info.titulo*/}</h6>
-          <p className='text-base'>{props.info.lead}</p>
+          <h6 className='text-base leading-5 font-semibold mb-2'>{parse("" + props.info.titulo)}</h6>
+          <p className='text-base'>{parse("" + props.info.lead)}</p>
         </Link>
         <div className='absolute bottom-8 right-2.5 left-2.5'>
           <PlayButton

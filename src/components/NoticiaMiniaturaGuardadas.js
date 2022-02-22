@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { guardarNoticia } from "../firebase";
 import { Link } from "react-router-dom";
+import parse from "html-react-parser";
 import eco from "../icons/eco.svg";
 import observador from "../icons/observador.png";
 import publico from "../icons/publico.svg";
@@ -39,31 +40,29 @@ function NoticiaMiniaturaGuardadas(props) {
         <div className='col-span-9'>
           <div className='py-3 px-4'>
             <Link to={`/noticia/${props.info.fonte}/${data.getFullYear()}/${data.getMonth() + 1}/${data.getDate()}/${props.info.id}`}>
-              <div className='py-3 grid grid-cols-12 gap-4'>
+              <div className='pt-3 pb-2 grid grid-cols-12 gap-4'>
                 <div className='col-start-1 col-end-11'>
-                  <h6 className='text-base leading-5 font-semibold mb-2'>{props.info.titulo}</h6>
+                  <h6 className='text-base leading-5 font-semibold mb-2'>{parse("" + props.info.titulo)}</h6>
                 </div>
-                <div className='col-span-2 col-end-13 text-right'>
-                  {(() => {
-                    switch (props.info.fonte) {
-                      case "eco":
-                        return <img src={eco} className='w-14 inline' />;
-                      case "observador":
-                        return <img src={observador} className='w-28 inline' />;
-                      case "publico":
-                        return <img src={publico} className='w-5 inline' />;
-                      default:
-                        return null;
-                    }
-                  })()}
-                </div>
+                <div className='col-span-2 col-end-13 text-right'></div>
               </div>
             </Link>
-            <div className='grid grid-cols-8'>
-              <div className='col-span-6 pr-2'>
-                <AudioPlayer func={audioATocar} />
+            <div className='grid grid-cols-8 items-center'>
+              <div className='col-start-1 col-span-3 pr-2'>
+                {(() => {
+                  switch (props.info.fonte) {
+                    case "eco":
+                      return <img src={eco} className='w-14 inline' />;
+                    case "observador":
+                      return <img src={observador} className='w-28 inline' />;
+                    case "publico":
+                      return <img src={publico} className='w-5 inline' />;
+                    default:
+                      return null;
+                  }
+                })()}
               </div>
-              <div className='col-span-2 pl-2 flex items-center justify-end w-full'>
+              <div className='col-start-9 col-end-13 pl-2 items-center'>
                 <GuardarButton is_saved={guardado} onChangeHandle={removerNoticia} info={props.info} />
               </div>
             </div>
