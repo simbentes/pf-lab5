@@ -7,7 +7,7 @@ import observador from "../icons/observador.png";
 import SortButton from "./SortButton";
 import ButtonSection from "./ButtonSection";
 import { hasFiltros, saveFitros, isDefAudio } from "../firebase";
-import { RefreshIcon } from "@heroicons/react/solid";
+import LoadingMiniatura from "./LoadingMiniatura";
 
 function OMeuFeed() {
   const renders = useRef(0);
@@ -32,7 +32,7 @@ function OMeuFeed() {
     vel: 1,
     pitch: 0,
   });
-
+  const loadingMin = [0, 1, 2, 3, 4, 5];
   const escolherFonte = (id, estado) => {
     saveFitros(temas, { ...fontes, [id]: estado });
     setFontes({ ...fontes, [id]: estado });
@@ -169,10 +169,11 @@ function OMeuFeed() {
           </ButtonSection>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-          {displayNoticias &&
-            displayNoticias.map((el, index) => (
-              <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={el.id} def_audio={defAudio} />
-            ))}
+          {noticias.length > 0
+            ? displayNoticias.map((el, index) => (
+                <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={el.id} def_audio={defAudio} />
+              ))
+            : loadingMin.map((e) => <LoadingMiniatura key={e} />)}
         </div>
       </div>
     </div>
