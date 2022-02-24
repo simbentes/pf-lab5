@@ -86,8 +86,71 @@ export const fetchMeuFeed = () => {
   });
 };
 
-export const fetchTemaNoticia = (arr_antigo, temas, fontes) => {
+export const fetchTemaNoticia = (temas, fontes) => {
   let arr_noticias = [];
+
+  ////////asdaskdjh
+  ////////asdaskdjh
+  ////////asdaskdjh
+
+  let temas_obs = {
+    politica: "Política",
+    sociedade: "Sociedade",
+    coronavirus: "Covid-19",
+    economia: "Economia",
+    cultura: "Cultura",
+    desporto: "Desporto",
+    ciencia: "Ciência",
+    tecnologia: "Tecnologia",
+  };
+
+  let arr_temas_obs = [];
+  for (let prop in temas) {
+    if (temas[prop] === true) {
+      arr_temas_obs.push(temas_obs[prop]);
+    }
+  }
+
+  let arr_noticias_obs = [];
+
+  fetch("https://pf-py-api.herokuapp.com/fetch/", {
+    method: "POST",
+    body: JSON.stringify({
+      link: "https://observador.pt/wp-json/obs_api/v4/news/widget/latest/",
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      //console.log(data)
+      data.forEach((e) => {
+        // verificação para remover podcasts pois não têm texto
+        if (!e.title.includes("As notícias")) {
+          arr_noticias_obs.push({
+            id: e.id,
+            titulo: e.title,
+            data: e.publish_date,
+            tag: e.tag,
+            lead: e.lead,
+            img: e.image,
+            fonte: "observador",
+          });
+        }
+
+        console.log(arr_noticias_obs);
+
+        let arr_filtrado_obs = [];
+
+        arr_temas_obs.forEach((elemento, index, arr) => {
+          arr_filtrado_obs = [...arr_filtrado_obs, ...arr_noticias_obs.filter((el) => el.tag == arr[index])];
+        });
+
+        arr_noticias.push(...arr_filtrado_obs);
+      });
+    });
+
   return new Promise((resolve, reject) => {
     let arr_temas = [];
     for (let prop in temas) {
@@ -157,20 +220,6 @@ export const fetchTemaNoticia = (arr_antigo, temas, fontes) => {
             });
           }
         });
-        /*   Promise.all(promises_eco)
-          .then((responses) => Promise.all(responses.map((res) => res.json())))
-          .then((res) => {
-            console.log(res);
-            
-          });*/
-
-        /* const checkTemas = (el) => {
-          if (el.tag == "sociedade" || el.tag == "Sociedade") return true;
-          return false;
-        };*/
-
-        //remover noticias de tags diferentes
-        // let arr_filtrado = arr_noticias.filter((el) => checkTemas(el));
 
         //remover noticias com o mesmo id
         arr_noticias = arr_noticias.filter((value, index, self) => index === self.findIndex((t) => t.id === value.id));
