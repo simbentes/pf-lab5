@@ -151,7 +151,7 @@ function OMeuFeed() {
     if (temas !== null) {
       if (temTemas()) {
         //se tiver temas selecionados fazer fetch com as fontes selecionadas
-        fetchTemaNoticia(temas, fontes).then((res) => {
+        fetchTemaNoticia(temas).then((res) => {
           setNoticias(res);
           setDisplayNoticias(res);
           setArrayRefs(res.map((noticia) => React.createRef()));

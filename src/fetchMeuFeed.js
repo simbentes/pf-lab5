@@ -86,12 +86,8 @@ export const fetchMeuFeed = () => {
   });
 };
 
-export const fetchTemaNoticia = (temas, fontes) => {
+export const fetchTemaNoticia = (temas) => {
   let arr_noticias = [];
-
-  ////////asdaskdjh
-  ////////asdaskdjh
-  ////////asdaskdjh
 
   let temas_obs = {
     politica: "Política",
