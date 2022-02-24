@@ -14,11 +14,7 @@ function OMeuFeed() {
   const [arrayRefs, setArrayRefs] = useState([]);
   const [noticias, setNoticias] = useState([]);
   const [displayNoticias, setDisplayNoticias] = useState([]);
-  const [fontes, setFontes] = useState({
-    publico: false,
-    eco: false,
-    observador: false,
-  });
+  const [fontes, setFontes] = useState(null);
   const [temas, setTemas] = useState(null);
   const [defAudio, setDefAudio] = useState({
     genero: "male",
@@ -27,12 +23,12 @@ function OMeuFeed() {
   });
   const loadingMin = [0, 1, 2, 3, 4, 5];
   const escolherFonte = (id, estado) => {
-    saveFitros(temas, { ...fontes, [id]: estado });
     setFontes({ ...fontes, [id]: estado });
+    saveFitros(temas, { ...fontes, [id]: estado });
   };
   const escolherTema = (id, estado) => {
-    saveFitros({ ...temas, [id]: estado }, fontes);
     setTemas({ ...temas, [id]: estado });
+    saveFitros({ ...temas, [id]: estado }, fontes);
   };
 
   useEffect(() => {
@@ -40,11 +36,6 @@ function OMeuFeed() {
     hasFiltros().then((filtros) => {
       if (filtros === false) {
         setTemas({
-          publico: false,
-          eco: false,
-          observador: false,
-        });
-        setFontes({
           politica: false,
           sociedade: false,
           coronavirus: false,
@@ -53,6 +44,11 @@ function OMeuFeed() {
           desporto: false,
           ciencia: false,
           tecnologia: false,
+        });
+        setFontes({
+          publico: false,
+          eco: false,
+          observador: false,
         });
       } else {
         setTemas(filtros.temas);
@@ -90,10 +86,14 @@ function OMeuFeed() {
     });
   };
 
-  useEffect(() => {
+  const filtrar_fontes = () => {
     const arr_filtrado = noticias.filter((el) => checkFontes(el));
     setDisplayNoticias(arr_filtrado);
     refreshAllAudios();
+  };
+
+  useEffect(() => {
+    filtrar_fontes();
   }, [fontes]);
 
   useEffect(() => {
@@ -137,6 +137,10 @@ function OMeuFeed() {
     }
   }, [temas]);
 
+  useEffect(() => {
+    filtrar_fontes();
+  }, [noticias]);
+
   return (
     <div className='py-5'>
       {console.log("display", displayNoticias)}
@@ -156,18 +160,20 @@ function OMeuFeed() {
               <SortButton id='tecnologia' content='Tecnologia' type='text' onChangeHandle={escolherTema} is_checked={temas.tecnologia} />
             </ButtonSection>
           )}
-          <ButtonSection name='Fontes'>
-            <SortButton id='publico' content={publico} type='img' size='h-6' onChangeHandle={escolherFonte} is_checked={fontes.publico} />
-            <SortButton id='eco' content={eco} type='img' size='h-4' onChangeHandle={escolherFonte} is_checked={fontes.eco} />
-            <SortButton
-              id='observador'
-              content={observador}
-              type='img'
-              size='h-2'
-              onChangeHandle={escolherFonte}
-              is_checked={fontes.observador}
-            />
-          </ButtonSection>
+          {fontes !== null && (
+            <ButtonSection name='Fontes'>
+              <SortButton id='publico' content={publico} type='img' size='h-6' onChangeHandle={escolherFonte} is_checked={fontes.publico} />
+              <SortButton id='eco' content={eco} type='img' size='h-4' onChangeHandle={escolherFonte} is_checked={fontes.eco} />
+              <SortButton
+                id='observador'
+                content={observador}
+                type='img'
+                size='h-2'
+                onChangeHandle={escolherFonte}
+                is_checked={fontes.observador}
+              />
+            </ButtonSection>
+          )}
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {noticias.length > 0

@@ -42,9 +42,9 @@ function Noticia() {
   };
 
   //guardar notícia - enviamos como callback para o componente GuardarButton
-  const adicionarNoticia = (is_checked, noticia_id, noticia_info) => {
+  const adicionarNoticia = (is_checked) => {
     setGuardado(!guardado);
-    guardarNoticia(noticia_param.id, noticia_info, is_checked);
+    guardarNoticia(noticia_param.id, noticia, is_checked);
   };
 
   useEffect(() => {
@@ -139,14 +139,12 @@ function Noticia() {
             fonte: noticia_param.fonte,
             data: noticia_param.dia + "-" + noticia_param.mes + "-" + noticia_param.ano,
             body_array: resultado.content.map((elem, index) => {
-              if (elem.type != "audio" && elem.type != "video"){
-                return elem.content
+              if (elem.type != "audio" && elem.type != "video") {
+                return elem.content;
+              } else if (index == 0) {
+                console.log(resultado.desc[0]);
+                return resultado.desc[0].content;
               }
-              else if (index == 0){
-                console.log(resultado.desc[0])
-                return resultado.desc[0].content
-              }
-              
             }),
           });
         }
@@ -197,13 +195,13 @@ function Noticia() {
               id={noticia_param.id}
               type='body'
               jornal={noticia_param.fonte}
-              def_audio={{ genero: "male", vel: 1, pitch: 0 }}
+              def_audio={defAudio}
               ref={arrayRefs[0]}
               pauseAllFunc={pauseAllAudios}
             />
             <div className='py-3 grid grid-cols-6 mt-2 gap-4 items-center'>
               <div className='col-span-2'>
-                <GuardarButton is_saved={guardado} onChangeHandle={adicionarNoticia} info={noticia} />
+                <GuardarButton is_saved={guardado} onChangeHandle={adicionarNoticia} id={noticia_param.id} info={noticia} />
               </div>
               <div className='col-end-7 col-span-3 text-right'>
                 {(() => {

@@ -69,15 +69,14 @@ export const guardarNoticia = async (id_noticia, obj_noticia, checked) => {
             fonte: obj_noticia.fonte,
             titulo: obj_noticia.titulo,
             img: obj_noticia.img,
-            body: obj_noticia.raw_body,
             data: obj_noticia.data,
           },
         ],
       };
-      console.log(id_noticia);
-      console.log(obj_noticia);
-      console.log(checked);
-      await setDoc(doc(db, "noticias_guardadas", auth.currentUser.uid), docData);
+      console.log("ID_NOTICIA", id_noticia);
+      console.log("OBJ_NOTICIA", obj_noticia);
+      console.log("CHECKED", checked);
+      await setDoc(docRef, docData);
     }
   } else {
     const docSnap = await getDoc(docRef);

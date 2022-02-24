@@ -63,7 +63,7 @@ function NoticiaMiniaturaGuardadas(props) {
                 })()}
               </div>
               <div className='col-start-9 col-end-13 pl-2 items-center'>
-                <GuardarButton is_saved={guardado} onChangeHandle={removerNoticia} info={props.info} />
+                <GuardarButton is_saved={guardado} onChangeHandle={removerNoticia} info={props.info} id={props.info.id} />
               </div>
             </div>
           </div>
