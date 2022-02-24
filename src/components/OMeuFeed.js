@@ -8,11 +8,14 @@ import SortButton from "./SortButton";
 import ButtonSection from "./ButtonSection";
 import { hasFiltros, saveFitros, isDefAudio } from "../firebase";
 import LoadingMiniatura from "./LoadingMiniatura";
+import { uniqueSort } from "domutils";
 
 function OMeuFeed() {
   const renders = useRef(0);
+  const refPesquisa = useRef(null);
   const [arrayRefs, setArrayRefs] = useState([]);
   const [noticias, setNoticias] = useState([]);
+  const [searchNoticias, setSearchNoticias] = useState(null);
   const [displayNoticias, setDisplayNoticias] = useState([]);
   const [fontes, setFontes] = useState(null);
   const [temas, setTemas] = useState(null);
@@ -87,9 +90,36 @@ function OMeuFeed() {
   };
 
   const filtrar_fontes = () => {
-    const arr_filtrado = noticias.filter((el) => checkFontes(el));
+    let arr_filtrado;
+    if (searchNoticias == null) {
+      arr_filtrado = noticias.filter((el) => checkFontes(el));
+    } else {
+      arr_filtrado = searchNoticias.filter((el) => checkFontes(el));
+    }
     setDisplayNoticias(arr_filtrado);
     refreshAllAudios();
+  };
+
+  const pesquisarNoticias = (texto) => {
+    let texto_lower = texto.toLowerCase();
+    let noticias_pesquisadas = [];
+    noticias_pesquisadas = noticias.filter((el) => {
+      let titulo_lower = el.titulo.toLowerCase();
+      return titulo_lower.includes(texto_lower);
+    });
+
+    if (texto == "") {
+      setSearchNoticias(noticias);
+      setDisplayNoticias(noticias);
+    } else {
+      if (noticias_pesquisadas != undefined) {
+        setSearchNoticias([...noticias_pesquisadas]);
+        setDisplayNoticias([...noticias_pesquisadas]);
+      } else {
+        setSearchNoticias(null);
+        setDisplayNoticias(null);
+      }
+    }
   };
 
   useEffect(() => {
@@ -139,6 +169,7 @@ function OMeuFeed() {
 
   useEffect(() => {
     filtrar_fontes();
+    pesquisarNoticias(refPesquisa.current.value);
   }, [noticias]);
 
   return (
@@ -146,7 +177,20 @@ function OMeuFeed() {
       {console.log("display", displayNoticias)}
       <h1 className='pl-11 text-center font-semibold text-2xl my-5'>O Meu Feed</h1>
       <div className='container mx-auto px-10'>
-        <button onClick={refreshAllAudios}>Refresh</button>
+        <div>
+          <input
+            type='text'
+            ref={refPesquisa}
+            onChange={(e) => {
+              pesquisarNoticias(e.target.value);
+            }}
+          />
+        </div>
+        <div className='my-3'>
+          <button onClick={refreshAllAudios} className='py-2 px-4 bg-indigo-600 rounded-md text-white'>
+            Refresh
+          </button>
+        </div>
         <div className='pb-7'>
           {temas !== null && (
             <ButtonSection name='Temas'>
