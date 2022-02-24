@@ -177,20 +177,6 @@ function OMeuFeed() {
       {console.log("display", displayNoticias)}
       <h1 className='pl-11 text-center font-semibold text-2xl my-5'>O Meu Feed</h1>
       <div className='container mx-auto px-10'>
-        <div>
-          <input
-            type='text'
-            ref={refPesquisa}
-            onChange={(e) => {
-              pesquisarNoticias(e.target.value);
-            }}
-          />
-        </div>
-        <div className='my-3'>
-          <button onClick={refreshAllAudios} className='py-2 px-4 bg-indigo-600 rounded-md text-white'>
-            Refresh
-          </button>
-        </div>
         <div className='pb-7'>
           {temas !== null && (
             <ButtonSection name='Temas'>
@@ -218,6 +204,24 @@ function OMeuFeed() {
               />
             </ButtonSection>
           )}
+          <div>
+            <h6 className='mb-1 text-xl font-semibold'>Pesquisar</h6>
+            <input
+              type='text'
+              ref={refPesquisa}
+              onChange={(e) => {
+                pesquisarNoticias(e.target.value);
+              }}
+              className='text-sm w-full md:w-96 bg-slate-300 rounded-lg p-2'
+              placeholder='Título'
+            />
+            <div className='inline ml-8'>
+              Áudios
+              <button onClick={refreshAllAudios} className='py-1 px-2 ml-2 shadow-sm border-2 rounded-lg text-black'>
+                Refresh
+              </button>
+            </div>
+          </div>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {noticias.length > 0

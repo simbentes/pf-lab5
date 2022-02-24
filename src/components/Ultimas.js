@@ -51,7 +51,7 @@ function Ultimas() {
 
   return (
     <div className='py-5'>
-      <h1 className='pl-11 text-center font-semibold text-2xl my-5'>Últimas Notícias</h1>
+      <h1 className='pl-11 text-center font-semibold text-2xl mb-5 mt-16'>Últimas Notícias</h1>
       <div className='container mx-auto px-10'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {noticias !== null
