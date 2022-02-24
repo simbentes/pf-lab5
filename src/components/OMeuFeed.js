@@ -226,7 +226,7 @@ function OMeuFeed() {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {noticias.length > 0
             ? displayNoticias.map((el, index) => (
-                <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={index} def_audio={defAudio} />
+                <NoticiaMiniatura ref={arrayRefs[index]} pauseAllFunc={pauseAllAudios} info={el} key={el.id} def_audio={defAudio} />
               ))
             : loadingMin.map((e) => <LoadingMiniatura key={e} />)}
         </div>
