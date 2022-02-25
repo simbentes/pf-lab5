@@ -89,6 +89,10 @@ export const fetchMeuFeed = () => {
 export const fetchTemaNoticia = (temas) => {
   let arr_noticias = [];
 
+  //como não é possível pesquisar por tema na api do observador,
+  //a solução encontrada passou por fazer um pedido das últimas 10 notícias e filtrar por temas essas mesmas notícias
+
+  //os temas do observador são diferentes do público
   let temas_obs = {
     politica: "Política",
     sociedade: "Sociedade",
@@ -100,6 +104,7 @@ export const fetchTemaNoticia = (temas) => {
     tecnologia: "Tecnologia",
   };
 
+  //verificar temas selecionados
   let arr_temas_obs = [];
   for (let prop in temas) {
     if (temas[prop] === true) {
@@ -139,10 +144,12 @@ export const fetchTemaNoticia = (temas) => {
 
         let arr_filtrado_obs = [];
 
+        //filtrar por tema, ou por temas, dependendo do tamanho do array de temas selecionados
         arr_temas_obs.forEach((elemento, index, arr) => {
           arr_filtrado_obs = [...arr_filtrado_obs, ...arr_noticias_obs.filter((el) => el.tag == arr[index])];
         });
 
+        //adicionar ao array principal as noticias filtradas do observador
         arr_noticias.push(...arr_filtrado_obs);
       });
     });
@@ -170,7 +177,7 @@ export const fetchTemaNoticia = (temas) => {
 
     const promises_eco = arr_temas.map((tema) => fetch(`https://eco.sapo.pt/wp-json/eco/v1/lists/tag/slug/${tema}/items`));
 
-    //fazer o fetch de todos os temas que estão selecionados
+    //fazer o fetch de todos os temas que estão selecionados para as duas apis (público e eco)
     Promise.all([...promises_publico, ...promises_eco])
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((res) => {
@@ -185,6 +192,7 @@ export const fetchTemaNoticia = (temas) => {
 
           console.log(domain.hostname);
 
+          //se a noiticia for do público
           if (domain.hostname == "www.publico.pt") {
             e_array.forEach((el) => {
               arr_noticias.push({
@@ -197,6 +205,7 @@ export const fetchTemaNoticia = (temas) => {
                 fonte: "publico",
               });
             });
+            //se a noiticia for do eco
           } else if (domain.hostname == "eco.sapo.pt") {
             e_array.forEach((el) => {
               let imagem_eco;
@@ -221,6 +230,7 @@ export const fetchTemaNoticia = (temas) => {
         //remover noticias com o mesmo id
         arr_noticias = arr_noticias.filter((value, index, self) => index === self.findIndex((t) => t.id === value.id));
 
+        //ordenar por datas
         arr_noticias.sort(function (a, b) {
           return new Date(b.data) - new Date(a.data);
         });

@@ -1,6 +1,7 @@
 export default function fetchUltimas(num = 25, id = null, fonte) {
   const noticias_arr = [];
   return new Promise((resolve, reject) => {
+    //se a fonte for o jornal eco, podemos fazer fetch de noticias relacionas, bastando passar o id da notícia atual
     if (fonte == "eco") {
       fetch(`https://eco.sapo.pt/wp-json/eco/v1/items/id/${id}/related`)
         .then((res) => res.json())
@@ -20,6 +21,9 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
           resolve(json_tratato);
         });
     }
+
+    //FETCH DAS 25 ÚLTIMAS NOTÍCIAS (10 público, 10 observador, 5 eco)
+    //jornal eco
     fetch("https://eco.sapo.pt/wp-json/eco/v1/lists/latest")
       .then((res) => res.json())
       .then((data) => {
@@ -34,9 +38,9 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
             fonte: "eco",
           };
         });
-
+        //adicionar o array de noticias do eco ao array de notícias principal
         noticias_arr.push(...json_tratato);
-
+        //observador
         return fetch("https://pf-py-api.herokuapp.com/fetch/", {
           method: "POST",
           body: JSON.stringify({
@@ -60,8 +64,9 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
             fonte: "observador",
           };
         });
+        //adicionar o array de noticias do observador ao array de notícias principal
         noticias_arr.push(...json_tratato);
-
+        //público
         return fetch("https://pf-py-api.herokuapp.com/fetch/", {
           method: "POST",
           body: JSON.stringify({
@@ -85,8 +90,10 @@ export default function fetchUltimas(num = 25, id = null, fonte) {
             fonte: "publico",
           };
         });
+        //adicionar o array de noticias do público ao array de notícias principal
         noticias_arr.push(...json_tratato);
 
+        //ordenar as notícias por datas
         noticias_arr.sort(function (a, b) {
           return new Date(b.data) - new Date(a.data);
         });
