@@ -31,12 +31,12 @@ function Noticia() {
   const [arrayRefs, setArrayRefs] = useState([React.createRef()]);
 
   const pauseAllAudios = () => {
-    console.log(arrayRefs);
+    //console.log(arrayRefs);
     arrayRefs.forEach((elem) => {
       try {
         if (elem.current != null) elem.current.pause_func();
       } catch (e) {
-        console.log(e);
+        //console.log(e);
       }
     });
   };
@@ -53,7 +53,7 @@ function Noticia() {
   }, [userID]);
 
   const removeCurlyBracketsNumerals = (body) => {
-    console.log(body);
+    //console.log(body);
     let newbody = body;
     let counter = 0;
     let hasBrackets = true;
@@ -70,7 +70,7 @@ function Noticia() {
   };
 
   const separateByCurlyBrackets = (body) => {
-    console.log(body)
+    //console.log(body)
     let newBody = []
     let rest = body
     let hasBrackets = true
@@ -90,7 +90,7 @@ function Noticia() {
       }
     }
 
-    console.log(newBody)
+    //console.log(newBody)
 
     return newBody
   }
@@ -168,7 +168,7 @@ function Noticia() {
               if (elem.type != "audio" && elem.type != "video") {
                 return elem.content;
               } else if (index == 0) {
-                console.log(resultado.desc[0]);
+                //console.log(resultado.desc[0]);
                 return resultado.desc[0].content;
               }
             }),
@@ -176,19 +176,19 @@ function Noticia() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
       });
 
     //fazer fetch das "outras noticias" (ou "noticias relacionadas" se forem a noticia for do jornal ECO)
     fetchUltimas(3, noticia_param.id, noticia_param.fonte).then(
       (news) => {
-        console.log(news);
+        //console.log(news);
         setNoticias(news);
         let array = news.map((element) => React.createRef());
         setArrayRefs([...arrayRefs, ...array]);
       },
       (err) => {
-        console.log(err);
+        //console.log(err);
       }
     );
   };

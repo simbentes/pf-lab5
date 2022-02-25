@@ -140,7 +140,7 @@ export const fetchTemaNoticia = (temas) => {
           });
         }
 
-        console.log(arr_noticias_obs);
+        //console.log(arr_noticias_obs);
 
         let arr_filtrado_obs = [];
 
@@ -158,7 +158,7 @@ export const fetchTemaNoticia = (temas) => {
     let arr_temas = [];
     for (let prop in temas) {
       if (temas[prop] === true) {
-        console.log(prop);
+        //console.log(prop);
         arr_temas.push(prop);
       }
     }
@@ -181,7 +181,7 @@ export const fetchTemaNoticia = (temas) => {
     Promise.all([...promises_publico, ...promises_eco])
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         res.forEach((e_array) => {
           let domain;
           try {
@@ -190,7 +190,7 @@ export const fetchTemaNoticia = (temas) => {
             domain = new URL(e_array[0].item.links.webUri);
           }
 
-          console.log(domain.hostname);
+          //console.log(domain.hostname);
 
           //se a noiticia for do público
           if (domain.hostname == "www.publico.pt") {
@@ -240,8 +240,8 @@ export const fetchTemaNoticia = (temas) => {
           const tudo = results.every((el) => el.status == "fulfilled");
 
           if (tudo) {
-            console.log(results);
-            console.log(arr_noticias);
+            //console.log(results);
+            //console.log(arr_noticias);
             resolve(arr_noticias);
           } else {
             reject(new Error("Array Vazio"));

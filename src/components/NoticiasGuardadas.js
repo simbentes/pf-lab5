@@ -7,11 +7,12 @@ function NoticiasGuardadas() {
   const [noticias_arr, setNoticias_arr] = useState([]);
   useEffect(() => {
     //dar display das notícias guardadas
-    nGuardadas().then((res) => setNoticias_arr(res.noticia_guardada));
+    nGuardadas().then((res) => setNoticias_arr(res.noticia_guardada.reverse()));
   }, []);
+
   return (
     <div className={noticias_arr.length < 2 ? "pt-3 pb-36" : "pt-3 pb-6"}>
-      {console.log(noticias_arr.length)}
+      {/*console.log(noticias_arr.length)*/}
       <div className='container mx-auto px-10'>
         <h1 className='pl-3 font-semibold text-2xl my-5 flex items-center'>
           <BookmarkAltIcon className='h-10 w-10 mr-2' />
