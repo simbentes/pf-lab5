@@ -61,9 +61,9 @@ function OMeuFeed() {
   }, []);
 
   const checkFontes = (el) => {
-    // check if all fontes are false
+    // Verifica se todas as fontes são falsas
     if (!fontes.publico && !fontes.observador && !fontes.eco) return true;
-    // check if elems fonte is trued in fontes
+    // verifica se a fonte correspondente ao estado é verdadeira ou false
     if (
       (el.fonte === "publico" && fontes.publico) ||
       (el.fonte === "eco" && fontes.eco) ||
@@ -74,6 +74,7 @@ function OMeuFeed() {
   };
 
   const pauseAllAudios = () => {
+    //percorre todos os elementos das referências distríbuidas pelos PlayButtons e chama a função pause de cada PlayButton
     arrayRefs.forEach((elem) => {
       try {
         if (elem.current != null) elem.current.pause_func();
@@ -82,6 +83,7 @@ function OMeuFeed() {
   };
 
   const refreshAllAudios = () => {
+    // função semelhante à pauseAllAudios()
     arrayRefs.forEach((elem) => {
       try {
         if (elem.current != null) elem.current.refresh_func();
@@ -133,7 +135,10 @@ function OMeuFeed() {
       }
     });
 
+    
+
     return () => {
+      //console.log(arrayRefs)
       pauseAllAudios();
     };
   }, []);
@@ -174,7 +179,7 @@ function OMeuFeed() {
 
   return (
     <div className='py-5'>
-      {console.log("display", displayNoticias)}
+      {/*console.log("display", displayNoticias)*/}
       <h1 className='pl-11 text-center font-semibold text-2xl my-5'>O Meu Feed</h1>
       <div className='container mx-auto px-10'>
         <div className='pb-7'>
