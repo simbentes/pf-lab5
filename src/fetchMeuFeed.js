@@ -170,6 +170,7 @@ export const fetchTemaNoticia = (temas) => {
 
     const promises_eco = arr_temas.map((tema) => fetch(`https://eco.sapo.pt/wp-json/eco/v1/lists/tag/slug/${tema}/items`));
 
+    //fazer o fetch de todos os temas que estão selecionados
     Promise.all([...promises_publico, ...promises_eco])
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((res) => {
