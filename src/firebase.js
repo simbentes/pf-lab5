@@ -73,9 +73,7 @@ export const guardarNoticia = async (id_noticia, obj_noticia, checked) => {
           },
         ],
       };
-      console.log("ID_NOTICIA", id_noticia);
-      console.log("OBJ_NOTICIA", obj_noticia);
-      console.log("CHECKED", checked);
+
       await setDoc(docRef, docData);
     }
   } else {
