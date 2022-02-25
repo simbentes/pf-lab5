@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { PlayIcon, PauseIcon, RefreshIcon } from "@heroicons/react/solid";
 
 const PlayButton = React.forwardRef((props, ref) => {
+  // Diferentes JSXs para o botão de play nos diferentes estados
   let playjsx = <PlayIcon className='h-10 w-10 fill-slate-800 hover:fill-slate-900' aria-hidden='true' />;
   let pausejsx = <PauseIcon className='h-10 w-10 fill-slate-800 hover:fill-slate-900' aria-hidden='true' />;
   let loadingjsx = "Loading";
@@ -14,6 +15,8 @@ const PlayButton = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     if (ref != null) {
+      // cada vez que os componentes pais são re-renderizados são atribuidos novas referencias pelo forward ref pelo que cada vez que isto aconte
+      // voltam a ser aplicados as funções à referência para facil acesso nos elementos pai
       ref.current.pause_func = pause;
       ref.current.refresh_func = refresh;
     }
@@ -29,14 +32,16 @@ const PlayButton = React.forwardRef((props, ref) => {
   }, [props.contents]);
 
   const fetch_audio = () => {
+    // se o conteudo a ser passado para o botão for null ou vazio o pedido não é efetuado e o botão de play informa que não existe audio
     if (props.contents[0] == null || props.contents[0] == "") {
       setButtonContent("Sem audio");
       setLoading("");
       return;
     }
 
-    console.log(props.contents.length)
+    //console.log(props.contents.length)
 
+    // aqui cria-se um novo audio context que se mantem entre renders pois é necessário garantir o continuo acesso ao audio context que é inicializado
     reference.current.context = new AudioContext();
     reference.current.source = reference.current.context.createBufferSource();
     fetch("https://pf-py-api.herokuapp.com/audio/", {
@@ -76,6 +81,7 @@ const PlayButton = React.forwardRef((props, ref) => {
   };
 
   const pause = () => {
+    // condição que impede que o botão seja premido
     if (disable || !reference.current.hasStarted) return;
     reference.current.context.suspend().then();
     setButtonContent(playjsx);
@@ -84,7 +90,12 @@ const PlayButton = React.forwardRef((props, ref) => {
   };
 
   const refresh = () => {
-    console.log("yo");
+    //console.log("yo");
+    // refresh do audio associado à noticia permitindo, fazer um novo pedido se algo correr mal
+    // mas acima de tudo tocar o audio desde o inicio
+    // pois o audio context não permite voltar ao inicio nem navegar uma timeline
+    // antes de cada refresh cada audio é pausado para garantir que o context anterior se estiver a tocar não continua a fazê-lo
+    // pois a referencia dele irá ser perdida
     pause();
     reference.current.hasStarted = false;
     setDisable(true);
@@ -98,12 +109,13 @@ const PlayButton = React.forwardRef((props, ref) => {
 
     if (props.pauseAllFunc != undefined) props.pauseAllFunc();
 
-    console.log(ref);
+    //console.log(ref);
 
     if (!reference.current.hasStarted) {
       reference.current.source.start();
       reference.current.hasStarted = true;
       setButtonContent(pausejsx);
+      // criação de um "dummy" state duplicado para garantir um nivel minimo de funcionalidade no microsoft edge
       ref.current.state = "running";
     } else if (ref.current.state == "running" || reference.current.context.state == "running") {
       reference.current.context.suspend().then();
